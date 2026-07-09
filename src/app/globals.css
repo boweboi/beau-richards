@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+:root {
+  /* Ink navy — evening sky over the harbour */
+  --navy-950: #0b2035;
+  --navy-900: #0f2a45;
+  --navy-800: #163a5c;
+  --navy-700: #1f4e78;
+  --navy-600: #2c6396;
+
+  /* Hi-vis — the colour every tradie wears on site */
+  --hivis-600: #e35a0a;
+  --hivis-500: #ff6a13;
+  --hivis-400: #ff8a3d;
+
+  /* Corrugated-roof green, used sparingly for trust/verified cues */
+  --iron-600: #1c8f63;
+
+  /* Paper + ink for body content */
+  --paper-0: #ffffff;
+  --paper-50: #f6f8fa;
+  --paper-100: #eef2f5;
+  --ink-900: #10202e;
+  --ink-700: #33475a;
+  --ink-500: #5c7286;
+  --line-200: #dde5ea;
+
+  --background: var(--paper-50);
+  --foreground: var(--ink-900);
+}
+
+@theme inline {
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-navy-600: var(--navy-600);
+
+  --color-hivis-600: var(--hivis-600);
+  --color-hivis-500: var(--hivis-500);
+  --color-hivis-400: var(--hivis-400);
+
+  --color-iron-600: var(--iron-600);
+
+  --color-paper: var(--paper-50);
+  --color-paper-0: var(--paper-0);
+  --color-paper-100: var(--paper-100);
+  --color-ink: var(--ink-900);
+  --color-ink-700: var(--ink-700);
+  --color-ink-500: var(--ink-500);
+  --color-line: var(--line-200);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-display: "Space Grotesk", Arial, Helvetica, sans-serif;
+  --font-body: "Inter", Arial, Helvetica, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+/* Visible keyboard focus, kept consistent across the page */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--hivis-500);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

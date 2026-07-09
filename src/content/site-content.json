@@ -1,0 +1,56 @@
+{
+  "brand": "Fix My Home",
+  "heroImage": null,
+  "hero": {
+    "eyebrow": "Built for Aotearoa homeowners & tradies",
+    "headline": "Find trusted Kiwi tradies for your home improvement jobs.",
+    "subcopy": "Describe the job once. Verified local tradies send you quotes \u2014 no cold calls, no chasing callbacks, no guesswork on price.",
+    "homeownerCard": {
+      "title": "Post a job",
+      "description": "Tell us what needs doing \u2014 a leaky tap, a full renovation, or anything in between. It takes about two minutes.",
+      "buttonText": "Post a job \u2014 it's free"
+    },
+    "tradieCard": {
+      "title": "Join as a tradie",
+      "description": "Get matched with local jobs that fit your trade and your schedule. Quote only on the work you actually want.",
+      "buttonText": "Sign up as a tradie"
+    }
+  },
+  "stats": [
+    {
+      "value": "12,400+",
+      "label": "jobs posted this year"
+    },
+    {
+      "value": "4,800+",
+      "label": "verified tradies on site"
+    },
+    {
+      "value": "3 hrs",
+      "label": "average time to first quote"
+    }
+  ],
+  "steps": [
+    {
+      "number": "01",
+      "title": "Post the job",
+      "description": "Describe what you need done and where. Add photos if it helps \u2014 most jobs take under two minutes to list."
+    },
+    {
+      "number": "02",
+      "title": "Review quotes",
+      "description": "Local tradies get in touch with quotes and availability. Compare prices, ratings and past work side by side."
+    },
+    {
+      "number": "03",
+      "title": "Hire with confidence",
+      "description": "Pick the right tradie for the job and get it booked in. Leave a review once it's done to help the next homeowner."
+    }
+  ],
+  "ctaBand": {
+    "heading": "Got a job that needs doing?",
+    "subcopy": "Post it today and start hearing back from local tradies within hours.",
+    "buttonText": "Post a job \u2014 it's free"
+  },
+  "footerTagline": "Connecting homeowners with trusted, verified tradies across Aotearoa New Zealand."
+}
