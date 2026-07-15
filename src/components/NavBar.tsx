@@ -34,7 +34,7 @@ export default async function NavBar() {
         </a>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-ink-700 md:flex">
-          <a className="hover:text-navy-950" href="#how-it-works">
+          <a className="hover:text-navy-950" href="/#how-it-works">
             How it works
           </a>
           <Link className="hover:text-navy-950" href="/signup">

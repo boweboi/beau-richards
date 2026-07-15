@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { logout } from "@/lib/supabase/actions";
 
@@ -18,6 +19,14 @@ export default async function AccountPage() {
     .eq("id", user.id)
     .single();
 
+  const isTradie = profile?.role === "tradie";
+  const primaryLink = isTradie
+    ? { href: "/jobs", label: "Find jobs" }
+    : { href: "/post-a-job", label: "Post a job" };
+  const secondaryLink = isTradie
+    ? { href: "/post-a-job", label: "Post a job" }
+    : { href: "/jobs", label: "Find jobs" };
+
   return (
     <main className="flex flex-1 items-center justify-center bg-navy-950 px-6 py-12">
       <div className="w-full max-w-sm rounded-2xl bg-paper-0 p-8 text-center shadow-xl">
@@ -32,10 +41,25 @@ export default async function AccountPage() {
           .
         </p>
 
-        <form action={logout} className="mt-6">
+        <div className="mt-6 space-y-3">
+          <Link
+            href={primaryLink.href}
+            className="block w-full rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
+          >
+            {primaryLink.label}
+          </Link>
+          <Link
+            href={secondaryLink.href}
+            className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+          >
+            {secondaryLink.label}
+          </Link>
+        </div>
+
+        <form action={logout} className="mt-3">
           <button
             type="submit"
-            className="w-full rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
+            className="w-full rounded-md px-4 py-2 text-sm font-medium text-ink-500 transition hover:text-navy-950"
           >
             Log out
           </button>
