@@ -1,15 +1,30 @@
 const columns = [
   {
     title: "Homeowners",
-    links: ["Post a job", "How it works", "Browse trades", "Reviews"],
+    links: [
+      { label: "Post a job", href: "/post-a-job" },
+      { label: "How it works", href: "/#how-it-works" },
+      { label: "Browse trades", href: "/browse-trades" },
+      { label: "Reviews", href: "/reviews" },
+    ],
   },
   {
     title: "Tradies",
-    links: ["Join as a tradie", "Pricing", "Success stories", "Support"],
+    links: [
+      { label: "Join as a tradie", href: "/signup" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Success stories", href: "/success-stories" },
+      { label: "Support", href: "/support" },
+    ],
   },
   {
     title: "Company",
-    links: ["About us", "Careers", "Contact", "Terms & privacy"],
+    links: [
+      { label: "About us", href: "/about" },
+      { label: "Careers", href: "/careers" },
+      { label: "Contact", href: "/contact" },
+      { label: "Terms & privacy", href: "/terms" },
+    ],
   },
 ];
 
@@ -35,12 +50,12 @@ export default function Footer() {
               </h4>
               <ul className="mt-4 space-y-3">
                 {column.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <a
-                      href="#"
+                      href={link.href}
                       className="text-sm text-white/70 transition hover:text-white"
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}

@@ -43,7 +43,7 @@ export default function Hero() {
               </p>
             </div>
             <a
-              href="#post-job"
+              href="/post-a-job"
               className="mt-6 inline-flex items-center justify-center rounded-md bg-navy-950 px-5 py-3 text-sm font-semibold text-white transition group-hover:bg-hivis-500 group-hover:text-navy-950"
             >
               Post a job — it&apos;s free
@@ -64,7 +64,7 @@ export default function Hero() {
               </p>
             </div>
             <a
-              href="#tradies"
+              href="/signup"
               className="mt-6 inline-flex items-center justify-center rounded-md bg-hivis-500 px-5 py-3 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
             >
               Sign up as a tradie

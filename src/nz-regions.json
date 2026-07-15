@@ -1,0 +1,21 @@
+{
+  "country": "New Zealand",
+  "regions": [
+    { "name": "Northland", "slug": "northland", "island": "North", "towns": ["Whangārei", "Kerikeri", "Kaitaia", "Dargaville", "Kaikohe", "Paihia", "Kawakawa", "Mangawhai", "Ruakākā", "Waipū"] },
+    { "name": "Auckland", "slug": "auckland", "island": "North", "towns": ["Auckland Central", "Manukau", "North Shore", "Waitākere", "Papakura", "Pukekohe", "Warkworth", "Helensville", "Waiuku", "Botany", "Albany", "Henderson"] },
+    { "name": "Waikato", "slug": "waikato", "island": "North", "towns": ["Hamilton", "Cambridge", "Te Awamutu", "Tokoroa", "Taupō", "Thames", "Morrinsville", "Matamata", "Huntly", "Ngāruawāhia", "Te Kūiti", "Putāruru", "Whitianga"] },
+    { "name": "Bay of Plenty", "slug": "bay-of-plenty", "island": "North", "towns": ["Tauranga", "Rotorua", "Whakatāne", "Mount Maunganui", "Te Puke", "Kawerau", "Ōpōtiki", "Katikati", "Pāpāmoa", "Ōhope"] },
+    { "name": "Gisborne", "slug": "gisborne", "island": "North", "towns": ["Gisborne", "Ruatoria", "Tolaga Bay", "Te Karaka", "Tokomaru Bay"] },
+    { "name": "Hawke's Bay", "slug": "hawkes-bay", "island": "North", "towns": ["Napier", "Hastings", "Havelock North", "Waipukurau", "Waipawa", "Wairoa", "Flaxmere", "Taradale"] },
+    { "name": "Taranaki", "slug": "taranaki", "island": "North", "towns": ["New Plymouth", "Hāwera", "Stratford", "Waitara", "Inglewood", "Ōpunake", "Eltham"] },
+    { "name": "Manawatū-Whanganui", "slug": "manawatu-whanganui", "island": "North", "towns": ["Palmerston North", "Whanganui", "Levin", "Feilding", "Taumarunui", "Dannevirke", "Marton", "Ōhakune", "Foxton", "Bulls"] },
+    { "name": "Wellington", "slug": "wellington", "island": "North", "towns": ["Wellington Central", "Lower Hutt", "Upper Hutt", "Porirua", "Kāpiti", "Paraparaumu", "Masterton", "Carterton", "Ōtaki", "Featherston", "Martinborough"] },
+    { "name": "Tasman", "slug": "tasman", "island": "South", "towns": ["Richmond", "Motueka", "Takaka", "Māpua", "Wakefield", "Brightwater"] },
+    { "name": "Nelson", "slug": "nelson", "island": "South", "towns": ["Nelson", "Stoke", "Tāhunanui"] },
+    { "name": "Marlborough", "slug": "marlborough", "island": "South", "towns": ["Blenheim", "Picton", "Renwick", "Havelock", "Seddon"] },
+    { "name": "West Coast", "slug": "west-coast", "island": "South", "towns": ["Greymouth", "Westport", "Hokitika", "Reefton", "Runanga", "Franz Josef"] },
+    { "name": "Canterbury", "slug": "canterbury", "island": "South", "towns": ["Christchurch", "Timaru", "Ashburton", "Rangiora", "Rolleston", "Kaiapoi", "Lincoln", "Geraldine", "Kaikōura", "Methven", "Amberley", "Darfield"] },
+    { "name": "Otago", "slug": "otago", "island": "South", "towns": ["Dunedin", "Queenstown", "Wānaka", "Oamaru", "Alexandra", "Cromwell", "Balclutha", "Mosgiel", "Milton", "Arrowtown"] },
+    { "name": "Southland", "slug": "southland", "island": "South", "towns": ["Invercargill", "Gore", "Te Anau", "Winton", "Bluff", "Riverton", "Ōtautau", "Mataura"] }
+  ]
+}

@@ -78,7 +78,7 @@ export default function HowItWorks() {
             </p>
           </div>
           <a
-            href="#post-job"
+            href="/post-a-job"
             className="inline-flex shrink-0 items-center justify-center rounded-md bg-hivis-500 px-6 py-3 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
           >
             Post a job — it&apos;s free
