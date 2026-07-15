@@ -1,40 +1,119 @@
+"use client";
+
+import { useState } from "react";
 import CorrugatedPattern from "./CorrugatedPattern";
 
-const steps = [
-  {
-    number: "01",
-    title: "Post the job",
-    description:
-      "Describe what you need done and where. Add photos if it helps — most jobs take under two minutes to list.",
+type Audience = "homeowner" | "tradie";
+
+const STEPS: Record<Audience, { number: string; title: string; description: string }[]> = {
+  homeowner: [
+    {
+      number: "01",
+      title: "Post your job",
+      description: "Describe what you need done — it's free.",
+    },
+    {
+      number: "02",
+      title: "Get quotes",
+      description: "Verified tradies in your area respond.",
+    },
+    {
+      number: "03",
+      title: "Compare & hire",
+      description: "Pick the tradie that suits you.",
+    },
+    {
+      number: "04",
+      title: "Get it done",
+      description: "Job completed — leave a review.",
+    },
+  ],
+  tradie: [
+    {
+      number: "01",
+      title: "Sign up",
+      description: "Create your tradie profile.",
+    },
+    {
+      number: "02",
+      title: "Browse jobs",
+      description: "Find work in your region and trade.",
+    },
+    {
+      number: "03",
+      title: "Send a quote",
+      description: "Respond to jobs that suit you.",
+    },
+    {
+      number: "04",
+      title: "Get hired & paid",
+      description: "Win the work, build your reputation.",
+    },
+  ],
+};
+
+const CTA: Record<Audience, { heading: string; body: string; label: string; href: string }> = {
+  homeowner: {
+    heading: "Got a job that needs doing?",
+    body: "Post it today and start hearing back from local tradies within hours.",
+    label: "Post a job — it's free",
+    href: "/post-a-job",
   },
-  {
-    number: "02",
-    title: "Review quotes",
-    description:
-      "Local tradies get in touch with quotes and availability. Compare prices, ratings and past work side by side.",
+  tradie: {
+    heading: "Ready to start winning jobs?",
+    body: "Sign up and start browsing jobs that match your trade and region.",
+    label: "Sign up as a tradie",
+    href: "/signup",
   },
-  {
-    number: "03",
-    title: "Hire with confidence",
-    description:
-      "Pick the right tradie for the job and get it booked in. Leave a review once it's done to help the next homeowner.",
-  },
-];
+};
 
 export default function HowItWorks() {
+  const [audience, setAudience] = useState<Audience>("homeowner");
+  const steps = STEPS[audience];
+  const cta = CTA[audience];
+
   return (
     <section id="how-it-works" className="relative bg-paper py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-xl">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
-            The process
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
-            Three steps from job to done.
-          </h2>
+        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+          <div className="max-w-xl">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
+              The process
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
+              Four steps from job to done.
+            </h2>
+          </div>
+
+          <div className="inline-flex shrink-0 rounded-md border border-line bg-white p-1">
+            <button
+              type="button"
+              aria-pressed={audience === "homeowner"}
+              onClick={() => setAudience("homeowner")}
+              className={`rounded px-4 py-2 text-sm font-semibold transition ${
+                audience === "homeowner"
+                  ? "bg-navy-950 text-white"
+                  : "text-ink-700 hover:text-navy-950"
+              }`}
+            >
+              I&apos;m a homeowner
+            </button>
+            <button
+              type="button"
+              aria-pressed={audience === "tradie"}
+              onClick={() => setAudience("tradie")}
+              className={`rounded px-4 py-2 text-sm font-semibold transition ${
+                audience === "tradie"
+                  ? "bg-navy-950 text-white"
+                  : "text-ink-700 hover:text-navy-950"
+              }`}
+            >
+              I&apos;m a tradie
+            </button>
+          </div>
         </div>
 
-        <ol className="mt-14 grid gap-8 sm:grid-cols-3 sm:gap-6">
+        <ol className="mt-14 grid gap-8 sm:grid-cols-4 sm:gap-6">
           {steps.map((step, index) => (
             <li key={step.number} className="relative">
               <div className="flex items-center gap-4 sm:block">
@@ -70,18 +149,15 @@ export default function HowItWorks() {
         <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="font-display text-2xl font-semibold text-white sm:text-3xl">
-              Got a job that needs doing?
+              {cta.heading}
             </h3>
-            <p className="mt-2 max-w-md text-white/70">
-              Post it today and start hearing back from local tradies within
-              hours.
-            </p>
+            <p className="mt-2 max-w-md text-white/70">{cta.body}</p>
           </div>
           <a
-            href="/post-a-job"
+            href={cta.href}
             className="inline-flex shrink-0 items-center justify-center rounded-md bg-hivis-500 px-6 py-3 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
           >
-            Post a job — it&apos;s free
+            {cta.label}
           </a>
         </div>
       </div>
