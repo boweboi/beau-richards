@@ -12,7 +12,13 @@ function formatPostedAt(createdAt: string) {
   };
 }
 
-export default async function JobsPage() {
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -22,11 +28,17 @@ export default async function JobsPage() {
     redirect("/login");
   }
 
-  const { data: jobs } = await supabase
+  let query = supabase
     .from("jobs")
     .select("id, title, description, region, town, created_at")
     .eq("status", "open")
     .order("created_at", { ascending: false });
+
+  if (category) {
+    query = query.eq("category", category);
+  }
+
+  const { data: jobs } = await query;
 
   const groups = groupJobsByRegion((jobs ?? []) as Job[], regionsData);
 
@@ -34,16 +46,30 @@ export default async function JobsPage() {
     <main className="min-h-screen bg-paper-0 px-4 py-12 sm:py-16">
       <div className="mx-auto mb-10 max-w-4xl text-center">
         <h1 className="font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
-          Jobs in your area
+          {category ? `${category} jobs` : "Jobs in your area"}
         </h1>
         <p className="mt-2 text-ink-500">
           Browse jobs posted by homeowners across Aotearoa, grouped by region and town.
         </p>
+        {category && (
+          <p className="mt-3">
+            <Link
+              href="/jobs"
+              className="text-sm font-medium text-navy-950 hover:underline"
+            >
+              Clear filter — show all trades
+            </Link>
+          </p>
+        )}
       </div>
 
       <div className="mx-auto max-w-4xl space-y-10">
         {groups.length === 0 && (
-          <p className="text-center text-ink-500">No jobs posted yet — check back soon.</p>
+          <p className="text-center text-ink-500">
+            {category
+              ? `No ${category} jobs posted yet — check back soon.`
+              : "No jobs posted yet — check back soon."}
+          </p>
         )}
 
         {groups.map((group) => (

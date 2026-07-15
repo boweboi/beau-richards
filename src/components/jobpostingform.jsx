@@ -3,29 +3,7 @@
 import { useState } from 'react';
 import regionsData from '../nz-regions.json';
 import { createJob } from '@/app/(site)/post-a-job/actions';
-
-const TRADE_CATEGORIES = [
-  'Building & Construction',
-  'Plumbing',
-  'Electrical',
-  'Painting & Decorating',
-  'Roofing',
-  'Carpentry',
-  'Plastering & Gib Stopping',
-  'Tiling',
-  'Flooring',
-  'Landscaping & Gardening',
-  'Fencing',
-  'Concreting',
-  'Decking',
-  'Bricklaying & Blocklaying',
-  'Glazing & Windows',
-  'Kitchen & Bathroom',
-  'Heating, Cooling & HVAC',
-  'Handyman / General',
-  'Cleaning',
-  'Other',
-];
+import { TRADE_CATEGORIES } from '@/lib/tradeCategories';
 
 const TIMEFRAMES = [
   'As soon as possible',
