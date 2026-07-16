@@ -16,6 +16,11 @@
   /* Corrugated-roof green, used sparingly for trust/verified cues */
   --iron-600: #1c8f63;
 
+  /* Bronze/Silver/Gold — tradie verification tier badges */
+  --bronze-600: #a15c2e;
+  --silver-600: #7b8794;
+  --gold-600: #b8860b;
+
   /* Paper + ink for body content */
   --paper-0: #ffffff;
   --paper-50: #f6f8fa;
@@ -41,6 +46,10 @@
   --color-hivis-400: var(--hivis-400);
 
   --color-iron-600: var(--iron-600);
+
+  --color-bronze-600: var(--bronze-600);
+  --color-silver-600: var(--silver-600);
+  --color-gold-600: var(--gold-600);
 
   --color-paper: var(--paper-50);
   --color-paper-0: var(--paper-0);

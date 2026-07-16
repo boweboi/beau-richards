@@ -5,6 +5,7 @@ const columns = [
       { label: "Post a job", href: "/post-a-job" },
       { label: "How it works", href: "/#how-it-works" },
       { label: "Browse trades", href: "/browse-trades" },
+      { label: "Trust & verification", href: "/trust" },
       { label: "Reviews", href: "/reviews" },
     ],
   },

@@ -7,7 +7,8 @@ export async function proxy(request: NextRequest) {
   // Admin area: unchanged hand-rolled cookie check.
   if (
     request.nextUrl.pathname.startsWith("/admin/dashboard") ||
-    request.nextUrl.pathname.startsWith("/admin/media")
+    request.nextUrl.pathname.startsWith("/admin/media") ||
+    request.nextUrl.pathname.startsWith("/admin/tradies")
   ) {
     const isLoggedIn = await verifySignedSessionValue(
       request.cookies.get(SESSION_COOKIE)?.value
@@ -53,6 +54,7 @@ export const config = {
   matcher: [
     "/admin/dashboard",
     "/admin/media",
+    "/admin/tradies",
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

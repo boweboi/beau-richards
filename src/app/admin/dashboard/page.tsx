@@ -101,6 +101,12 @@ export default function AdminDashboardPage() {
             Media manager
           </a>
           <a
+            href="/admin/tradies"
+            className="text-sm font-medium text-ink-700 hover:text-navy-950"
+          >
+            Tradie verification
+          </a>
+          <a
             href="/"
             target="_blank"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"

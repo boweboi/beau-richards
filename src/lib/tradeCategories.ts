@@ -4,19 +4,30 @@ export const TRADE_CATEGORIES = [
   'Electrical',
   'Painting & Decorating',
   'Roofing',
-  'Carpentry',
   'Plastering & Gib Stopping',
   'Tiling',
   'Flooring',
   'Landscaping & Gardening',
   'Fencing',
   'Concreting',
-  'Decking',
   'Bricklaying & Blocklaying',
   'Glazing & Windows',
-  'Kitchen & Bathroom',
-  'Heating, Cooling & HVAC',
   'Handyman / General',
   'Cleaning',
-  'Other',
 ];
+
+// Trades where NZ law restricts who can do the work (LBP scheme, licensed
+// trades, etc.) — these require a Level 4 qualification or LBP number at
+// every verification tier. Everything else in TRADE_CATEGORIES is
+// non-regulated.
+export const REGULATED_TRADES = [
+  'Building & Construction',
+  'Plumbing',
+  'Electrical',
+  'Roofing',
+  'Bricklaying & Blocklaying',
+];
+
+export function isRegulatedTrade(trade: string | null): boolean {
+  return trade !== null && (REGULATED_TRADES as string[]).includes(trade);
+}
