@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isRegulatedTrade } from "@/lib/tradeCategories";
+import { TRADE_CATEGORIES, isRegulatedTrade } from "@/lib/tradeCategories";
 import { getVerificationTier } from "@/lib/verificationTier";
 import VerificationBadge from "@/components/VerificationBadge";
 
@@ -52,6 +52,7 @@ export default function AdminTradiesPage() {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        trade_type: tradie.trade_type,
         phone: tradie.phone,
         phone_verified: tradie.phone_verified,
         email_verified: tradie.email_verified,
@@ -131,10 +132,9 @@ export default function AdminTradiesPage() {
                     {tradie.full_name}
                   </h2>
                   <p className="text-xs text-ink-500">{tradie.email}</p>
-                  <p className="mt-1 text-xs text-ink-500">
-                    {tradie.trade_type ?? "No trade set"}
-                    {regulated ? " · Regulated trade" : ""}
-                  </p>
+                  {regulated && (
+                    <p className="mt-1 text-xs text-ink-500">Regulated trade</p>
+                  )}
                 </div>
                 {tier !== "none" ? (
                   <VerificationBadge tier={tier} />
@@ -144,6 +144,25 @@ export default function AdminTradiesPage() {
               </div>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-ink-700">
+                    Trade
+                  </label>
+                  <select
+                    value={tradie.trade_type ?? ""}
+                    onChange={(e) =>
+                      updateRow(tradie.id, { trade_type: e.target.value || null })
+                    }
+                    className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm text-ink-900 focus:border-navy-700 focus:outline-none"
+                  >
+                    <option value="">No trade set</option>
+                    {TRADE_CATEGORIES.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <Field
                   label="Phone"
                   value={tradie.phone ?? ""}

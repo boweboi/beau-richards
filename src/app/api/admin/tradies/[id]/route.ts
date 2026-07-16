@@ -6,6 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 // admin panel from being able to overwrite unrelated profile fields
 // (role, email, full_name, etc.) via a crafted request body.
 const EDITABLE_FIELDS = [
+  "trade_type",
   "phone",
   "phone_verified",
   "email_verified",
