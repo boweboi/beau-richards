@@ -7,6 +7,7 @@ const columns = [
       { label: "Browse trades", href: "/browse-trades" },
       { label: "Trust & verification", href: "/trust" },
       { label: "Reviews", href: "/reviews" },
+      { label: "Homeowner resources", href: "/homeowner-resources" },
     ],
   },
   {
@@ -16,6 +17,7 @@ const columns = [
       { label: "Pricing", href: "/pricing" },
       { label: "Success stories", href: "/success-stories" },
       { label: "Support", href: "/support" },
+      { label: "Tradie resources", href: "/tradie-resources" },
     ],
   },
   {
