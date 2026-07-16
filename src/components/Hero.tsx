@@ -31,43 +31,37 @@ export default function Hero() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           <article className="group relative flex flex-col justify-between rounded-2xl bg-paper-0 p-7 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]">
             <div>
-              <span className="inline-flex items-center rounded-full bg-navy-900/5 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-navy-700">
-                Homeowner
-              </span>
-              <h2 className="mt-4 font-display text-2xl font-semibold text-navy-950">
-                Post a job
+              <h2 className="font-display text-2xl font-semibold text-navy-950">
+                Homeowner?
               </h2>
               <p className="mt-2 text-sm text-ink-700">
-                Tell us what needs doing — a leaky tap, a full renovation, or
-                anything in between. It takes about two minutes.
+                Create a free account, then post your job and get quotes
+                from verified local tradies.
               </p>
             </div>
             <a
-              href="/post-a-job"
+              href="/signup"
               className="mt-6 inline-flex items-center justify-center rounded-md bg-navy-950 px-5 py-3 text-sm font-semibold text-white transition group-hover:bg-hivis-500 group-hover:text-navy-950"
             >
-              Post a job — it&apos;s free
+              Join as a homeowner
             </a>
           </article>
 
           <article className="group relative flex flex-col justify-between rounded-2xl border border-white/10 bg-navy-900 p-7">
             <div>
-              <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-hivis-400">
-                Tradie
-              </span>
-              <h2 className="mt-4 font-display text-2xl font-semibold text-white">
-                Join as a tradie
+              <h2 className="font-display text-2xl font-semibold text-white">
+                Tradie?
               </h2>
               <p className="mt-2 text-sm text-white/70">
-                Get matched with local jobs that fit your trade and your
-                schedule. Quote only on the work you actually want.
+                Create a free profile, then browse local jobs that match
+                your trade and quote on the ones you want.
               </p>
             </div>
             <a
               href="/signup"
               className="mt-6 inline-flex items-center justify-center rounded-md bg-hivis-500 px-5 py-3 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
             >
-              Sign up as a tradie
+              Join as a tradie
             </a>
           </article>
         </div>
