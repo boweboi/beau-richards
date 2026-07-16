@@ -29,6 +29,7 @@ export default function JobPostingForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   // Towns for the currently selected region
   const selectedRegion = regionsData.regions.find((r) => r.name === form.region);
@@ -73,6 +74,7 @@ export default function JobPostingForm() {
           onClick={() => {
             setForm({ title: '', category: '', region: '', town: '', description: '', budget: '', timeframe: '', name: '', email: '', phone: '' });
             setSubmitted(false);
+            setTermsAccepted(false);
           }}
           className="mt-6 rounded-lg bg-[#FF6A00] px-6 py-3 font-semibold text-white transition hover:bg-[#e85f00]"
         >
@@ -213,12 +215,25 @@ export default function JobPostingForm() {
           </div>
         </div>
 
+        <label className="flex items-start gap-3 text-sm text-[#0B1F3A]/80">
+          <input
+            type="checkbox"
+            required
+            checked={termsAccepted}
+            onChange={(e) => setTermsAccepted(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#FF6A00]"
+          />
+          I understand my job will be shared with verified tradies in my
+          region. I&apos;ll review their quotes and choose which tradies to
+          contact.
+        </label>
+
         {error && (
           <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
         )}
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || !termsAccepted}
           className="w-full rounded-lg bg-[#FF6A00] px-6 py-3.5 text-base font-bold text-white transition hover:bg-[#e85f00] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? 'Posting…' : 'Post job'}
