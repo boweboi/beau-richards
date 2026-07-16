@@ -16,7 +16,7 @@ export default function Hero() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-hivis-400">
-            Built for Aotearoa homeowners &amp; tradies
+            Built for New Zealand homeowners and tradies.
           </p>
           <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] text-white sm:text-5xl lg:text-6xl">
             Find trusted Kiwi tradies for your home improvement jobs.
