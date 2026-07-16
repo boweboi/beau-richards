@@ -5,51 +5,11 @@ import CorrugatedPattern from "./CorrugatedPattern";
 
 type Audience = "homeowner" | "tradie";
 
-const STEPS: Record<Audience, { number: string; title: string; description: string }[]> = {
-  homeowner: [
-    {
-      number: "01",
-      title: "Post your job",
-      description: "Describe what you need done — it's free.",
-    },
-    {
-      number: "02",
-      title: "Get quotes",
-      description: "Verified tradies in your area respond.",
-    },
-    {
-      number: "03",
-      title: "Compare & hire",
-      description: "Pick the tradie that suits you.",
-    },
-    {
-      number: "04",
-      title: "Get it done",
-      description: "Job completed — leave a review.",
-    },
-  ],
-  tradie: [
-    {
-      number: "01",
-      title: "Sign up",
-      description: "Create your tradie profile.",
-    },
-    {
-      number: "02",
-      title: "Browse jobs",
-      description: "Find work in your region and trade.",
-    },
-    {
-      number: "03",
-      title: "Send a quote",
-      description: "Respond to jobs that suit you.",
-    },
-    {
-      number: "04",
-      title: "Get hired & paid",
-      description: "Win the work, build your reputation.",
-    },
-  ],
+const FLOWS: Record<Audience, string> = {
+  homeowner:
+    "Sign up, post your job, and verified tradies in your region will browse it, reach out to discuss and view the project, and send you a quote — then you choose which tradie to hire.",
+  tradie:
+    "Sign up and create your profile, browse jobs in your region, reach out to homeowners to discuss and view the project, submit a quote, and once you're hired, build your reputation through reviews.",
 };
 
 const CTA: Record<Audience, { heading: string; body: string; label: string; href: string }> = {
@@ -69,7 +29,7 @@ const CTA: Record<Audience, { heading: string; body: string; label: string; href
 
 export default function HowItWorks() {
   const [audience, setAudience] = useState<Audience>("homeowner");
-  const steps = STEPS[audience];
+  const flow = FLOWS[audience];
   const cta = CTA[audience];
 
   return (
@@ -81,7 +41,7 @@ export default function HowItWorks() {
               The process
             </p>
             <h2 className="mt-3 font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
-              Four steps from job to done.
+              How it works.
             </h2>
           </div>
 
@@ -113,30 +73,9 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        <ol className="mt-14 grid gap-8 sm:grid-cols-4 sm:gap-6">
-          {steps.map((step, index) => (
-            <li key={step.number} className="relative">
-              <div className="flex items-center gap-4 sm:block">
-                <span className="font-display text-4xl font-semibold text-navy-900/15 sm:text-5xl">
-                  {step.number}
-                </span>
-                <h3 className="font-display text-xl font-semibold text-navy-950 sm:mt-4">
-                  {step.title}
-                </h3>
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-ink-700">
-                {step.description}
-              </p>
-
-              {index < steps.length - 1 && (
-                <span
-                  aria-hidden="true"
-                  className="absolute right-[-1.5rem] top-2 hidden h-px w-8 bg-line sm:block"
-                />
-              )}
-            </li>
-          ))}
-        </ol>
+        <p className="mt-14 max-w-3xl font-display text-2xl font-medium leading-relaxed text-navy-950 sm:text-3xl">
+          {flow}
+        </p>
       </div>
 
       <div className="relative mt-20 overflow-hidden rounded-2xl bg-navy-950 py-14">
