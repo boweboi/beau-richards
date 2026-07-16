@@ -43,6 +43,12 @@ export default async function NavBar() {
           <Link className="hover:text-navy-950" href="/pricing">
             Pricing
           </Link>
+          <Link className="hover:text-navy-950" href="/tradie-resources">
+            Tradie resources
+          </Link>
+          <Link className="hover:text-navy-950" href="/homeowner-resources">
+            Homeowner resources
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
