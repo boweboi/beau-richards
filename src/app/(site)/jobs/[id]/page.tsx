@@ -1,6 +1,7 @@
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 function formatPostedAt(createdAt: string) {
   const date = new Date(createdAt);
@@ -28,7 +29,7 @@ export default async function JobDetailPage({
 
   const { data: job } = await supabase
     .from("jobs")
-    .select("title, description, category, region, town, budget, timeframe, created_at")
+    .select("title, description, category, region, town, budget, timeframe, created_at, homeowner_id")
     .eq("id", id)
     .single();
 
@@ -37,6 +38,36 @@ export default async function JobDetailPage({
   }
 
   const { date, time } = formatPostedAt(job.created_at);
+
+  const isOwner = job.homeowner_id === user.id;
+
+  const admin = createAdminClient();
+
+  const { count: paidCount } = await admin
+    .from("lead_purchases")
+    .select("id", { count: "exact", head: true })
+    .eq("job_id", id)
+    .eq("status", "paid");
+
+  const { data: ownPurchase } = await admin
+    .from("lead_purchases")
+    .select("id")
+    .eq("job_id", id)
+    .eq("tradie_id", user.id)
+    .eq("status", "paid")
+    .maybeSingle();
+
+  const hasPaid = Boolean(ownPurchase);
+
+  let contact: { contact_name: string; contact_email: string; contact_phone: string | null } | null = null;
+  if (isOwner || hasPaid) {
+    const { data } = await admin
+      .from("job_contacts")
+      .select("contact_name, contact_email, contact_phone")
+      .eq("job_id", id)
+      .maybeSingle();
+    contact = data;
+  }
 
   return (
     <main className="min-h-screen bg-paper-0 px-4 py-12 sm:py-16">
@@ -73,6 +104,38 @@ export default async function JobDetailPage({
               </dt>
               <dd className="mt-1 text-navy-950">{job.timeframe}</dd>
             </div>
+          </dl>
+
+          <dl className="mt-6 border-t border-line pt-6">
+            <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+              Contact details
+            </dt>
+            {contact ? (
+              <>
+                <dd className="mt-2 text-navy-950">{contact.contact_name}</dd>
+                <dd className="mt-1 text-navy-950">{contact.contact_email}</dd>
+                {contact.contact_phone && (
+                  <dd className="mt-1 text-navy-950">{contact.contact_phone}</dd>
+                )}
+              </>
+            ) : (paidCount ?? 0) >= 2 ? (
+              <dd className="mt-2 text-sm text-ink-700">
+                This lead has already been claimed by 2 tradies.
+              </dd>
+            ) : (
+              <dd className="mt-2">
+                <p className="text-sm text-ink-700">
+                  Contact details available after purchasing this lead.
+                </p>
+                <button
+                  type="button"
+                  disabled
+                  className="mt-3 rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 opacity-60"
+                >
+                  Unlock this lead — $20
+                </button>
+              </dd>
+            )}
           </dl>
 
           <p className="mt-6 text-xs text-ink-500">
