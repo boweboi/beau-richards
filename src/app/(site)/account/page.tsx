@@ -48,12 +48,14 @@ export default async function AccountPage() {
           >
             {primaryLink.label}
           </Link>
-          <Link
-            href={secondaryLink.href}
-            className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
-          >
-            {secondaryLink.label}
-          </Link>
+          {!isTradie && (
+            <Link
+              href={secondaryLink.href}
+              className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+            >
+              {secondaryLink.label}
+            </Link>
+          )}
         </div>
 
         <form action={logout} className="mt-3">
