@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const SECTIONS = [
   {
     title: "Why Your Quote Matters",
@@ -41,7 +43,29 @@ export default function TradieResourcesPage() {
         </h1>
       </div>
 
-      <div className="mx-auto mt-14 max-w-2xl space-y-10">
+      <div className="mx-auto mt-14 max-w-2xl">
+        <div className="rounded-2xl border border-line bg-white p-8">
+          <span className="inline-flex items-center rounded-full bg-navy-900/5 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-navy-700">
+            Guide
+          </span>
+          <h2 className="mt-4 font-display text-xl font-semibold text-navy-950">
+            Invoices and quotes: a practical guide
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-ink-700">
+            What has to be on a compliant NZ tax invoice, the GST rules you
+            need to know, and how to write a quote that protects you and the
+            homeowner — with sample templates.
+          </p>
+          <Link
+            href="/tradie-resources/invoices-quotes"
+            className="mt-4 inline-block text-sm font-semibold text-navy-950 hover:underline"
+          >
+            Read the full guide →
+          </Link>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-10 max-w-2xl space-y-10">
         {SECTIONS.map((section, index) => (
           <ResourceSection
             key={section.title}
