@@ -1,13 +1,15 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { signup, SignupState } from "./actions";
+import TradeCategoryCheckboxes from "@/components/TradeCategoryCheckboxes";
 
 const initialState: SignupState = { error: null };
 
 export default function SignupPage() {
   const [state, formAction, pending] = useActionState(signup, initialState);
+  const [role, setRole] = useState<"homeowner" | "tradie">("homeowner");
 
   return (
     <main className="flex flex-1 items-center justify-center bg-navy-950 px-6 py-12">
@@ -83,6 +85,7 @@ export default function SignupPage() {
                   name="role"
                   value="homeowner"
                   defaultChecked
+                  onChange={() => setRole("homeowner")}
                   className="accent-navy-950"
                 />
                 Homeowner
@@ -92,12 +95,15 @@ export default function SignupPage() {
                   type="radio"
                   name="role"
                   value="tradie"
+                  onChange={() => setRole("tradie")}
                   className="accent-navy-950"
                 />
                 Tradie
               </label>
             </div>
           </fieldset>
+
+          {role === "tradie" && <TradeCategoryCheckboxes />}
 
           {state.error && (
             <p className="text-sm text-red-600" role="alert">
