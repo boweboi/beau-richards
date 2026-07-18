@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TRADE_CATEGORIES, isRegulatedTrade } from "@/lib/tradeCategories";
 import { getVerificationTier } from "@/lib/verificationTier";
+import { groupAreasByRegion } from "@/lib/serviceAreas";
 import VerificationBadge from "@/components/VerificationBadge";
 
 type Tradie = {
@@ -269,18 +270,6 @@ export default function AdminTradiesPage() {
       </div>
     </main>
   );
-}
-
-function groupAreasByRegion(
-  areas: { region: string; town: string }[]
-): { region: string; towns: string[] }[] {
-  const byRegion = new Map<string, string[]>();
-  for (const { region, town } of areas) {
-    const towns = byRegion.get(region) ?? [];
-    towns.push(town);
-    byRegion.set(region, towns);
-  }
-  return Array.from(byRegion, ([region, towns]) => ({ region, towns }));
 }
 
 function Field({

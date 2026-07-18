@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAnyRegulatedTrade } from "@/lib/tradeCategories";
+import { groupAreasByRegion } from "@/lib/serviceAreas";
 import { getVerificationTier, type TradieVerification } from "@/lib/verificationTier";
 import VerificationBadge from "@/components/VerificationBadge";
 
@@ -42,6 +43,13 @@ export default async function TradieProfilePage({
         : ["Tradie"];
 
   const regulated = isAnyRegulatedTrade(displayCategories);
+
+  const { data: areaRows } = await supabase
+    .from("tradie_service_areas")
+    .select("region, town")
+    .eq("tradie_id", id);
+
+  const groupedAreas = groupAreasByRegion(areaRows ?? []);
 
   const verification: TradieVerification = {
     regulated,
@@ -89,8 +97,16 @@ export default async function TradieProfilePage({
           <h1 className="mt-2 font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
             {profile.full_name}
           </h1>
-          {profile.service_region && (
-            <p className="mt-1 text-sm text-ink-500">{profile.service_region}</p>
+          {groupedAreas.length > 0 ? (
+            <p className="mt-1 text-sm text-ink-500">
+              {groupedAreas
+                .map(({ region, towns }) => `${region}: ${towns.join(", ")}`)
+                .join(" · ")}
+            </p>
+          ) : (
+            profile.service_region && (
+              <p className="mt-1 text-sm text-ink-500">{profile.service_region}</p>
+            )
           )}
 
           <div className="mt-4">
