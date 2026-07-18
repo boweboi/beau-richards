@@ -63,6 +63,26 @@ export default function TradieResourcesPage() {
             Read the full guide →
           </Link>
         </div>
+
+        <div className="mt-6 rounded-2xl border border-line bg-white p-8">
+          <span className="inline-flex items-center rounded-full bg-navy-900/5 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-navy-700">
+            Guide
+          </span>
+          <h2 className="mt-4 font-display text-xl font-semibold text-navy-950">
+            Growing your skills and trade career
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-ink-700">
+            Apprenticeships and formal training, becoming a licensed builder,
+            electrical and plumbing registration, and how to keep upskilling
+            around a full workload.
+          </p>
+          <Link
+            href="/tradie-resources/skill-development"
+            className="mt-4 inline-block text-sm font-semibold text-navy-950 hover:underline"
+          >
+            Read the full guide →
+          </Link>
+        </div>
       </div>
 
       <div className="mx-auto mt-10 max-w-2xl space-y-10">

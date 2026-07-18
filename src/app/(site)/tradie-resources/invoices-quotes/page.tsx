@@ -225,7 +225,16 @@ export default function InvoicesQuotesPage() {
           footerNote="40% deposit required to confirm booking, balance due on completion. This is a fixed price quote for the scope described above — any additional work will be quoted separately."
         />
 
-        <p className="mt-10 border-t border-line pt-6 text-xs leading-relaxed text-ink-500">
+        <p className="mt-10 border-t border-line pt-6 text-sm">
+          <Link
+            href="/tradie-resources/skill-development"
+            className="font-semibold text-navy-950 hover:underline"
+          >
+            Related guide: Growing your skills and trade career →
+          </Link>
+        </p>
+
+        <p className="mt-6 border-t border-line pt-6 text-xs leading-relaxed text-ink-500">
           This guide is general information for New Zealand tradies and isn&apos;t
           legal or tax advice. GST rules, thresholds, and invoicing
           requirements can change — always confirm your specific
