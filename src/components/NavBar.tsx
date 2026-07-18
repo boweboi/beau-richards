@@ -9,13 +9,15 @@ export default async function NavBar() {
   } = await supabase.auth.getUser();
 
   let fullName: string | null = null;
+  let isTradie = false;
   if (user) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("full_name")
+      .select("full_name, role")
       .eq("id", user.id)
       .single();
     fullName = profile?.full_name ?? null;
+    isTradie = profile?.role === "tradie";
   }
 
   return (
@@ -88,12 +90,14 @@ export default async function NavBar() {
           >
             Find jobs
           </Link>
-          <a
-            href="/post-a-job"
-            className="rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400"
-          >
-            Post a job
-          </a>
+          {!isTradie && (
+            <a
+              href="/post-a-job"
+              className="rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400"
+            >
+              Post a job
+            </a>
+          )}
         </div>
       </div>
     </header>
