@@ -21,5 +21,21 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ tradies: data });
+  const { data: areaRows } = await supabase
+    .from("tradie_service_areas")
+    .select("tradie_id, region, town");
+
+  const areasByTradie = new Map<string, { region: string; town: string }[]>();
+  for (const row of areaRows ?? []) {
+    const existing = areasByTradie.get(row.tradie_id) ?? [];
+    existing.push({ region: row.region, town: row.town });
+    areasByTradie.set(row.tradie_id, existing);
+  }
+
+  const tradies = data.map((tradie) => ({
+    ...tradie,
+    service_areas: areasByTradie.get(tradie.id) ?? [],
+  }));
+
+  return NextResponse.json({ tradies });
 }

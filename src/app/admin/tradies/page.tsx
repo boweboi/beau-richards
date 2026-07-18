@@ -20,6 +20,7 @@ type Tradie = {
   has_level4_qualification: boolean;
   qualifications_checked: boolean;
   review_count: number;
+  service_areas: { region: string; town: string }[];
 };
 
 export default function AdminTradiesPage() {
@@ -194,6 +195,21 @@ export default function AdminTradiesPage() {
                 />
               </div>
 
+              <div className="mt-4">
+                <span className="block text-sm font-medium text-ink-700">
+                  Service areas
+                </span>
+                {tradie.service_areas.length === 0 ? (
+                  <p className="mt-1 text-sm text-ink-500">Not set</p>
+                ) : (
+                  <p className="mt-1 text-sm text-ink-700">
+                    {groupAreasByRegion(tradie.service_areas)
+                      .map(({ region, towns }) => `${region}: ${towns.join(", ")}`)
+                      .join(" · ")}
+                  </p>
+                )}
+              </div>
+
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                 <Checkbox
                   label="Email verified"
@@ -253,6 +269,18 @@ export default function AdminTradiesPage() {
       </div>
     </main>
   );
+}
+
+function groupAreasByRegion(
+  areas: { region: string; town: string }[]
+): { region: string; towns: string[] }[] {
+  const byRegion = new Map<string, string[]>();
+  for (const { region, town } of areas) {
+    const towns = byRegion.get(region) ?? [];
+    towns.push(town);
+    byRegion.set(region, towns);
+  }
+  return Array.from(byRegion, ([region, towns]) => ({ region, towns }));
 }
 
 function Field({
