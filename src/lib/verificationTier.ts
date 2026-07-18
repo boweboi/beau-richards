@@ -1,9 +1,7 @@
-import { isRegulatedTrade } from "@/lib/tradeCategories";
-
 export type VerificationTier = "none" | "bronze" | "silver" | "gold";
 
 export type TradieVerification = {
-  tradeType: string | null;
+  regulated: boolean;
   emailVerified: boolean;
   phoneVerified: boolean;
   nzbnVerified: boolean;
@@ -25,9 +23,7 @@ function meetsQualificationRequirement(profile: TradieVerification): boolean {
 export function getVerificationTier(
   profile: TradieVerification
 ): VerificationTier {
-  const regulated = isRegulatedTrade(profile.tradeType);
-
-  const meetsBronze = regulated
+  const meetsBronze = profile.regulated
     ? profile.emailVerified &&
       profile.phoneVerified &&
       meetsQualificationRequirement(profile)

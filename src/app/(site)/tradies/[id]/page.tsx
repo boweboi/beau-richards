@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { isRegulatedTrade } from "@/lib/tradeCategories";
+import { isAnyRegulatedTrade } from "@/lib/tradeCategories";
 import { getVerificationTier, type TradieVerification } from "@/lib/verificationTier";
 import VerificationBadge from "@/components/VerificationBadge";
 
@@ -29,10 +29,22 @@ export default async function TradieProfilePage({
     notFound();
   }
 
-  const regulated = isRegulatedTrade(profile.trade_type);
+  const { data: categoryRows } = await supabase
+    .from("tradie_trade_categories")
+    .select("category")
+    .eq("tradie_id", id);
+
+  const displayCategories =
+    categoryRows && categoryRows.length > 0
+      ? categoryRows.map((row) => row.category)
+      : profile.trade_type
+        ? [profile.trade_type]
+        : ["Tradie"];
+
+  const regulated = isAnyRegulatedTrade(displayCategories);
 
   const verification: TradieVerification = {
-    tradeType: profile.trade_type,
+    regulated,
     emailVerified: profile.email_verified,
     phoneVerified: profile.phone_verified,
     nzbnVerified: profile.nzbn_verified,
@@ -64,9 +76,16 @@ export default async function TradieProfilePage({
     <main className="flex-1 bg-paper-0 px-4 py-16 sm:py-20">
       <div className="mx-auto max-w-2xl">
         <div className="rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
-            {profile.trade_type ?? "Tradie"}
-          </p>
+          <div className="flex flex-wrap gap-2">
+            {displayCategories.map((category) => (
+              <span
+                key={category}
+                className="inline-flex items-center rounded-full bg-navy-900/5 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-navy-700"
+              >
+                {category}
+              </span>
+            ))}
+          </div>
           <h1 className="mt-2 font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
             {profile.full_name}
           </h1>

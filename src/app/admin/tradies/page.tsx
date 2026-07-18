@@ -111,7 +111,7 @@ export default function AdminTradiesPage() {
         {tradies.map((tradie) => {
           const regulated = isRegulatedTrade(tradie.trade_type);
           const tier = getVerificationTier({
-            tradeType: tradie.trade_type,
+            regulated,
             emailVerified: tradie.email_verified,
             phoneVerified: tradie.phone_verified,
             nzbnVerified: tradie.nzbn_verified,

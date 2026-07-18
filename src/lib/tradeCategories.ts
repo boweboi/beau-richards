@@ -31,3 +31,7 @@ export const REGULATED_TRADES = [
 export function isRegulatedTrade(trade: string | null): boolean {
   return trade !== null && (REGULATED_TRADES as string[]).includes(trade);
 }
+
+export function isAnyRegulatedTrade(trades: string[]): boolean {
+  return trades.some((trade) => (REGULATED_TRADES as string[]).includes(trade));
+}
