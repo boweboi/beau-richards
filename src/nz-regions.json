@@ -2,7 +2,7 @@
   "country": "New Zealand",
   "regions": [
     { "name": "Northland", "slug": "northland", "island": "North", "towns": ["Whangārei", "Kerikeri", "Kaitaia", "Dargaville", "Kaikohe", "Paihia", "Kawakawa", "Mangawhai", "Ruakākā", "Waipū"] },
-    { "name": "Auckland", "slug": "auckland", "island": "North", "towns": ["Auckland Central", "Manukau", "North Shore", "Waitākere", "Papakura", "Pukekohe", "Warkworth", "Helensville", "Waiuku", "Botany", "Albany", "Henderson"] },
+    { "name": "Auckland", "slug": "auckland", "island": "North", "towns": ["Auckland Central", "Manukau", "North Shore", "Waitākere", "Papakura", "Pukekohe", "Warkworth", "Helensville", "Waiuku", "Botany", "Albany", "Henderson", "Manurewa", "Takapuna", "Mt Eden"] },
     { "name": "Waikato", "slug": "waikato", "island": "North", "towns": ["Hamilton", "Cambridge", "Te Awamutu", "Tokoroa", "Taupō", "Thames", "Morrinsville", "Matamata", "Huntly", "Ngāruawāhia", "Te Kūiti", "Putāruru", "Whitianga"] },
     { "name": "Bay of Plenty", "slug": "bay-of-plenty", "island": "North", "towns": ["Tauranga", "Rotorua", "Whakatāne", "Mount Maunganui", "Te Puke", "Kawerau", "Ōpōtiki", "Katikati", "Pāpāmoa", "Ōhope"] },
     { "name": "Gisborne", "slug": "gisborne", "island": "North", "towns": ["Gisborne", "Ruatoria", "Tolaga Bay", "Te Karaka", "Tokomaru Bay"] },

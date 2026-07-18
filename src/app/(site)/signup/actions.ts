@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { TRADE_CATEGORIES } from "@/lib/tradeCategories";
+import { parseAreaPairs, isValidAreaPair } from "@/lib/serviceAreas";
 
 export type SignupState = { error: string | null };
 
@@ -29,6 +30,16 @@ export async function signup(
     }
     if (categories.some((category) => !TRADE_CATEGORIES.includes(category))) {
       return { error: "One of the selected trades isn't valid." };
+    }
+  }
+
+  const areas = parseAreaPairs(formData.getAll("areas") as string[]);
+  if (role === "tradie") {
+    if (areas.length === 0) {
+      return { error: "Please select at least one area you cover." };
+    }
+    if (areas.some((area) => !isValidAreaPair(area))) {
+      return { error: "One of the selected areas isn't valid." };
     }
   }
 
@@ -60,10 +71,13 @@ export async function signup(
     role,
     full_name: fullName,
     email,
-    // trade_type is the tradie's "primary" trade — the first category
-    // they selected — kept in sync so the admin editor, public tradie
-    // profile, and verification-tier checklist keep working unchanged.
-    ...(role === "tradie" ? { trade_type: categories[0] } : {}),
+    // trade_type/service_region are the tradie's "primary" trade and
+    // region — the first of each they selected — kept in sync so the
+    // admin editor, public tradie profile, and verification-tier
+    // checklist keep working unchanged.
+    ...(role === "tradie"
+      ? { trade_type: categories[0], service_region: areas[0].region }
+      : {}),
   });
 
   if (profileError) {
@@ -84,6 +98,19 @@ export async function signup(
       return {
         error:
           "Your account was created, but we couldn't save your trades. Please contact support.",
+      };
+    }
+
+    const { error: areasError } = await supabase
+      .from("tradie_service_areas")
+      .insert(
+        areas.map((area) => ({ tradie_id: userId, region: area.region, town: area.town }))
+      );
+
+    if (areasError) {
+      return {
+        error:
+          "Your account was created, but we couldn't save your service areas. Please contact support.",
       };
     }
   }
