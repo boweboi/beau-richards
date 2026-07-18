@@ -47,5 +47,20 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  if (event.type === "checkout.session.expired") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const purchaseId = session.metadata?.purchase_id;
+
+    if (purchaseId) {
+      const admin = createAdminClient();
+      await admin
+        .from("lead_purchases")
+        .update({ status: "failed" })
+        .eq("id", purchaseId)
+        .eq("stripe_checkout_session_id", session.id)
+        .eq("status", "pending");
+    }
+  }
+
   return NextResponse.json({ received: true });
 }
