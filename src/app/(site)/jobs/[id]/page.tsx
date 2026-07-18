@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import PurchaseLeadButton from "@/components/PurchaseLeadButton";
 
 function formatPostedAt(createdAt: string) {
   const date = new Date(createdAt);
@@ -13,10 +14,13 @@ function formatPostedAt(createdAt: string) {
 
 export default async function JobDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ purchase?: string }>;
 }) {
   const { id } = await params;
+  const { purchase } = await searchParams;
 
   const supabase = await createClient();
   const {
@@ -127,16 +131,22 @@ export default async function JobDetailPage({
                 <p className="text-sm text-ink-700">
                   Contact details available after purchasing this lead.
                 </p>
-                <button
-                  type="button"
-                  disabled
-                  className="mt-3 rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 opacity-60"
-                >
-                  Unlock this lead — $20
-                </button>
+                <PurchaseLeadButton jobId={id} />
               </dd>
             )}
           </dl>
+
+          {purchase === "success" && !contact && (
+            <p className="mt-6 rounded-md bg-hivis-500/10 px-4 py-3 text-sm text-navy-950">
+              Payment received — we&apos;re confirming it now. Refresh in a
+              moment to see the contact details.
+            </p>
+          )}
+          {purchase === "cancelled" && (
+            <p className="mt-6 rounded-md bg-navy-900/5 px-4 py-3 text-sm text-ink-700">
+              Checkout was cancelled — no charge was made.
+            </p>
+          )}
 
           <p className="mt-6 text-xs text-ink-500">
             Posted {date} at {time}
