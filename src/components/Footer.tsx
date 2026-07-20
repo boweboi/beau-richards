@@ -2,7 +2,7 @@ const columns = [
   {
     title: "Homeowners",
     links: [
-      { label: "Post a job", href: "/post-a-job" },
+      { label: "Join as a homeowner", href: "/signup" },
       { label: "Browse trades", href: "/browse-trades" },
       { label: "Trust & verification", href: "/trust" },
       { label: "Reviews", href: "/reviews" },
