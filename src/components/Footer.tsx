@@ -5,7 +5,6 @@ const columns = [
       { label: "Join as a homeowner", href: "/signup" },
       { label: "Browse trades", href: "/browse-trades" },
       { label: "Trust & verification", href: "/trust" },
-      { label: "Reviews", href: "/reviews" },
       { label: "Homeowner resources", href: "/homeowner-resources" },
       { label: "Support", href: "mailto:support@tradematchnz.co.nz" },
     ],
