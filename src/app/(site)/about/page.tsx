@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function AboutPage() {
   return (
     <main className="flex-1 bg-paper-0 px-4 py-16 sm:py-20">
@@ -21,21 +19,6 @@ export default function AboutPage() {
           only for the leads they choose to respond to — no subscriptions,
           no upfront cost to browse.
         </p>
-
-        <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link
-            href="/post-a-job"
-            className="inline-flex items-center justify-center rounded-md bg-navy-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-navy-900"
-          >
-            Post a job — it&apos;s free
-          </Link>
-          <Link
-            href="/signup"
-            className="inline-flex items-center justify-center rounded-md border border-line px-5 py-3 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
-          >
-            Sign up as a tradie
-          </Link>
-        </div>
       </div>
     </main>
   );
