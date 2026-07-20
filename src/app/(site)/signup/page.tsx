@@ -5,6 +5,7 @@ import Link from "next/link";
 import { signup, SignupState } from "./actions";
 import TradeCategoryCheckboxes from "@/components/TradeCategoryCheckboxes";
 import ServiceAreaCheckboxes from "@/components/ServiceAreaCheckboxes";
+import TermsCheckbox from "@/components/TermsCheckbox";
 
 const initialState: SignupState = { error: null };
 
@@ -106,6 +107,8 @@ export default function SignupPage() {
 
           {role === "tradie" && <TradeCategoryCheckboxes />}
           {role === "tradie" && <ServiceAreaCheckboxes />}
+
+          <TermsCheckbox role={role} />
 
           {state.error && (
             <p className="text-sm text-red-600" role="alert">

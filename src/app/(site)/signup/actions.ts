@@ -23,6 +23,10 @@ export async function signup(
     return { error: "Please choose whether you're a tradie or a homeowner." };
   }
 
+  if (!formData.get("agree_terms")) {
+    return { error: "Please agree to the Terms and Conditions to continue." };
+  }
+
   const categories = formData.getAll("categories") as string[];
   if (role === "tradie") {
     if (categories.length === 0) {
