@@ -199,6 +199,14 @@ export default function SkillDevelopmentPage() {
             Related guide: Invoices and quotes for NZ tradies →
           </Link>
         </p>
+        <p className="mt-2 text-sm">
+          <Link
+            href="/tradie-resources/build-your-profile"
+            className="font-semibold text-navy-950 hover:underline"
+          >
+            Related guide: Building a strong TradeMatch profile →
+          </Link>
+        </p>
 
         <p className="mt-6 border-t border-line pt-6 text-xs leading-relaxed text-ink-500">
           This guide is general information for New Zealand tradies and

@@ -233,6 +233,14 @@ export default function InvoicesQuotesPage() {
             Related guide: Growing your skills and trade career →
           </Link>
         </p>
+        <p className="mt-2 text-sm">
+          <Link
+            href="/tradie-resources/price-your-work-right"
+            className="font-semibold text-navy-950 hover:underline"
+          >
+            Related guide: Pricing your work right →
+          </Link>
+        </p>
 
         <p className="mt-6 border-t border-line pt-6 text-xs leading-relaxed text-ink-500">
           This guide is general information for New Zealand tradies and isn&apos;t
