@@ -16,7 +16,7 @@ const CTA: Record<Audience, { heading: string; body: string; label: string; href
   homeowner: {
     heading: "Ready to get your job done right?",
     body: "Skip the cold calls and guesswork. All our tradies are independently verified by us. Post your job once, get quotes from qualified professionals who match your needs, and hire with confidence. See ratings from real customers who've used them before. No more chasing callbacks or wondering if you're getting a fair price. Sign up and post your job today.",
-    label: "Post a job — it's free",
+    label: "Sign up. It's free",
     href: "/post-a-job",
   },
   tradie: {
