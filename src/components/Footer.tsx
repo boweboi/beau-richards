@@ -26,7 +26,6 @@ const columns = [
       { label: "About us", href: "/about" },
       { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
-      { label: "Terms & privacy", href: "/terms" },
     ],
   },
 ];
