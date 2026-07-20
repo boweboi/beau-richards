@@ -21,7 +21,7 @@ const CTA: Record<Audience, { heading: string; body: string; label: string; href
   },
   tradie: {
     heading: "Ready to start winning jobs?",
-    body: "Sign up and start browsing jobs that match your trade and region.",
+    body: "For urgent repairs, first to quote often wins. For planned work, your professionalism and price matter most. Your return on investment could be 100 to 500 times the cost of unlocking a lead. At just $20 per lead, that's the price of three cups of coffee. You're positioned to win jobs worth thousands. Sign up and start browsing jobs that match your trade and region.",
     label: "Sign up as a tradie",
     href: "/signup",
   },
