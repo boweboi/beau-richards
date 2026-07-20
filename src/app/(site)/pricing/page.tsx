@@ -45,7 +45,7 @@ export default function PricingPage() {
             Tradies
           </span>
           <p className="mt-4 font-display text-4xl font-semibold">
-            $15{" "}
+            $20{" "}
             <span className="text-lg font-normal text-white/60">
               / lead
             </span>
@@ -56,7 +56,7 @@ export default function PricingPage() {
           <ul className="mt-6 space-y-3 text-sm text-white/80">
             <li>Browse every job for free</li>
             <li>No monthly fees or subscriptions</li>
-            <li>$15 flat, per lead, whenever you choose to respond</li>
+            <li>$20 flat, per lead, whenever you choose to respond</li>
           </ul>
           <Link
             href="/signup"
