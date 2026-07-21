@@ -6,7 +6,6 @@ const columns = [
       { label: "Browse trades", href: "/browse-trades" },
       { label: "Trust & verification", href: "/trust" },
       { label: "Homeowner resources", href: "/homeowner-resources" },
-      { label: "Support", href: "mailto:support@tradematchnz.co.nz" },
     ],
   },
   {
@@ -15,7 +14,6 @@ const columns = [
       { label: "Join as a tradie", href: "/signup" },
       { label: "Pricing", href: "/pricing" },
       { label: "Success stories", href: "/success-stories" },
-      { label: "Support", href: "mailto:support@tradematchnz.co.nz" },
       { label: "Tradie resources", href: "/tradie-resources" },
     ],
   },
