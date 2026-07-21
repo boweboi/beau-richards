@@ -119,5 +119,9 @@ export async function signup(
     }
   }
 
+  if (role === "tradie") {
+    redirect("/tradie-dashboard");
+  }
+
   redirect("/account");
 }
