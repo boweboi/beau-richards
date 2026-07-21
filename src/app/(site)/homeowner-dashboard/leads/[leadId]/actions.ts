@@ -38,29 +38,56 @@ export async function markAsHired(leadId: string) {
     redirect("/login");
   }
 
-  const lead = await getOwnedPaidLead(leadId, user.id);
-  if (!lead) {
-    return;
+  // TEMPORARY: verbose logging + error surfacing to diagnose a live 503 on
+  // this action. Remove once root-caused.
+  let errorMessage: string | null = null;
+
+  try {
+    console.log("[markAsHired] start", { leadId, userId: user.id });
+
+    const lead = await getOwnedPaidLead(leadId, user.id);
+    console.log("[markAsHired] getOwnedPaidLead result", lead);
+
+    if (!lead) {
+      errorMessage = "Lead not found, not paid, or not owned by you.";
+    } else {
+      // Own-session client, not the admin client — the
+      // lead_purchases_update_homeowner_hire RLS policy (step9 migration)
+      // is what authorizes this.
+      const { error: hireError, data: hireData } = await supabase
+        .from("lead_purchases")
+        .update({ engagement_status: "hired" })
+        .eq("id", leadId)
+        .select();
+
+      console.log("[markAsHired] hire update result", { hireError, hireData });
+
+      if (hireError) {
+        errorMessage = `Hire update failed: ${hireError.message}`;
+      } else {
+        // If a second tradie also purchased this lead and hasn't been
+        // engaged past the tradie's own pipeline yet, auto-decline them —
+        // the job's filled.
+        const { error: declineError, data: declineData } = await supabase
+          .from("lead_purchases")
+          .update({ engagement_status: "not_progressing" })
+          .eq("job_id", lead.job_id)
+          .eq("status", "paid")
+          .neq("tradie_id", lead.tradie_id)
+          .in("engagement_status", ["pending_response", "quoted"])
+          .select();
+
+        console.log("[markAsHired] decline-sibling result", { declineError, declineData });
+      }
+    }
+  } catch (err) {
+    console.error("[markAsHired] unexpected error", err);
+    errorMessage = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
   }
 
-  // Own-session client, not the admin client — the
-  // lead_purchases_update_homeowner_hire RLS policy (step9 migration) is
-  // what authorizes this.
-  await supabase
-    .from("lead_purchases")
-    .update({ engagement_status: "hired" })
-    .eq("id", leadId);
-
-  // If a second tradie also purchased this lead and hasn't been engaged
-  // past the tradie's own pipeline yet, auto-decline them — the job's
-  // filled.
-  await supabase
-    .from("lead_purchases")
-    .update({ engagement_status: "not_progressing" })
-    .eq("job_id", lead.job_id)
-    .eq("status", "paid")
-    .neq("tradie_id", lead.tradie_id)
-    .in("engagement_status", ["pending_response", "quoted"]);
+  if (errorMessage) {
+    redirect(`/homeowner-dashboard/leads/${leadId}?hireError=${encodeURIComponent(errorMessage)}`);
+  }
 
   revalidatePath(`/homeowner-dashboard/leads/${leadId}`);
   revalidatePath("/homeowner-dashboard");

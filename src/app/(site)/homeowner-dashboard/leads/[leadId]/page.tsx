@@ -42,10 +42,13 @@ function ReviewStars({ review }: { review: ReviewRatings }) {
 
 export default async function LeadTradieProfilePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ leadId: string }>;
+  searchParams: Promise<{ hireError?: string }>;
 }) {
   const { leadId } = await params;
+  const { hireError } = await searchParams;
 
   const session = await createClient();
   const {
@@ -299,6 +302,11 @@ export default async function LeadTradieProfilePage({
           </div>
 
           <div className="mt-6 border-t border-line pt-6">
+            {hireError && (
+              <p className="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+                {hireError}
+              </p>
+            )}
             {!isHired && (
               <form action={markAsHired.bind(null, leadId)}>
                 <button
