@@ -17,13 +17,30 @@ export async function login(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
+  if (error || !user) {
     return { error: "That email or password isn't right. Try again." };
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role === "tradie") {
+    redirect("/tradie-dashboard");
+  }
+
+  if (profile?.role === "homeowner") {
+    redirect("/homeowner-dashboard");
   }
 
   redirect("/account");
