@@ -123,5 +123,5 @@ export async function signup(
     redirect("/tradie-dashboard");
   }
 
-  redirect("/account");
+  redirect("/homeowner-dashboard");
 }
