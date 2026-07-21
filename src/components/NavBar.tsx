@@ -93,10 +93,27 @@ export default async function NavBar() {
           {!isTradie && (
             <a
               href="/post-a-job"
-              className="rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400"
+              className="hidden rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400 sm:block"
             >
               Post a job
             </a>
+          )}
+          {user ? (
+            <form action={logout} className="sm:hidden">
+              <button
+                type="submit"
+                className="rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400"
+              >
+                Logout
+              </button>
+            </form>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400 sm:hidden"
+            >
+              Login
+            </Link>
           )}
         </div>
       </div>
