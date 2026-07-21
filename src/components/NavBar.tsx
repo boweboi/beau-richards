@@ -84,6 +84,14 @@ export default async function NavBar() {
               </Link>
             </div>
           )}
+          {user && (
+            <Link
+              href={isTradie ? "/tradie-dashboard" : "/homeowner-dashboard"}
+              className="text-sm font-medium text-ink-700 hover:text-navy-950"
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             href="/jobs"
             className="hidden text-sm font-medium text-ink-700 hover:text-navy-950 sm:block"
