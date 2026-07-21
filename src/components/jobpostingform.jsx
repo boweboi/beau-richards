@@ -4,14 +4,7 @@ import { useState } from 'react';
 import regionsData from '../nz-regions.json';
 import { createJob } from '@/app/(site)/post-a-job/actions';
 import { TRADE_CATEGORIES } from '@/lib/tradeCategories';
-
-const TIMEFRAMES = [
-  'As soon as possible',
-  'Within a week',
-  'Within a month',
-  'Flexible / no rush',
-  'Just getting quotes',
-];
+import { TIMEFRAMES } from '@/lib/timeframes';
 
 export default function JobPostingForm() {
   const [form, setForm] = useState({
@@ -238,7 +231,7 @@ export default function JobPostingForm() {
         >
           {submitting ? 'Posting…' : 'Post job'}
         </button>
-        <p className="text-center text-xs text-[#0B1F3A]/50">It's free to post. Verified tradies will contact you directly.</p>
+        <p className="text-center text-xs text-[#0B1F3A]/50">It&apos;s free to post. Verified tradies will contact you directly.</p>
       </div>
     </form>
   );
