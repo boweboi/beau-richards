@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TRADE_CATEGORIES, isRegulatedTrade } from "@/lib/tradeCategories";
+import {
+  TRADE_CATEGORIES,
+  isRegulatedTrade,
+  qualificationBoardSuffix,
+} from "@/lib/tradeCategories";
 import { getVerificationTier } from "@/lib/verificationTier";
 import { groupAreasByRegion } from "@/lib/serviceAreas";
 import VerificationBadge from "@/components/VerificationBadge";
@@ -230,7 +234,7 @@ export default function AdminTradiesPage() {
                 {regulated && (
                   <>
                     <Checkbox
-                      label="Has Level 4 qualification"
+                      label={`Has relevant qualifications and/or LBP${qualificationBoardSuffix([tradie.trade_type])}`}
                       checked={tradie.has_level4_qualification}
                       onChange={(v) =>
                         updateRow(tradie.id, { has_level4_qualification: v })

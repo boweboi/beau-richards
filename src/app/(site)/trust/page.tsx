@@ -28,7 +28,7 @@ export default function TrustPage() {
         />
         <WhyCard
           title="Confirm qualifications & legitimacy"
-          description="For regulated trades, we check a Level 4 qualification or LBP number before it counts. Business registration is checked too, so you know who you're actually hiring."
+          description="For regulated trades, we check relevant qualifications and/or LBP — EWRB for electricians, PGDB for plumbers and gasfitters — before it counts. Business registration is checked too, so you know who you're actually hiring."
         />
         <WhyCard
           title="Build confidence"
@@ -57,7 +57,7 @@ export default function TrustPage() {
           requirements={[
             "Email verified",
             "Phone verified",
-            "Regulated trades only: Level 4 qualification or LBP number, checked by our team",
+            "Regulated trades only: relevant qualifications and/or LBP (EWRB for electricians, PGDB for plumbers/gasfitters), checked by our team",
           ]}
         />
         <TierCard
@@ -78,8 +78,9 @@ export default function TrustPage() {
 
       <div className="mx-auto mt-10 max-w-2xl rounded-xl border border-line bg-paper-50 p-6 text-center text-sm text-ink-700">
         <span className="font-semibold text-navy-950">Regulated trades</span>{" "}
-        — {REGULATED_TRADES.join(", ")} — must show a Level 4 qualification
-        or LBP number at every tier, confirmed by our team before it counts.
+        — {REGULATED_TRADES.join(", ")} — must show relevant qualifications
+        and/or LBP (EWRB for electricians, PGDB for plumbers/gasfitters) at
+        every tier, confirmed by our team before it counts.
         Every other trade follows the same email, phone, NZBN, and review
         requirements without that extra qualification check.
       </div>

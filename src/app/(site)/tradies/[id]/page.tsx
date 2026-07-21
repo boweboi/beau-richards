@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { isAnyRegulatedTrade } from "@/lib/tradeCategories";
+import { isAnyRegulatedTrade, qualificationBoardSuffix } from "@/lib/tradeCategories";
 import { groupAreasByRegion } from "@/lib/serviceAreas";
 import { getVerificationTier, type TradieVerification } from "@/lib/verificationTier";
 import VerificationBadge from "@/components/VerificationBadge";
@@ -71,7 +71,12 @@ export default async function TradieProfilePage({
     { label: "Email verified", met: profile.email_verified },
     { label: "Phone verified", met: profile.phone_verified },
     ...(regulated
-      ? [{ label: "Level 4 qualification or LBP confirmed", met: qualified }]
+      ? [
+          {
+            label: `Relevant qualifications and/or LBP${qualificationBoardSuffix(displayCategories)} confirmed`,
+            met: qualified,
+          },
+        ]
       : []),
     { label: "NZBN verified", met: profile.nzbn_verified },
     {

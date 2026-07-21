@@ -11,9 +11,9 @@ export type TradieVerification = {
   reviewCount: number;
 };
 
-// A regulated trade's Level 4/LBP claim only counts once an admin has
-// checked it — an unverified self-report shouldn't be enough to unlock
-// Bronze, or the "verification" system wouldn't verify anything.
+// A regulated trade's qualifications/LBP claim only counts once an admin
+// has checked it — an unverified self-report shouldn't be enough to
+// unlock Bronze, or the "verification" system wouldn't verify anything.
 function meetsQualificationRequirement(profile: TradieVerification): boolean {
   const claimsQualification =
     profile.hasLevel4Qualification || Boolean(profile.lbpNumber);
