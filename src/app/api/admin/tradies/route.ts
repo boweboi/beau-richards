@@ -34,14 +34,26 @@ export async function GET() {
 
   // review_count/average_rating are live-computed from actual reviews, not
   // stored columns — verification tiers must never drift out of sync with
-  // real review data.
-  const { data: reviewRows } = await supabase.from("reviews").select("tradie_id, rating");
+  // real review data. Each review has five category ratings; the "overall"
+  // score per review is their average, then averaged again across reviews.
+  const { data: reviewRows } = await supabase
+    .from("reviews")
+    .select(
+      "tradie_id, communication_rating, quality_rating, timeliness_rating, value_rating, professionalism_rating"
+    );
 
   const reviewStatsByTradie = new Map<string, { count: number; ratingSum: number }>();
   for (const row of reviewRows ?? []) {
     const existing = reviewStatsByTradie.get(row.tradie_id) ?? { count: 0, ratingSum: 0 };
+    const overall =
+      (row.communication_rating +
+        row.quality_rating +
+        row.timeliness_rating +
+        row.value_rating +
+        row.professionalism_rating) /
+      5;
     existing.count += 1;
-    existing.ratingSum += row.rating;
+    existing.ratingSum += overall;
     reviewStatsByTradie.set(row.tradie_id, existing);
   }
 

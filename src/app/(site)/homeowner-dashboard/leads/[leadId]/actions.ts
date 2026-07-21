@@ -91,12 +91,29 @@ export async function submitReview(
     return { error: "Mark this tradie as hired before leaving a review." };
   }
 
-  const rating = Number(formData.get("rating"));
-  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-    return { error: "Please choose a rating from 1 to 5." };
-  }
+  const RATING_FIELDS = [
+    "communication_rating",
+    "quality_rating",
+    "timeliness_rating",
+    "value_rating",
+    "professionalism_rating",
+  ] as const;
 
-  const comment = (formData.get("comment") as string | null)?.trim() || null;
+  const ratings: Record<(typeof RATING_FIELDS)[number], number> = {
+    communication_rating: 0,
+    quality_rating: 0,
+    timeliness_rating: 0,
+    value_rating: 0,
+    professionalism_rating: 0,
+  };
+
+  for (const field of RATING_FIELDS) {
+    const value = Number(formData.get(field));
+    if (!Number.isInteger(value) || value < 1 || value > 5) {
+      return { error: "Please choose a star rating (1 to 5) for every category." };
+    }
+    ratings[field] = value;
+  }
 
   // Own-session client — the reviews_insert_homeowner_hired RLS policy
   // (step9 migration) re-checks all of this same ownership/hired/paid
@@ -106,8 +123,7 @@ export async function submitReview(
     job_id: lead.job_id,
     tradie_id: lead.tradie_id,
     homeowner_id: user.id,
-    rating,
-    comment,
+    ...ratings,
   });
 
   if (error) {

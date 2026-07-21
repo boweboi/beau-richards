@@ -9,6 +9,37 @@ import VerificationBadge from "@/components/VerificationBadge";
 import ReviewForm from "./ReviewForm";
 import { markAsHired } from "./actions";
 
+const REVIEW_CATEGORIES = [
+  { key: "communication_rating", label: "Communication" },
+  { key: "quality_rating", label: "Quality of Work" },
+  { key: "timeliness_rating", label: "Timeliness" },
+  { key: "value_rating", label: "Value for Money" },
+  { key: "professionalism_rating", label: "Professionalism" },
+] as const;
+
+type ReviewRatings = Record<(typeof REVIEW_CATEGORIES)[number]["key"], number>;
+
+function reviewAverage(review: ReviewRatings) {
+  const sum = REVIEW_CATEGORIES.reduce((total, category) => total + review[category.key], 0);
+  return sum / REVIEW_CATEGORIES.length;
+}
+
+function ReviewStars({ review }: { review: ReviewRatings }) {
+  return (
+    <dl className="space-y-0.5">
+      {REVIEW_CATEGORIES.map((category) => (
+        <div key={category.key} className="flex items-center gap-2 text-xs">
+          <dt className="w-32 shrink-0 text-ink-500">{category.label}</dt>
+          <dd className="text-navy-950">
+            {"★".repeat(review[category.key])}
+            {"☆".repeat(5 - review[category.key])}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export default async function LeadTradieProfilePage({
   params,
 }: {
@@ -103,7 +134,9 @@ export default async function LeadTradieProfilePage({
 
   const { data: reviewRows } = await admin
     .from("reviews")
-    .select("id, lead_purchase_id, rating, comment, created_at, homeowner_id")
+    .select(
+      "id, lead_purchase_id, communication_rating, quality_rating, timeliness_rating, value_rating, professionalism_rating, created_at, homeowner_id"
+    )
     .eq("tradie_id", lead.tradie_id)
     .order("created_at", { ascending: false });
 
@@ -123,7 +156,7 @@ export default async function LeadTradieProfilePage({
 
   const averageRating =
     reviews.length > 0
-      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      ? reviews.reduce((sum, review) => sum + reviewAverage(review), 0) / reviews.length
       : null;
 
   const verification: TradieVerification = {
@@ -252,17 +285,13 @@ export default async function LeadTradieProfilePage({
             ) : (
               <ul className="mt-3 space-y-3">
                 {reviews.map((review) => (
-                  <li key={review.id} className="rounded-lg border border-line p-3 text-sm">
-                    <p className="font-semibold text-navy-950">
-                      {"★".repeat(review.rating)}
-                      {"☆".repeat(5 - review.rating)}{" "}
-                      <span className="font-normal text-ink-500">
-                        — {reviewerNames.get(review.homeowner_id) ?? "Homeowner"}
-                      </span>
+                  <li key={review.id} className="rounded-lg border border-line p-3">
+                    <p className="text-xs font-semibold text-ink-500">
+                      {reviewerNames.get(review.homeowner_id) ?? "Homeowner"}
                     </p>
-                    {review.comment && (
-                      <p className="mt-1 text-ink-700">{review.comment}</p>
-                    )}
+                    <div className="mt-2">
+                      <ReviewStars review={review} />
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -296,13 +325,9 @@ export default async function LeadTradieProfilePage({
                 <p className="text-sm font-semibold text-navy-950">
                   Your review
                 </p>
-                <p className="mt-1 text-sm text-ink-700">
-                  {"★".repeat(myReview.rating)}
-                  {"☆".repeat(5 - myReview.rating)}
-                </p>
-                {myReview.comment && (
-                  <p className="mt-1 text-sm text-ink-700">{myReview.comment}</p>
-                )}
+                <div className="mt-2">
+                  <ReviewStars review={myReview} />
+                </div>
               </div>
             )}
           </div>

@@ -42,13 +42,25 @@ export default async function TradieProfilePage({
 
   const { data: reviewRowsRaw } = await supabase
     .from("reviews")
-    .select("rating")
+    .select(
+      "communication_rating, quality_rating, timeliness_rating, value_rating, professionalism_rating"
+    )
     .eq("tradie_id", id);
   const reviewRows = reviewRowsRaw ?? [];
   const totalReviews = reviewRows.length;
   const averageRating =
     totalReviews > 0
-      ? reviewRows.reduce((sum, review) => sum + review.rating, 0) / totalReviews
+      ? reviewRows.reduce(
+          (sum, review) =>
+            sum +
+            (review.communication_rating +
+              review.quality_rating +
+              review.timeliness_rating +
+              review.value_rating +
+              review.professionalism_rating) /
+              5,
+          0
+        ) / totalReviews
       : null;
 
   const { data: categoryRows } = await supabase
