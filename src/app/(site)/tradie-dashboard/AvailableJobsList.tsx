@@ -36,12 +36,10 @@ const SORT_OPTIONS: { value: SortOption; label: string }[] = [
 export default function AvailableJobsList({
   jobs,
   sort,
-  hasSetup,
   purchasedJobIds,
 }: {
   jobs: Job[];
   sort: SortOption;
-  hasSetup: boolean;
   purchasedJobIds: Set<string>;
 }) {
   return (
@@ -50,7 +48,7 @@ export default function AvailableJobsList({
         <h2 className="font-display text-xl font-semibold text-navy-950">
           Available jobs
         </h2>
-        {hasSetup && jobs.length > 0 && (
+        {jobs.length > 0 && (
           <div className="flex items-center gap-1 text-sm">
             {SORT_OPTIONS.map((option) => (
               <Link
@@ -69,20 +67,7 @@ export default function AvailableJobsList({
         )}
       </div>
 
-      {!hasSetup && (
-        <div className="mt-4 rounded-2xl border border-line bg-white p-6 text-sm text-ink-700">
-          Set up your trade categories and service areas to see jobs
-          matched to you.{" "}
-          <Link
-            href="/account/edit"
-            className="font-semibold text-navy-950 hover:underline"
-          >
-            Edit your profile →
-          </Link>
-        </div>
-      )}
-
-      {hasSetup && jobs.length === 0 && (
+      {jobs.length === 0 && (
         <p className="mt-4 rounded-2xl border border-line bg-white p-6 text-sm text-ink-700">
           No open jobs match your trades and areas right now — check back soon.
         </p>

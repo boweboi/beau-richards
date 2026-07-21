@@ -5,6 +5,7 @@ import AvailableJobsList, { type Job, type SortOption } from "./AvailableJobsLis
 import PurchasedLeadsList, { type PurchaseRow } from "./PurchasedLeadsList";
 import PortfolioSection, { type PortfolioPhotoRow } from "./PortfolioSection";
 import ResourceLinksSection from "./ResourceLinksSection";
+import CompleteProfileSection from "./CompleteProfileSection";
 
 function sortJobs(jobs: Job[], sort: SortOption, areaKeys: Set<string>): Job[] {
   const sorted = [...jobs];
@@ -120,12 +121,18 @@ export default async function TradieDashboardPage({
         </h1>
 
         <section className="mt-10">
-          <AvailableJobsList
-            jobs={sortedJobs}
-            sort={sort}
-            hasSetup={hasSetup}
-            purchasedJobIds={purchasedJobIds}
-          />
+          {hasSetup ? (
+            <AvailableJobsList
+              jobs={sortedJobs}
+              sort={sort}
+              purchasedJobIds={purchasedJobIds}
+            />
+          ) : (
+            <CompleteProfileSection
+              defaultCategories={categories}
+              defaultAreas={areas.map((area) => `${area.region}|${area.town}`)}
+            />
+          )}
         </section>
 
         <section className="mt-14 border-t border-line pt-10">
