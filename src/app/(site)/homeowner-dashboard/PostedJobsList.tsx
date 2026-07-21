@@ -10,6 +10,20 @@ export type HomeownerJob = {
   created_at: string;
 };
 
+export type PurchasingTradie = {
+  leadId: string;
+  tradieName: string;
+  trade: string | null;
+  engagementStatus: string;
+};
+
+const ENGAGEMENT_LABELS: Record<string, string> = {
+  pending_response: "Pending response",
+  quoted: "Quoted",
+  hired: "Hired",
+  not_progressing: "Not progressing",
+};
+
 function formatPostedAt(createdAt: string) {
   const date = new Date(createdAt);
   return date.toLocaleDateString("en-NZ", {
@@ -19,7 +33,13 @@ function formatPostedAt(createdAt: string) {
   });
 }
 
-export default function PostedJobsList({ jobs }: { jobs: HomeownerJob[] }) {
+export default function PostedJobsList({
+  jobs,
+  leadsByJob,
+}: {
+  jobs: HomeownerJob[];
+  leadsByJob: Record<string, PurchasingTradie[]>;
+}) {
   return (
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -75,6 +95,41 @@ export default function PostedJobsList({ jobs }: { jobs: HomeownerJob[] }) {
                   View details →
                 </Link>
               </div>
+
+              {(leadsByJob[job.id]?.length ?? 0) > 0 && (
+                <div className="mt-4 border-t border-line pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+                    Tradies who bought this lead
+                  </p>
+                  <ul className="mt-2 space-y-2">
+                    {leadsByJob[job.id].map((tradie) => (
+                      <li
+                        key={tradie.leadId}
+                        className="flex flex-col gap-2 rounded-lg border border-line p-3 text-sm sm:flex-row sm:items-center sm:justify-between"
+                      >
+                        <div>
+                          <span className="font-semibold text-navy-950">
+                            {tradie.tradieName}
+                          </span>
+                          {tradie.trade && (
+                            <span className="text-ink-500"> — {tradie.trade}</span>
+                          )}
+                          <span className="ml-2 text-xs text-ink-500">
+                            {ENGAGEMENT_LABELS[tradie.engagementStatus] ??
+                              tradie.engagementStatus}
+                          </span>
+                        </div>
+                        <Link
+                          href={`/homeowner-dashboard/leads/${tradie.leadId}`}
+                          className="text-sm font-semibold text-navy-950 hover:underline"
+                        >
+                          View profile →
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </li>
           ))}
         </ul>

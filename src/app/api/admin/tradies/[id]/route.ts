@@ -15,7 +15,6 @@ const EDITABLE_FIELDS = [
   "lbp_number",
   "has_level4_qualification",
   "qualifications_checked",
-  "review_count",
 ] as const;
 
 type EditableField = (typeof EDITABLE_FIELDS)[number];

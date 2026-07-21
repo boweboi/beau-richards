@@ -1,5 +1,6 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isAnyRegulatedTrade, qualificationBoardSuffix } from "@/lib/tradeCategories";
 import { groupAreasByRegion } from "@/lib/serviceAreas";
@@ -9,7 +10,7 @@ import VerificationBadge from "@/components/VerificationBadge";
 // Only ever select the columns a visitor is allowed to see — this table
 // also holds `email` and raw `phone`, which stay admin-only.
 const PUBLIC_PROFILE_COLUMNS =
-  "id, full_name, role, trade_type, service_region, nzbn, lbp_number, has_level4_qualification, email_verified, phone_verified, nzbn_verified, qualifications_checked, review_count";
+  "id, full_name, role, trade_type, service_region, nzbn, lbp_number, has_level4_qualification, email_verified, phone_verified, nzbn_verified, qualifications_checked";
 
 export default async function TradieProfilePage({
   params,
@@ -17,6 +18,15 @@ export default async function TradieProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
+  const session = await createClient();
+  const {
+    data: { user },
+  } = await session.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const supabase = createAdminClient();
   const { data: profile } = await supabase
@@ -29,6 +39,17 @@ export default async function TradieProfilePage({
   if (!profile) {
     notFound();
   }
+
+  const { data: reviewRowsRaw } = await supabase
+    .from("reviews")
+    .select("rating")
+    .eq("tradie_id", id);
+  const reviewRows = reviewRowsRaw ?? [];
+  const totalReviews = reviewRows.length;
+  const averageRating =
+    totalReviews > 0
+      ? reviewRows.reduce((sum, review) => sum + review.rating, 0) / totalReviews
+      : null;
 
   const { data: categoryRows } = await supabase
     .from("tradie_trade_categories")
@@ -59,7 +80,8 @@ export default async function TradieProfilePage({
     qualificationsChecked: profile.qualifications_checked,
     hasLevel4Qualification: profile.has_level4_qualification,
     lbpNumber: profile.lbp_number,
-    reviewCount: profile.review_count,
+    reviewCount: totalReviews,
+    averageRating,
   };
 
   const tier = getVerificationTier(verification);
@@ -80,8 +102,8 @@ export default async function TradieProfilePage({
       : []),
     { label: "NZBN verified", met: profile.nzbn_verified },
     {
-      label: `${profile.review_count} customer review${profile.review_count === 1 ? "" : "s"}`,
-      met: profile.review_count >= 3,
+      label: `${totalReviews} customer review${totalReviews === 1 ? "" : "s"}`,
+      met: totalReviews >= 3,
     },
   ];
 

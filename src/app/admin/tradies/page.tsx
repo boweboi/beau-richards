@@ -25,6 +25,7 @@ type Tradie = {
   has_level4_qualification: boolean;
   qualifications_checked: boolean;
   review_count: number;
+  average_rating: number | null;
   service_areas: { region: string; town: string }[];
 };
 
@@ -67,7 +68,6 @@ export default function AdminTradiesPage() {
         lbp_number: tradie.lbp_number,
         has_level4_qualification: tradie.has_level4_qualification,
         qualifications_checked: tradie.qualifications_checked,
-        review_count: tradie.review_count,
       }),
     });
 
@@ -125,6 +125,7 @@ export default function AdminTradiesPage() {
             hasLevel4Qualification: tradie.has_level4_qualification,
             lbpNumber: tradie.lbp_number,
             reviewCount: tradie.review_count,
+            averageRating: tradie.average_rating,
           });
 
           return (
@@ -188,16 +189,17 @@ export default function AdminTradiesPage() {
                     }
                   />
                 )}
-                <Field
-                  label="Review count"
-                  type="number"
-                  value={String(tradie.review_count)}
-                  onChange={(v) =>
-                    updateRow(tradie.id, {
-                      review_count: Math.max(0, Number(v) || 0),
-                    })
-                  }
-                />
+                <div>
+                  <span className="block text-sm font-medium text-ink-700">
+                    Reviews
+                  </span>
+                  <p className="mt-1 text-sm text-ink-500">
+                    {tradie.review_count} review{tradie.review_count === 1 ? "" : "s"}
+                    {tradie.average_rating !== null &&
+                      `, ${tradie.average_rating.toFixed(1)} avg rating`}{" "}
+                    (live)
+                  </p>
+                </div>
               </div>
 
               <div className="mt-4">

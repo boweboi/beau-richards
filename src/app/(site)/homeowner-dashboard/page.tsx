@@ -1,7 +1,16 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import CompleteProfileSection from "./CompleteProfileSection";
-import PostedJobsList, { type HomeownerJob } from "./PostedJobsList";
+import PostedJobsList, { type HomeownerJob, type PurchasingTradie } from "./PostedJobsList";
+
+type LeadRow = {
+  id: string;
+  job_id: string;
+  tradie_id: string;
+  engagement_status: string;
+  profiles: { full_name: string; trade_type: string | null } | null;
+};
 
 export default async function HomeownerDashboardPage() {
   const supabase = await createClient();
@@ -26,6 +35,7 @@ export default async function HomeownerDashboardPage() {
   const hasProfile = Boolean(profile.address && profile.region && profile.town);
 
   let jobs: HomeownerJob[] = [];
+  const leadsByJob: Record<string, PurchasingTradie[]> = {};
   if (hasProfile) {
     const { data } = await supabase
       .from("jobs")
@@ -33,6 +43,29 @@ export default async function HomeownerDashboardPage() {
       .eq("homeowner_id", user.id)
       .order("created_at", { ascending: false });
     jobs = (data ?? []) as HomeownerJob[];
+
+    if (jobs.length > 0) {
+      const admin = createAdminClient();
+      const { data: leadRows } = await admin
+        .from("lead_purchases")
+        .select("id, job_id, tradie_id, engagement_status, profiles(full_name, trade_type)")
+        .in(
+          "job_id",
+          jobs.map((job) => job.id)
+        )
+        .eq("status", "paid");
+
+      for (const row of (leadRows ?? []) as unknown as LeadRow[]) {
+        const existing = leadsByJob[row.job_id] ?? [];
+        existing.push({
+          leadId: row.id,
+          tradieName: row.profiles?.full_name ?? "Tradie",
+          trade: row.profiles?.trade_type ?? null,
+          engagementStatus: row.engagement_status,
+        });
+        leadsByJob[row.job_id] = existing;
+      }
+    }
   }
 
   return (
@@ -47,7 +80,7 @@ export default async function HomeownerDashboardPage() {
 
         <section className="mt-10">
           {hasProfile ? (
-            <PostedJobsList jobs={jobs} />
+            <PostedJobsList jobs={jobs} leadsByJob={leadsByJob} />
           ) : (
             <CompleteProfileSection
               defaultAddress={profile.address ?? ""}

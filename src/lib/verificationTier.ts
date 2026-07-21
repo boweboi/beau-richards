@@ -9,6 +9,7 @@ export type TradieVerification = {
   hasLevel4Qualification: boolean;
   lbpNumber: string | null;
   reviewCount: number;
+  averageRating: number | null;
 };
 
 // A regulated trade's qualifications/LBP claim only counts once an admin
@@ -31,10 +32,19 @@ export function getVerificationTier(
 
   if (!meetsBronze) return "none";
 
-  const meetsSilver = profile.nzbnVerified && profile.reviewCount >= 3;
+  // Review count alone isn't enough — a tradie with plenty of reviews but
+  // a poor average rating shouldn't be promoted on volume alone.
+  const meetsSilver =
+    profile.nzbnVerified &&
+    profile.reviewCount >= 3 &&
+    profile.averageRating !== null &&
+    profile.averageRating >= 4.0;
   if (!meetsSilver) return "bronze";
 
-  const meetsGold = profile.reviewCount >= 10;
+  const meetsGold =
+    profile.reviewCount >= 10 &&
+    profile.averageRating !== null &&
+    profile.averageRating >= 4.5;
   if (!meetsGold) return "silver";
 
   return "gold";

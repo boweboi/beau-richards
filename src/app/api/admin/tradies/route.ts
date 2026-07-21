@@ -3,7 +3,7 @@ import { isAuthenticated } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const ADMIN_TRADIE_COLUMNS =
-  "id, full_name, email, trade_type, service_region, phone, phone_verified, email_verified, nzbn, nzbn_verified, lbp_number, has_level4_qualification, qualifications_checked, review_count";
+  "id, full_name, email, trade_type, service_region, phone, phone_verified, email_verified, nzbn, nzbn_verified, lbp_number, has_level4_qualification, qualifications_checked";
 
 export async function GET() {
   if (!(await isAuthenticated())) {
@@ -32,10 +32,28 @@ export async function GET() {
     areasByTradie.set(row.tradie_id, existing);
   }
 
-  const tradies = data.map((tradie) => ({
-    ...tradie,
-    service_areas: areasByTradie.get(tradie.id) ?? [],
-  }));
+  // review_count/average_rating are live-computed from actual reviews, not
+  // stored columns — verification tiers must never drift out of sync with
+  // real review data.
+  const { data: reviewRows } = await supabase.from("reviews").select("tradie_id, rating");
+
+  const reviewStatsByTradie = new Map<string, { count: number; ratingSum: number }>();
+  for (const row of reviewRows ?? []) {
+    const existing = reviewStatsByTradie.get(row.tradie_id) ?? { count: 0, ratingSum: 0 };
+    existing.count += 1;
+    existing.ratingSum += row.rating;
+    reviewStatsByTradie.set(row.tradie_id, existing);
+  }
+
+  const tradies = data.map((tradie) => {
+    const stats = reviewStatsByTradie.get(tradie.id);
+    return {
+      ...tradie,
+      review_count: stats?.count ?? 0,
+      average_rating: stats ? stats.ratingSum / stats.count : null,
+      service_areas: areasByTradie.get(tradie.id) ?? [],
+    };
+  });
 
   return NextResponse.json({ tradies });
 }
