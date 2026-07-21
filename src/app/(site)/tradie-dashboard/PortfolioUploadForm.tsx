@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { addPortfolioPhoto } from "./actions";
 
@@ -31,6 +31,8 @@ export default function PortfolioUploadForm() {
   const [photoType, setPhotoType] = useState<"before" | "after" | "other">("other");
   const [caption, setCaption] = useState("");
   const [state, setState] = useState<UploadState>({ status: "idle" });
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,6 +86,7 @@ export default function PortfolioUploadForm() {
       setState({ status: "idle" });
       setCaption("");
       setPhotoType("other");
+      setSelectedFileName(null);
       form.reset();
     },
     [caption, photoType]
@@ -99,12 +102,26 @@ export default function PortfolioUploadForm() {
           <label htmlFor="portfolio-photo" className="block text-sm font-medium text-ink-700">
             Photo
           </label>
+          <div className="mt-1 flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="rounded-md border border-line px-3 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+            >
+              Choose photo
+            </button>
+            <span className="truncate text-sm text-ink-500">
+              {selectedFileName ?? "No file chosen"}
+            </span>
+          </div>
           <input
+            ref={fileInputRef}
             id="portfolio-photo"
             name="photo"
             type="file"
             accept="image/png,image/jpeg,image/webp"
-            className="mt-1 block text-sm text-ink-700"
+            onChange={(event) => setSelectedFileName(event.target.files?.[0]?.name ?? null)}
+            className="hidden"
           />
         </div>
 
