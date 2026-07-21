@@ -15,9 +15,16 @@ export default function AboutPage() {
           callbacks, no guesswork on price.
         </p>
         <p className="mt-4 text-ink-700">
-          Posting a job is free, and stays free. Tradies pay a flat fee
-          only for the leads they choose to respond to — no subscriptions,
-          no upfront cost to browse.
+          TradeMatch is built differently. We&apos;re not a subscription
+          service or a race to the bottom on price. We&apos;re an
+          alternative built for tradies, fair flat-fee pricing, quality
+          leads, and a platform designed around how you actually work.
+          Posting a job stays free for homeowners. Tradies pay only for
+          the leads they choose to respond to.
+        </p>
+        <p className="mt-4 text-ink-700">
+          No subscriptions, no upfront cost. Just straightforward access
+          to serious homeowners and real work.
         </p>
       </div>
     </main>
