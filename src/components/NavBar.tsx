@@ -36,16 +36,16 @@ export default async function NavBar() {
         </a>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-ink-700 md:flex">
-          <a className="hover:text-navy-950" href="/#how-it-works">
+          <a className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/#how-it-works">
             How it works
           </a>
-          <Link className="hover:text-navy-950" href="/pricing">
+          <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/pricing">
             Pricing
           </Link>
-          <Link className="hover:text-navy-950" href="/tradie-resources">
+          <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/tradie-resources">
             Tradie resources
           </Link>
-          <Link className="hover:text-navy-950" href="/homeowner-resources">
+          <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/homeowner-resources">
             Homeowner resources
           </Link>
         </nav>
@@ -59,7 +59,7 @@ export default async function NavBar() {
               <form action={logout}>
                 <button
                   type="submit"
-                  className="text-sm font-medium text-ink-700 hover:text-navy-950"
+                  className="text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
                 >
                   Log out
                 </button>
@@ -69,13 +69,13 @@ export default async function NavBar() {
             <div className="hidden items-center gap-4 sm:flex">
               <Link
                 href="/login"
-                className="text-sm font-medium text-ink-700 hover:text-navy-950"
+                className="text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="text-sm font-medium text-ink-700 hover:text-navy-950"
+                className="text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
               >
                 Sign up
               </Link>
@@ -84,14 +84,14 @@ export default async function NavBar() {
           {user && (
             <Link
               href={isTradie ? "/tradie-dashboard" : "/homeowner-dashboard"}
-              className="text-sm font-medium text-ink-700 hover:text-navy-950"
+              className="text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
             >
               Dashboard
             </Link>
           )}
           <Link
             href="/jobs"
-            className="hidden text-sm font-medium text-ink-700 hover:text-navy-950 sm:block"
+            className="hidden text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8 sm:block"
           >
             Find jobs
           </Link>
