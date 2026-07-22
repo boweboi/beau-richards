@@ -39,9 +39,6 @@ export default async function NavBar() {
           <a className="hover:text-navy-950" href="/#how-it-works">
             How it works
           </a>
-          <Link className="hover:text-navy-950" href="/signup">
-            Sign up
-          </Link>
           <Link className="hover:text-navy-950" href="/pricing">
             Pricing
           </Link>
