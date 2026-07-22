@@ -73,12 +73,6 @@ export default async function NavBar() {
               >
                 Log in
               </Link>
-              <Link
-                href="/signup"
-                className="text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
-              >
-                Sign up
-              </Link>
             </div>
           )}
           {user && (
@@ -89,18 +83,12 @@ export default async function NavBar() {
               Dashboard
             </Link>
           )}
-          <Link
-            href="/jobs"
-            className="hidden text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8 sm:block"
-          >
-            Find jobs
-          </Link>
           {!isTradie && (
             <a
-              href="/post-a-job"
+              href="/signup"
               className="hidden rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-hivis-400 sm:block"
             >
-              Post a job
+              Sign up
             </a>
           )}
           {user ? (
