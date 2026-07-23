@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How to Build a Strong TradeMatch Profile | TradeMatch NZ",
+  title: "How to Build a Strong TradieMatch Profile | TradieMatch",
   description:
-    "How NZ tradies can build a TradeMatch profile that stands out — photos, bio, qualifications, reviews, and verification status.",
+    "How NZ tradies can build a TradieMatch profile that stands out — photos, bio, qualifications, reviews, and verification status.",
 };
 
 export default function BuildYourProfilePage() {
@@ -35,7 +35,7 @@ export default function BuildYourProfilePage() {
         </p>
         <p className="mt-6 leading-relaxed text-ink-700">
           Your profile is also the one part of your presence on
-          TradeMatch NZ that keeps working for you between jobs. You quote
+          TradieMatch that keeps working for you between jobs. You quote
           once, but your profile is seen by every homeowner comparing you
           against other tradies — it&apos;s worth treating it as seriously as
           you&apos;d treat a quote, rather than something you fill in once and
@@ -121,7 +121,7 @@ export default function BuildYourProfilePage() {
             Verification status
           </h2>
           <p className="mt-3 leading-relaxed text-ink-700">
-            TradeMatch NZ shows a verification badge on your profile based
+            TradieMatch shows a verification badge on your profile based
             on what&apos;s been checked — things like your email, phone, and
             for regulated trades, your qualifications or licence. Keeping
             your details current and getting verified where you can is

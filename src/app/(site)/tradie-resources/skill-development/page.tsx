@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Trade Apprenticeships NZ | Licensed Builder & Upskilling Guide | TradeMatch NZ",
+  title: "Trade Apprenticeships NZ | Licensed Builder & Upskilling Guide | TradieMatch",
   description:
     "A practical guide for New Zealand tradies: apprenticeships and formal training, becoming a licensed builder, electrical and plumbing registration, and how to keep upskilling around a full workload.",
 };
@@ -55,7 +55,7 @@ export default function SkillDevelopmentPage() {
             simply can&apos;t, which means less competing purely on price.
           </p>
           <p className="mt-3 leading-relaxed text-ink-700">
-            Homeowners posting jobs on platforms like TradeMatch NZ can also
+            Homeowners posting jobs on platforms like TradieMatch can also
             see your qualifications and verification status on your profile
             — the more you can genuinely show, the more you stand out
             against other tradies bidding on the same job.
@@ -204,7 +204,7 @@ export default function SkillDevelopmentPage() {
             href="/tradie-resources/build-your-profile"
             className="font-semibold text-navy-950 hover:underline"
           >
-            Related guide: Building a strong TradeMatch profile →
+            Related guide: Building a strong TradieMatch profile →
           </Link>
         </p>
 

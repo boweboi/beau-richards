@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Invoice Template for Tradies NZ | How to Quote a Job | TradeMatch NZ",
+  title: "Invoice Template for Tradies NZ | How to Quote a Job | TradieMatch",
   description:
     "A practical guide for New Zealand tradies: how to write a compliant NZ tax invoice, GST rules explained, and how to quote a building job — with sample invoice and quote templates.",
 };

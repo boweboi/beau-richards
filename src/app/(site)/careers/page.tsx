@@ -11,7 +11,7 @@ export default function CareersPage() {
           We&apos;re not hiring yet.
         </h1>
         <p className="mt-4 text-ink-700">
-          TradeMatch NZ is just getting started, and there are no open
+          TradieMatch is just getting started, and there are no open
           roles right now. If that changes, we&apos;ll list them here — but
           if you&apos;d like to reach out anyway, we&apos;d love to hear
           from you.

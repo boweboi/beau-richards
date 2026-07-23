@@ -33,7 +33,7 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <span className="font-display text-lg font-semibold tracking-tight text-white">
-              TradeMatch<span className="text-hivis-500"> NZ</span>
+              TradieMatch
             </span>
             <p className="mt-3 max-w-xs text-sm text-white/60">
               Connecting homeowners with trusted, verified tradies across
@@ -63,7 +63,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} TradeMatch NZ. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} TradieMatch. All rights reserved.</p>
           <p>Made in Aotearoa.</p>
         </div>
       </div>

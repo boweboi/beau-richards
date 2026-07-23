@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How to Price Your Work Right | NZ Tradie Pricing Guide | TradeMatch NZ",
+  title: "How to Price Your Work Right | NZ Tradie Pricing Guide | TradieMatch",
   description:
     "A practical guide to pricing trade work fairly in New Zealand — cost breakdowns, margin, researching regional rates, and the pricing mistakes that quietly cost tradies money.",
 };
@@ -115,7 +115,7 @@ export default function PriceYourWorkRightPage() {
             talk to other tradies in your trade and region, check your
             trade&apos;s industry association if it publishes rate guidance,
             and pay attention to what similar jobs are actually going
-            for on platforms like TradeMatch NZ. Pricing blind — either
+            for on platforms like TradieMatch. Pricing blind — either
             too high or too low — costs you jobs or costs you margin.
           </p>
           <p className="mt-3 leading-relaxed text-ink-700">

@@ -4,7 +4,7 @@ import Link from "next/link";
 const CONTACT_EMAIL = "beaurichards01@gmail.com";
 
 export const metadata: Metadata = {
-  title: "Tradie Terms and Conditions | TradeMatch NZ",
+  title: "Tradie Terms and Conditions | TradieMatch",
   robots: { index: false, follow: false },
 };
 
@@ -12,7 +12,7 @@ const SECTIONS = [
   {
     heading: "1. Who this applies to",
     body: `These terms apply to you if you create a tradie account on
-      TradeMatch NZ. By creating an account and purchasing leads, you
+      TradieMatch. By creating an account and purchasing leads, you
       agree to these terms.`,
   },
   {
@@ -60,7 +60,7 @@ const SECTIONS = [
   {
     heading: "8. Independent contractor status",
     body: `You are an independent contractor. You are not an employee,
-      agent, or partner of TradeMatch NZ, and nothing in these terms
+      agent, or partner of TradieMatch, and nothing in these terms
       creates an employment relationship. You're responsible for your
       own tax, ACC, insurance, and business obligations.`,
   },
@@ -73,7 +73,7 @@ const SECTIONS = [
   },
   {
     heading: "10. Limitation of liability",
-    body: `TradeMatch NZ is a marketplace that connects you with
+    body: `TradieMatch is a marketplace that connects you with
       homeowners — we are not a party to any agreement you make with a
       homeowner. We're not responsible for disputes between you and a
       homeowner, the outcome of any job, or payment issues arising

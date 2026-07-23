@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Professionalism On Site | TradeMatch NZ",
+  title: "Professionalism On Site | TradieMatch",
   description:
     "Punctuality, presentation, site conduct, and safety — the professionalism habits that build a NZ tradie's reputation faster than word of mouth alone.",
 };
@@ -200,7 +200,7 @@ export default function BeProfessionalPage() {
             href="/tradie-resources/build-your-profile"
             className="font-semibold text-navy-950 hover:underline"
           >
-            Related guide: Building a strong TradeMatch profile →
+            Related guide: Building a strong TradieMatch profile →
           </Link>
         </p>
 

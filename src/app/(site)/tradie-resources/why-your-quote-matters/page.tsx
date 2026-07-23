@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Why Your Quote Matters | Win More Jobs | TradeMatch NZ",
+  title: "Why Your Quote Matters | Win More Jobs | TradieMatch",
   description:
     "Why the quote you send a homeowner is often the deciding factor in whether you win the job — first impressions, trust, and how to stand out against other tradies.",
 };
@@ -50,7 +50,7 @@ export default function WhyYourQuoteMattersPage() {
             First impressions and trust
           </h2>
           <p className="mt-3 leading-relaxed text-ink-700">
-            A homeowner posting a job on TradeMatch NZ is often letting a
+            A homeowner posting a job on TradieMatch is often letting a
             stranger into their home for the first time. They&apos;re weighing
             up trust as much as price. A clear, professional quote — one
             that&apos;s easy to read, spells out exactly what you&apos;ll do, and

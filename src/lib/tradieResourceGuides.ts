@@ -54,7 +54,7 @@ export const TRADIE_RESOURCE_GUIDES: TradieResourceGuide[] = [
     href: "/tradie-resources/follow-up",
   },
   {
-    title: "Building a strong TradeMatch profile",
+    title: "Building a strong TradieMatch profile",
     description:
       "Photos, bio, qualifications, reviews, and verification status — how to stand out among tradies bidding the same job.",
     href: "/tradie-resources/build-your-profile",

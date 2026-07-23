@@ -4,7 +4,7 @@ import Link from "next/link";
 const CONTACT_EMAIL = "beaurichards01@gmail.com";
 
 export const metadata: Metadata = {
-  title: "Homeowner Terms and Conditions | TradeMatch NZ",
+  title: "Homeowner Terms and Conditions | TradieMatch",
   robots: { index: false, follow: false },
 };
 
@@ -12,7 +12,7 @@ const SECTIONS = [
   {
     heading: "1. Who this applies to",
     body: `These terms apply to you if you create a homeowner account on
-      TradeMatch NZ. By creating an account and posting a job, you agree
+      TradieMatch. By creating an account and posting a job, you agree
       to these terms.`,
   },
   {
@@ -54,7 +54,7 @@ const SECTIONS = [
   },
   {
     heading: "7. Limitation of liability",
-    body: `TradeMatch NZ is a marketplace that connects you with
+    body: `TradieMatch is a marketplace that connects you with
       tradies — we are not a party to any agreement you make with a
       tradie. We're not responsible for the quality, safety, or outcome
       of any work carried out, or for disputes between you and a

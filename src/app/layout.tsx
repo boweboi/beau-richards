@@ -10,7 +10,7 @@ import "@fontsource/ibm-plex-mono/500.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TradeMatch NZ | Find Trusted Kiwi Tradies",
+  title: "TradieMatch | Find Trusted Kiwi Tradies",
   description:
     "Post your home improvement job, compare quotes from verified New Zealand tradies, and hire with confidence.",
 };

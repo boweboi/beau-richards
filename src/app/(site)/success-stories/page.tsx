@@ -12,7 +12,7 @@ export default function SuccessStoriesPage() {
         </h1>
         <p className="mt-4 text-ink-700">
           We&apos;ll feature real tradies who&apos;ve grown their business
-          through TradeMatch NZ here — once there are jobs to tell stories
+          through TradieMatch here — once there are jobs to tell stories
           about. We&apos;d rather show you nothing than make something up.
         </p>
 

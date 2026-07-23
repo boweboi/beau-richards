@@ -31,7 +31,7 @@ export default async function NavBar() {
             TM
           </span>
           <span className="font-display text-lg font-semibold tracking-tight text-navy-950">
-            TradeMatch<span className="text-hivis-600"> NZ</span>
+            TradieMatch
           </span>
         </a>
 

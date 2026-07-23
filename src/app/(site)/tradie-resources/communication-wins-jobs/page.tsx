@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How Communication Wins Jobs | TradeMatch NZ",
+  title: "How Communication Wins Jobs | TradieMatch",
   description:
     "How clear, responsive communication with homeowners wins more jobs and turns one-off customers into repeat business and referrals for NZ tradies.",
 };

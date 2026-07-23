@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How to Write a Winning Quote | TradeMatch NZ",
+  title: "How to Write a Winning Quote | TradieMatch",
   description:
     "How to structure and price a quote that wins jobs for New Zealand tradies — what to include, what to leave out, and the mistakes that lose work.",
 };

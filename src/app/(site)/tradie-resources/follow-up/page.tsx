@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Why Follow-Up Matters | TradeMatch NZ",
+  title: "Why Follow-Up Matters | TradieMatch",
   description:
     "Why following up with homeowners after a quote wins more jobs, when to do it, and how to stay top of mind without being pushy.",
 };

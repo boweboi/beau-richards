@@ -3,13 +3,13 @@ const CONTACT_EMAIL = "beaurichards01@gmail.com";
 const SECTIONS = [
   {
     heading: "1. Who this applies to",
-    body: `These terms apply to anyone who creates an account on TradeMatch NZ,
+    body: `These terms apply to anyone who creates an account on TradieMatch,
       whether as a homeowner posting a job or a tradie browsing and responding
       to jobs. By creating an account, you agree to these terms.`,
   },
   {
-    heading: "2. What TradeMatch NZ is (and isn't)",
-    body: `TradeMatch NZ is a marketplace that connects homeowners with tradies.
+    heading: "2. What TradieMatch is (and isn't)",
+    body: `TradieMatch is a marketplace that connects homeowners with tradies.
       We are not a party to any agreement between a homeowner and a tradie,
       we don't employ tradies, and we don't guarantee the quality, licensing,
       or outcome of any work. Homeowners and tradies are responsible for
@@ -57,7 +57,7 @@ const SECTIONS = [
   },
   {
     heading: "9. Limitation of liability",
-    body: `TradeMatch NZ is provided "as is." To the extent permitted by law,
+    body: `TradieMatch is provided "as is." To the extent permitted by law,
       we're not liable for disputes, damages, or losses arising from
       interactions or work arranged between homeowners and tradies through
       the platform.`,

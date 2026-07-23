@@ -9,13 +9,13 @@ export default function AboutPage() {
           Built for Aotearoa homeowners &amp; tradies.
         </h1>
         <p className="mt-4 text-ink-700">
-          TradeMatch NZ connects homeowners across Aotearoa with trusted
+          TradieMatch connects homeowners across Aotearoa with trusted
           local tradies. Post a job for free, get quotes from verified
           tradies, and hire with confidence — no cold calls, no chasing
           callbacks, no guesswork on price.
         </p>
         <p className="mt-4 text-ink-700">
-          TradeMatch is built differently. We&apos;re not a subscription
+          TradieMatch is built differently. We&apos;re not a subscription
           service or a race to the bottom on price. We&apos;re an
           alternative built for tradies, fair flat-fee pricing, quality
           leads, and a platform designed around how you actually work.
