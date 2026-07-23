@@ -199,15 +199,6 @@ export default function TermsTradiePage() {
           ← Back to sign up
         </Link>
 
-        <div className="mt-6 rounded-xl border border-hivis-500/40 bg-hivis-500/10 p-4 text-sm text-navy-950">
-          <p className="font-semibold">Draft — not reviewed by a lawyer.</p>
-          <p className="mt-1 text-ink-700">
-            This is a plain-language starter template, not final legal
-            advice. It should be reviewed by a lawyer before the platform
-            takes real signups.
-          </p>
-        </div>
-
         <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
           Terms &amp; conditions
         </p>
