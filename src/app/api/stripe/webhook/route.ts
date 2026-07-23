@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     if (purchaseId) {
       const admin = createAdminClient();
-      await admin
+      const { data: updatedPurchase } = await admin
         .from("lead_purchases")
         .update({
           status: "paid",
@@ -43,7 +43,55 @@ export async function POST(request: NextRequest) {
             typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id,
         })
         .eq("id", purchaseId)
-        .eq("stripe_checkout_session_id", session.id);
+        .eq("stripe_checkout_session_id", session.id)
+        .select("id, job_id, tradie_id, amount_cents")
+        .single();
+
+      // Receipt email is a nice-to-have, not part of the payment flow — the
+      // purchase is already marked paid above, so any failure here (a
+      // lookup miss, a Resend error) must never affect the webhook's
+      // response to Stripe.
+      if (updatedPurchase) {
+        try {
+          const [{ data: job }, { data: tradieProfile }] = await Promise.all([
+            admin
+              .from("jobs")
+              .select("title, category, region, town")
+              .eq("id", updatedPurchase.job_id)
+              .single(),
+            admin
+              .from("profiles")
+              .select("full_name, email")
+              .eq("id", updatedPurchase.tradie_id)
+              .single(),
+          ]);
+
+          if (job && tradieProfile) {
+            const receiptNumber = `TM-${updatedPurchase.id.slice(0, 8).toUpperCase()}`;
+
+            const res = await fetch(`${request.nextUrl.origin}/api/emails/send-lead-receipt`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: tradieProfile.email,
+                tradieName: tradieProfile.full_name,
+                receiptNumber,
+                jobTitle: job.title,
+                category: job.category,
+                location: `${job.town}, ${job.region}`,
+                price: updatedPurchase.amount_cents / 100,
+              }),
+            });
+
+            if (!res.ok) {
+              const body = await res.json().catch(() => ({}));
+              console.error("Failed to send lead receipt email:", body.error ?? res.statusText);
+            }
+          }
+        } catch (err) {
+          console.error("Failed to send lead receipt email:", err);
+        }
+      }
     }
   }
 

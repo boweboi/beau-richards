@@ -35,8 +35,9 @@ function truncate(text: string, max = 140) {
 export default function JobAlertEmail({
   tradieName = "there",
   jobs,
-  siteUrl = process.env.NEXT_PUBLIC_SITE_URL,
-  preferencesUrl = `${siteUrl}/settings/alerts`,
+  // Placeholder — there's no /settings/alerts page in the app yet. Swap
+  // this default for a real preferences URL once one exists.
+  preferencesUrl = "#",
 }: JobAlertEmailProps) {
   const previewText = `${jobs.length} new job${
     jobs.length === 1 ? "" : "s"

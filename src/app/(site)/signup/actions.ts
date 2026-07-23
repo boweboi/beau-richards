@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { TRADE_CATEGORIES } from "@/lib/tradeCategories";
 import { parseAreaPairs, isValidAreaPair } from "@/lib/serviceAreas";
@@ -89,6 +90,29 @@ export async function signup(
       error:
         "Your account was created, but we couldn't set up your profile. Please contact support.",
     };
+  }
+
+  // Welcome email is a nice-to-have, not a signup blocker — the account is
+  // already created and committed above, so a failure here must never
+  // surface to the user or stop the rest of signup.
+  try {
+    const requestHeaders = await headers();
+    const host = requestHeaders.get("host");
+    const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
+    const origin = `${protocol}://${host}`;
+
+    const res = await fetch(`${origin}/api/emails/send-welcome`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, firstName: fullName.trim().split(" ")[0], role }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      console.error("Failed to send welcome email:", body.error ?? res.statusText);
+    }
+  } catch (err) {
+    console.error("Failed to send welcome email:", err);
   }
 
   if (role === "tradie") {

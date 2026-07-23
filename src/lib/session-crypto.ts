@@ -74,3 +74,65 @@ export async function verifySignedSessionValue(value: string | undefined | null)
   const expected = await sign(nonce);
   return timingSafeEqual(expected, signature);
 }
+
+// Same HMAC machinery as above, generalised to sign an arbitrary JSON
+// payload (e.g. an email address) with an expiry, for one-off links like
+// email unsubscribe tokens rather than cookie-backed sessions.
+
+function toBase64Url(bytes: Uint8Array): string {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(value: string): Uint8Array {
+  const base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+  return Uint8Array.from(atob(padded), (c) => c.charCodeAt(0));
+}
+
+interface EmailTokenPayload {
+  email: string;
+  exp: number; // unix seconds
+}
+
+/** Creates a signed, time-limited token embedding an email address (e.g. for an unsubscribe link). */
+export async function createSignedEmailToken(
+  email: string,
+  expiresInSeconds: number
+): Promise<string> {
+  const payload: EmailTokenPayload = {
+    email,
+    exp: Math.floor(Date.now() / 1000) + expiresInSeconds,
+  };
+  const encodedPayload = toBase64Url(encoder.encode(JSON.stringify(payload)));
+  const signature = await sign(encodedPayload);
+  return `${encodedPayload}.${signature}`;
+}
+
+/**
+ * Verifies a signed email token. Returns the embedded email address if the
+ * signature checks out and it hasn't expired, otherwise null.
+ */
+export async function verifySignedEmailToken(
+  token: string | undefined | null
+): Promise<string | null> {
+  if (!token) return null;
+  const [encodedPayload, signature] = token.split(".");
+  if (!encodedPayload || !signature) return null;
+
+  const expected = await sign(encodedPayload);
+  if (!timingSafeEqual(expected, signature)) return null;
+
+  let payload: EmailTokenPayload;
+  try {
+    payload = JSON.parse(new TextDecoder().decode(fromBase64Url(encodedPayload)));
+  } catch {
+    return null;
+  }
+
+  if (typeof payload.email !== "string" || typeof payload.exp !== "number") return null;
+  if (Math.floor(Date.now() / 1000) > payload.exp) return null;
+
+  return payload.email;
+}

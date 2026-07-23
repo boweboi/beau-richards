@@ -30,7 +30,7 @@ const roleCopy = {
     intro:
       "TradieMatch connects you with verified local tradies who are ready to quote on your job. Post the details once, and tradies in your area will reach out directly.",
     cta: "Post your first job",
-    ctaPath: "/jobs/new",
+    ctaPath: "/post-a-job",
   },
 };
 
@@ -38,7 +38,9 @@ export default function WelcomeEmail({
   firstName = "there",
   role = "homeowner",
   siteUrl = process.env.NEXT_PUBLIC_SITE_URL,
-  unsubscribeUrl = `${siteUrl}/unsubscribe`,
+  // Placeholder — there's no /unsubscribe page in the app yet. Swap this
+  // default for a real unsubscribe URL once one exists.
+  unsubscribeUrl = "#",
 }: WelcomeEmailProps) {
   const copy = roleCopy[role];
 

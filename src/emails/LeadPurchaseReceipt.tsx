@@ -13,18 +13,13 @@ import {
   Text,
 } from "@react-email/components";
 
-export interface PurchasedTradie {
-  name: string;
-  category: string;
-  rating: number;
-}
-
 export interface LeadPurchaseReceiptProps {
-  homeownerName: string;
+  tradieName: string;
   receiptNumber: string;
   jobTitle: string;
-  tradies: PurchasedTradie[];
-  pricePerTradie?: number;
+  category: string;
+  location: string;
+  price?: number;
   estimatedResponseTime?: string;
   siteUrl?: string;
   dashboardUrl?: string;
@@ -37,25 +32,20 @@ function formatNzd(amount: number) {
   }).format(amount);
 }
 
-function starString(rating: number) {
-  const full = Math.round(rating);
-  return "★".repeat(Math.min(full, 5)) + "☆".repeat(Math.max(5 - full, 0));
-}
-
 export default function LeadPurchaseReceipt({
-  homeownerName = "there",
+  tradieName = "there",
   receiptNumber,
   jobTitle,
-  tradies,
-  pricePerTradie = 20,
+  category,
+  location,
+  price = 20,
   estimatedResponseTime = "within 24 hours",
   siteUrl = process.env.NEXT_PUBLIC_SITE_URL,
   dashboardUrl = `${siteUrl}/dashboard`,
 }: LeadPurchaseReceiptProps) {
-  const totalCost = pricePerTradie * tradies.length;
-  const previewText = `Receipt ${receiptNumber}: ${tradies.length} tradie${
-    tradies.length === 1 ? "" : "s"
-  } contacted for "${jobTitle}"`;
+  const previewText = `Receipt ${receiptNumber}: you unlocked "${jobTitle}" for ${formatNzd(
+    price
+  )}`;
 
   return (
     <Html>
@@ -71,8 +61,8 @@ export default function LeadPurchaseReceipt({
           <Section style={styles.content}>
             <Heading style={styles.heading}>Lead purchase receipt</Heading>
             <Text style={styles.paragraph}>
-              Hi {homeownerName}, here&apos;s your receipt for the tradies you
-              contacted about your job.
+              Hi {tradieName}, you&apos;ve successfully unlocked the contact
+              details for this job.
             </Text>
 
             <Section style={styles.card}>
@@ -90,50 +80,24 @@ export default function LeadPurchaseReceipt({
               </Row>
               <Row>
                 <Column>
-                  <Text style={styles.cardLabel}>Tradies contacted</Text>
-                  <Text style={styles.cardValue}>{tradies.length}</Text>
+                  <Text style={styles.cardLabel}>Category</Text>
+                  <Text style={styles.cardValue}>{category}</Text>
                 </Column>
                 <Column>
-                  <Text style={styles.cardLabel}>Price per tradie</Text>
-                  <Text style={styles.cardValue}>
-                    {formatNzd(pricePerTradie)}
-                  </Text>
+                  <Text style={styles.cardLabel}>Location</Text>
+                  <Text style={styles.cardValue}>{location}</Text>
                 </Column>
               </Row>
               <Hr style={styles.cardHr} />
               <Row>
                 <Column>
-                  <Text style={styles.totalLabel}>Total charged</Text>
+                  <Text style={styles.totalLabel}>Amount charged</Text>
                 </Column>
                 <Column align="right">
-                  <Text style={styles.totalValue}>
-                    {formatNzd(totalCost)}
-                  </Text>
+                  <Text style={styles.totalValue}>{formatNzd(price)}</Text>
                 </Column>
               </Row>
             </Section>
-
-            <Text style={styles.sectionTitle}>Tradies contacted</Text>
-            {tradies.map((tradie, i) => (
-              <Section key={i} style={styles.tradieRow}>
-                <Row>
-                  <Column>
-                    <Text style={styles.tradieName}>{tradie.name}</Text>
-                    <Text style={styles.tradieCategory}>
-                      {tradie.category}
-                    </Text>
-                  </Column>
-                  <Column align="right">
-                    <Text style={styles.tradieRating}>
-                      {starString(tradie.rating)}{" "}
-                      <span style={styles.tradieRatingNumber}>
-                        {tradie.rating.toFixed(1)}
-                      </span>
-                    </Text>
-                  </Column>
-                </Row>
-              </Section>
-            ))}
 
             <Text style={styles.responseNote}>
               Estimated response time: {estimatedResponseTime}
@@ -146,9 +110,10 @@ export default function LeadPurchaseReceipt({
             <Hr style={styles.hr} />
 
             <Text style={styles.footer}>
-              This charge is final and non-refundable, including if a tradie
-              doesn&apos;t respond. Questions about this charge? Reply to
-              this email or contact support@tradiematch.co.nz.
+              This charge is final and non-refundable, including if the
+              homeowner doesn&apos;t respond or has already hired another
+              tradie. Questions about this charge? Reply to this email or
+              contact support@tradiematch.co.nz.
             </Text>
           </Section>
         </Container>
@@ -158,15 +123,12 @@ export default function LeadPurchaseReceipt({
 }
 
 LeadPurchaseReceipt.PreviewProps = {
-  homeownerName: "Alex",
+  tradieName: "Mike",
   receiptNumber: "TM-10482",
   jobTitle: "Leaky kitchen tap replacement",
-  tradies: [
-    { name: "Mike's Plumbing", category: "Plumber", rating: 4.8 },
-    { name: "Rangi Waters Ltd", category: "Plumber", rating: 4.5 },
-    { name: "QuickFix Plumbing", category: "Plumber", rating: 4.2 },
-  ],
-  pricePerTradie: 20,
+  category: "Plumbing",
+  location: "Ponsonby, Auckland",
+  price: 20,
   estimatedResponseTime: "within 24 hours",
 } as LeadPurchaseReceiptProps;
 
@@ -261,43 +223,10 @@ const styles = {
     margin: 0,
     textAlign: "right" as const,
   },
-  sectionTitle: {
-    color: "#0b2035",
-    fontSize: "13px",
-    fontWeight: 700,
-    letterSpacing: "0.05em",
-    margin: "0 0 8px",
-    textTransform: "uppercase" as const,
-  },
-  tradieRow: {
-    borderBottom: "1px solid #eef2f5",
-    padding: "10px 0",
-  },
-  tradieName: {
-    color: "#0b2035",
-    fontSize: "14px",
-    fontWeight: 600,
-    margin: 0,
-  },
-  tradieCategory: {
-    color: "#5c7286",
-    fontSize: "13px",
-    margin: "2px 0 0",
-  },
-  tradieRating: {
-    color: "#e35a0a",
-    fontSize: "14px",
-    margin: 0,
-    textAlign: "right" as const,
-  },
-  tradieRatingNumber: {
-    color: "#5c7286",
-    fontSize: "12px",
-  },
   responseNote: {
     color: "#33475a",
     fontSize: "13px",
-    margin: "16px 0 24px",
+    margin: "0 0 24px",
   },
   button: {
     backgroundColor: "#ff6a13",
