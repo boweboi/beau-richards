@@ -1,4 +1,4 @@
-const CONTACT_EMAIL = "support@tradematchnz.co.nz";
+const CONTACT_EMAIL = "support@tradiematch.co.nz";
 
 export default function ContactPage() {
   return (
