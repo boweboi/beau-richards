@@ -48,7 +48,7 @@ const SECTIONS: Section[] = [
     body: [
       "4.1 Your contact details (phone, email, address) are private and only revealed to tradies who have paid to access them.",
       "4.2 Tradies who purchase access to your details agree to use that information solely to discuss and quote on the job you posted. Misuse of your contact details may result in their account suspension.",
-      "4.3 We collect and store your information in accordance with the Privacy Act 2020. See our Privacy Policy for full details.",
+      "4.3 We collect and store your information in accordance with the Privacy Act 2020. See our Privacy Policy (/privacy-policy) for full details.",
     ],
   },
   {
