@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
 import PurchaseLeadButton from "@/components/PurchaseLeadButton";
 
 function formatPostedAt(createdAt: string) {
@@ -44,6 +45,24 @@ export default async function JobDetailPage({
   const { date, time } = formatPostedAt(job.created_at);
 
   const isOwner = job.homeowner_id === user.id;
+
+  const criteria = await getTradieMatchCriteria(supabase, user.id);
+  const isMatchingCategory = criteria.categories.includes(job.category);
+  const isMatchingRegion = criteria.regions.includes(job.region);
+
+  // Only warn once the tradie actually has categories/areas set up —
+  // with nothing set up yet, every job would "mismatch" and the banner
+  // would show unconditionally, which isn't useful signal.
+  let outsideMatchMessage: string | null = null;
+  if (criteria.hasSetup && (!isMatchingCategory || !isMatchingRegion)) {
+    if (!isMatchingCategory && !isMatchingRegion) {
+      outsideMatchMessage = `This job is ${job.category} work in ${job.region}, outside both your trade categories and your service areas. You can still buy this lead, but it's outside your registered trades and regions.`;
+    } else if (!isMatchingCategory) {
+      outsideMatchMessage = `This job is ${job.category} work, outside your trade categories. You can still buy this lead, but it's outside your registered trades.`;
+    } else {
+      outsideMatchMessage = `This job is in ${job.region}, outside your service areas. You can still buy this lead, but you'll be working outside your registered regions.`;
+    }
+  }
 
   const admin = createAdminClient();
 
@@ -131,6 +150,11 @@ export default async function JobDetailPage({
                 <p className="text-sm text-ink-700">
                   Contact details available after purchasing this lead.
                 </p>
+                {outsideMatchMessage && (
+                  <p className="mt-3 rounded-md bg-hivis-500/10 px-4 py-3 text-sm text-navy-950">
+                    {outsideMatchMessage}
+                  </p>
+                )}
                 <PurchaseLeadButton jobId={id} />
               </dd>
             )}
