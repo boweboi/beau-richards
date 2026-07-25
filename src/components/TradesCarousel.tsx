@@ -19,7 +19,7 @@ export default function TradesCarousel() {
   return (
     <section className="border-b border-line bg-paper-0 py-3 sm:py-4">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4">
-        <h2 className="shrink-0 whitespace-nowrap font-display text-base font-semibold text-hivis-600 sm:text-lg">
+        <h2 className="shrink-0 whitespace-nowrap font-display text-base font-semibold text-navy-950 sm:text-lg">
           Verified Trades
         </h2>
 
