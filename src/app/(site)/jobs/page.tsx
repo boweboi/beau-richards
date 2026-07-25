@@ -5,8 +5,19 @@ import { groupJobsByRegion, type Job, type RegionGroup } from "@/lib/groupJobsBy
 import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
 import regionsData from "@/nz-regions.json";
 import SaveJobButton from "./SaveJobButton";
+import Pagination, { buildJobsUrl } from "./Pagination";
 
 type Tab = "matching" | "all";
+
+const PAGE_SIZE = 10;
+
+// "Garbage in" guard — missing, non-numeric, or sub-1 values all default
+// to page 1 rather than producing a broken range() call.
+function sanitizePage(value: string | undefined): number {
+  const parsed = parseInt(value ?? "", 10);
+  if (!Number.isInteger(parsed) || parsed < 1) return 1;
+  return parsed;
+}
 
 function formatPostedAt(createdAt: string) {
   const date = new Date(createdAt);
@@ -84,10 +95,29 @@ function JobGroups({
 export default async function JobsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; tab?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    tab?: string;
+    matchingPage?: string;
+    allPage?: string;
+  }>;
 }) {
-  const { category, tab: tabParam } = await searchParams;
+  const {
+    category,
+    tab: tabParam,
+    matchingPage: matchingPageParam,
+    allPage: allPageParam,
+  } = await searchParams;
   const tab: Tab = tabParam === "all" ? "all" : "matching";
+
+  const matchingPage = sanitizePage(matchingPageParam);
+  const allPage = sanitizePage(allPageParam);
+  // Only the active tab's page actually gets clamped against a real
+  // totalPages below (that's the only tab whose query runs) — the other
+  // tab's sanitized value just passes through untouched so it round-trips
+  // in links until the user switches to it.
+  let matchingPageClamped = matchingPage;
+  let allPageClamped = allPage;
 
   const supabase = await createClient();
   const {
@@ -144,15 +174,40 @@ export default async function JobsPage({
   }
 
   let jobs: Job[] = [];
+  let matchingTotalPages = 1;
+  let allTotalPages = 1;
+
   if (tab === "matching") {
     if (hasSetup) {
+      // Count first, with the same filters but no range — that's what the
+      // clamp below needs before we can build a valid range() for the
+      // actual fetch.
+      let countQuery = supabase
+        .from("jobs")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "open")
+        .in("category", categories)
+        .in("region", regions);
+
+      if (category) {
+        countQuery = countQuery.eq("category", category);
+      }
+
+      const { count } = await countQuery;
+      matchingTotalPages = Math.max(1, Math.ceil((count ?? 0) / PAGE_SIZE));
+      matchingPageClamped = matchingPage > matchingTotalPages ? matchingTotalPages : matchingPage;
+
+      const from = (matchingPageClamped - 1) * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+
       let query = supabase
         .from("jobs")
-        .select("id, title, description, region, town, created_at")
+        .select("id, title, description, region, town, created_at", { count: "exact" })
         .eq("status", "open")
         .in("category", categories)
         .in("region", regions)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .range(from, to);
 
       if (category) {
         query = query.eq("category", category);
@@ -165,11 +220,28 @@ export default async function JobsPage({
     // "All jobs" — deliberately unfiltered by category/region. ?category=
     // still applies here (unlike region), since the whole point of this
     // tab is letting a tradie see work outside their usual area.
+    let countQuery = supabase
+      .from("jobs")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "open");
+
+    if (category) {
+      countQuery = countQuery.eq("category", category);
+    }
+
+    const { count } = await countQuery;
+    allTotalPages = Math.max(1, Math.ceil((count ?? 0) / PAGE_SIZE));
+    allPageClamped = allPage > allTotalPages ? allTotalPages : allPage;
+
+    const from = (allPageClamped - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
     let query = supabase
       .from("jobs")
-      .select("id, title, description, region, town, created_at")
+      .select("id, title, description, region, town, created_at", { count: "exact" })
       .eq("status", "open")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(from, to);
 
     if (category) {
       query = query.eq("category", category);
@@ -184,7 +256,14 @@ export default async function JobsPage({
   const heading =
     tab === "all" ? "All open jobs" : category ? `${category} jobs` : "Jobs matching your trade";
 
-  const clearFilterHref = tab === "all" ? "/jobs?tab=all" : "/jobs";
+  const otherParams = {
+    tab,
+    category,
+    matchingPage: matchingPageClamped,
+    allPage: allPageClamped,
+  };
+
+  const clearFilterHref = buildJobsUrl({ ...otherParams, category: undefined });
 
   return (
     <main className="min-h-screen bg-paper-0 px-4 py-12 sm:py-16">
@@ -200,7 +279,7 @@ export default async function JobsPage({
 
         <div className="mt-4 flex items-center justify-center gap-1 text-sm">
           <Link
-            href="/jobs?tab=matching"
+            href={buildJobsUrl({ ...otherParams, tab: "matching" })}
             className={`rounded-md px-3 py-1.5 font-medium transition ${
               tab === "matching" ? "bg-navy-950 text-white" : "text-ink-700 hover:bg-navy-950/5"
             }`}
@@ -208,7 +287,7 @@ export default async function JobsPage({
             Matching jobs
           </Link>
           <Link
-            href="/jobs?tab=all"
+            href={buildJobsUrl({ ...otherParams, tab: "all" })}
             className={`rounded-md px-3 py-1.5 font-medium transition ${
               tab === "all" ? "bg-navy-950 text-white" : "text-ink-700 hover:bg-navy-950/5"
             }`}
@@ -247,12 +326,29 @@ export default async function JobsPage({
               : "No jobs posted yet — check back soon."}
           </p>
         ) : (
-          <JobGroups
-            groups={groups}
-            savedJobIds={savedJobIds}
-            purchasedJobIds={purchasedJobIds}
-            showSaveButton={tab === "matching"}
-          />
+          <>
+            <JobGroups
+              groups={groups}
+              savedJobIds={savedJobIds}
+              purchasedJobIds={purchasedJobIds}
+              showSaveButton={tab === "matching"}
+            />
+            {tab === "matching" ? (
+              <Pagination
+                page={matchingPageClamped}
+                totalPages={matchingTotalPages}
+                paramName="matchingPage"
+                otherParams={otherParams}
+              />
+            ) : (
+              <Pagination
+                page={allPageClamped}
+                totalPages={allTotalPages}
+                paramName="allPage"
+                otherParams={otherParams}
+              />
+            )}
+          </>
         )}
       </div>
     </main>
