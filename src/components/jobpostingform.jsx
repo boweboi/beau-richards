@@ -16,9 +16,15 @@ const EMPTY_JOB_FIELDS = {
   timeframe: '',
 };
 
-export default function JobPostingForm({ initialName = '', initialEmail = '', initialPhone = '' }) {
+export default function JobPostingForm({
+  initialName = '',
+  initialEmail = '',
+  initialPhone = '',
+  initialCategory = '',
+}) {
   const [form, setForm] = useState({
     ...EMPTY_JOB_FIELDS,
+    category: initialCategory,
     name: initialName,
     email: initialEmail,
     phone: initialPhone,

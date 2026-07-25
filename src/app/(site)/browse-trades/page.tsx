@@ -17,7 +17,7 @@ export default function BrowseTradesPage() {
         {TRADE_CATEGORIES.map((category) => (
           <Link
             key={category}
-            href={`/jobs?category=${encodeURIComponent(category)}`}
+            href={`/post-a-job?category=${encodeURIComponent(category)}`}
             className="rounded-xl border border-line bg-white p-4 text-center text-sm font-medium text-navy-950 shadow-sm transition hover:border-hivis-500"
           >
             {category}

@@ -2,7 +2,13 @@
 import { createClient } from "@/lib/supabase/server";
 import JobPostingForm from "@/components/jobpostingform.jsx";
 
-export default async function PostAJobPage() {
+export default async function PostAJobPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -39,6 +45,7 @@ export default async function PostAJobPage() {
         initialName={profile?.full_name ?? ""}
         initialEmail={profile?.email ?? ""}
         initialPhone={profile?.phone ?? ""}
+        initialCategory={category ?? ""}
       />
     </main>
   );
