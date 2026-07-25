@@ -93,3 +93,22 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* TradesCarousel: the track renders its trade-name list twice back-to-back;
+   starting at 0 and animating to -50% moves the track leftward (new items
+   enter from the right, exit on the left — right-to-left scroll), landing
+   exactly on the seam between the two copies with no visible jump.
+   Neutralised by the reduced-motion block above since it's a real
+   animation, not JS-driven scrolling. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
