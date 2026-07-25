@@ -5,7 +5,7 @@ const CONTACT_EMAIL = "support@tradiematch.co.nz";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | TradieMatch",
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
 };
 
 type SectionBlock = string | string[];
