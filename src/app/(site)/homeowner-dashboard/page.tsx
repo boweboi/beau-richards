@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import CompleteProfileSection from "./CompleteProfileSection";
@@ -77,6 +78,11 @@ export default async function HomeownerDashboardPage() {
         <h1 className="mt-3 font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
           Your dashboard
         </h1>
+        <p className="mt-2">
+          <Link href="/account/edit" className="text-sm font-medium text-navy-950 hover:underline">
+            Edit profile →
+          </Link>
+        </p>
 
         <section className="mt-10">
           {hasProfile ? (
