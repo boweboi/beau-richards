@@ -36,6 +36,15 @@ export default function TermsCheckbox({
           className="font-medium text-navy-950 underline hover:no-underline"
         >
           {label}
+        </a>{" "}
+        and{" "}
+        <a
+          href="/privacy-policy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-navy-950 underline hover:no-underline"
+        >
+          Privacy Policy
         </a>
       </span>
     </div>
