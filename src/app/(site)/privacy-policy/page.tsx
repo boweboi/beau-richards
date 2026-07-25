@@ -53,6 +53,7 @@ const SECTIONS: Section[] = [
         "Supabase — hosts our database and handles account authentication",
         "Stripe — processes lead purchase payments; we never see your full card details",
         "Resend — delivers the transactional emails described in section 3.3",
+        "Vercel — hosts the Platform and processes data in transit",
       ],
       "4.3 We may disclose information where required by law, or to protect the rights, property, or safety of TradieMatch, our users, or the public.",
     ],
@@ -102,7 +103,7 @@ const SECTIONS: Section[] = [
   {
     heading: "11. International data transfers",
     body: [
-      "Some of our service providers (including Supabase, Stripe, and Resend) may store or process data on servers located outside New Zealand. Where this happens, we rely on those providers' own security and privacy safeguards to protect your information.",
+      "Some of our service providers (including Supabase, Stripe, Resend, and Vercel) may store or process data on servers located outside New Zealand. Where this happens, we rely on those providers' own security and privacy safeguards to protect your information.",
     ],
   },
   {
