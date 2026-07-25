@@ -6,18 +6,22 @@ import { createJob } from '@/app/(site)/post-a-job/actions';
 import { TRADE_CATEGORIES } from '@/lib/tradeCategories';
 import { TIMEFRAMES } from '@/lib/timeframes';
 
-export default function JobPostingForm() {
+const EMPTY_JOB_FIELDS = {
+  title: '',
+  category: '',
+  region: '',
+  town: '',
+  description: '',
+  budget: '',
+  timeframe: '',
+};
+
+export default function JobPostingForm({ initialName = '', initialEmail = '', initialPhone = '' }) {
   const [form, setForm] = useState({
-    title: '',
-    category: '',
-    region: '',
-    town: '',
-    description: '',
-    budget: '',
-    timeframe: '',
-    name: '',
-    email: '',
-    phone: '',
+    ...EMPTY_JOB_FIELDS,
+    name: initialName,
+    email: initialEmail,
+    phone: initialPhone,
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -65,7 +69,7 @@ export default function JobPostingForm() {
         </p>
         <button
           onClick={() => {
-            setForm({ title: '', category: '', region: '', town: '', description: '', budget: '', timeframe: '', name: '', email: '', phone: '' });
+            setForm((prev) => ({ ...EMPTY_JOB_FIELDS, name: prev.name, email: prev.email, phone: prev.phone }));
             setSubmitted(false);
             setTermsAccepted(false);
           }}

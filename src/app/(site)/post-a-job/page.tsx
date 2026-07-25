@@ -14,7 +14,7 @@ export default async function PostAJobPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, address, region, town")
+    .select("role, address, region, town, full_name, email, phone")
     .eq("id", user.id)
     .single();
 
@@ -35,7 +35,11 @@ export default async function PostAJobPage() {
           Tell us what you need done and get connected with verified Kiwi tradies in your area.
         </p>
       </div>
-      <JobPostingForm />
+      <JobPostingForm
+        initialName={profile?.full_name ?? ""}
+        initialEmail={profile?.email ?? ""}
+        initialPhone={profile?.phone ?? ""}
+      />
     </main>
   );
 }
