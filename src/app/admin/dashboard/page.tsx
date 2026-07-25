@@ -113,6 +113,12 @@ export default function AdminDashboardPage() {
             Homeowners
           </a>
           <a
+            href="/admin/site-stats"
+            className="text-sm font-medium text-ink-700 hover:text-navy-950"
+          >
+            Site stats
+          </a>
+          <a
             href="/"
             target="_blank"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"

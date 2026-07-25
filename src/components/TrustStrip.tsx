@@ -1,20 +1,34 @@
-const stats = [
-  { value: "12,400+", label: "jobs posted this year" },
-  { value: "4,800+", label: "verified tradies on site" },
-  { value: "3 hrs", label: "average time to first quote" },
-];
+export type TrustStripStats = {
+  verified_tradies: number;
+  jobs_completed: number;
+  average_quote_hours: number;
+};
 
-export default function TrustStrip() {
+function formatCount(value: number) {
+  return `${value.toLocaleString("en-NZ")}+`;
+}
+
+function formatHours(value: number) {
+  return `${value % 1 === 0 ? value : value.toFixed(1)} hrs`;
+}
+
+export default function TrustStrip({ stats }: { stats: TrustStripStats }) {
+  const items = [
+    { value: formatCount(stats.jobs_completed), label: "jobs completed" },
+    { value: formatCount(stats.verified_tradies), label: "verified tradies on site" },
+    { value: formatHours(stats.average_quote_hours), label: "average time to first quote" },
+  ];
+
   return (
     <section className="border-b border-line bg-paper-0">
       <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-line px-6 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
-        {stats.map((stat) => (
-          <div key={stat.label} className="flex items-center gap-4 py-6 sm:justify-center sm:py-8">
+        {items.map((item) => (
+          <div key={item.label} className="flex items-center gap-4 py-6 sm:justify-center sm:py-8">
             <span className="font-mono text-2xl font-medium text-navy-900 sm:text-3xl">
-              {stat.value}
+              {item.value}
             </span>
             <span className="max-w-[10rem] text-sm text-ink-500">
-              {stat.label}
+              {item.label}
             </span>
           </div>
         ))}
