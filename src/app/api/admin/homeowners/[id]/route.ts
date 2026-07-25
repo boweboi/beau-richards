@@ -2,24 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-// Only these columns can be written through this endpoint — keeps the
-// admin panel from being able to overwrite unrelated profile fields
-// (role, email, full_name, etc.) via a crafted request body.
-const EDITABLE_FIELDS = [
-  "trade_type",
-  "phone",
-  "phone_verified",
-  "email_verified",
-  "nzbn",
-  "nzbn_verified",
-  "lbp_number",
-  "has_level4_qualification",
-  "qualifications_checked",
-  "deactivated",
-] as const;
-
-type EditableField = (typeof EDITABLE_FIELDS)[number];
-
+// Only "deactivated" can be written through this endpoint — mirrors the
+// tradie endpoint's allowlist pattern, keeps the admin panel from being
+// able to overwrite unrelated profile fields via a crafted request body.
 export async function PATCH(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -31,23 +16,16 @@ export async function PATCH(
   const { id } = await context.params;
   const body = (await request.json()) as Record<string, unknown>;
 
-  const updates: Partial<Record<EditableField, unknown>> = {};
-  for (const field of EDITABLE_FIELDS) {
-    if (field in body) {
-      updates[field] = body[field];
-    }
-  }
-
-  if (Object.keys(updates).length === 0) {
+  if (!("deactivated" in body)) {
     return NextResponse.json({ error: "No editable fields provided." }, { status: 400 });
   }
 
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("profiles")
-    .update(updates)
+    .update({ deactivated: body.deactivated })
     .eq("id", id)
-    .eq("role", "tradie");
+    .eq("role", "homeowner");
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

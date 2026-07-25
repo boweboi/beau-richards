@@ -104,7 +104,13 @@ export default function AdminDashboardPage() {
             href="/admin/tradies"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
-            Tradie verification
+            Tradies
+          </a>
+          <a
+            href="/admin/homeowners"
+            className="text-sm font-medium text-ink-700 hover:text-navy-950"
+          >
+            Homeowners
           </a>
           <a
             href="/"

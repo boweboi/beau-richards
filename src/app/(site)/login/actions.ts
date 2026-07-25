@@ -31,9 +31,14 @@ export async function login(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, deactivated")
     .eq("id", user.id)
     .single();
+
+  if (profile?.deactivated) {
+    await supabase.auth.signOut();
+    return { error: "This account has been deactivated. Contact support." };
+  }
 
   if (profile?.role === "tradie") {
     redirect("/tradie-dashboard");

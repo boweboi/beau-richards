@@ -5,6 +5,9 @@ import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
 import WatchlistSection, { type WatchlistRow } from "./WatchlistSection";
 import PurchasedLeadsList, { type PurchaseRow } from "./PurchasedLeadsList";
 import PortfolioSection, { type PortfolioPhotoRow } from "./PortfolioSection";
+import QualificationDocumentsSection, {
+  type QualificationDocumentRow,
+} from "./QualificationDocumentsSection";
 import ResourceLinksSection from "./ResourceLinksSection";
 import CompleteProfileSection from "./CompleteProfileSection";
 
@@ -28,31 +31,42 @@ export default async function TradieDashboardPage() {
     redirect("/account");
   }
 
-  const [criteria, { data: watchlistRows }, { data: purchaseRows }, { data: photoRows }] =
-    await Promise.all([
-      getTradieMatchCriteria(supabase, user.id),
-      supabase
-        .from("tradie_watchlist")
-        .select("id, job_id, created_at, jobs(title, description, category, region, town, timeframe, created_at)")
-        .eq("tradie_id", user.id)
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("lead_purchases")
-        .select("id, job_id, amount_cents, engagement_status, paid_at, jobs(title, region, town)")
-        .eq("tradie_id", user.id)
-        .eq("status", "paid")
-        .order("paid_at", { ascending: false }),
-      supabase
-        .from("tradie_portfolio_photos")
-        .select("id, storage_path, caption, photo_type, created_at")
-        .eq("tradie_id", user.id)
-        .order("created_at", { ascending: false }),
-    ]);
+  const [
+    criteria,
+    { data: watchlistRows },
+    { data: purchaseRows },
+    { data: photoRows },
+    { data: documentRows },
+  ] = await Promise.all([
+    getTradieMatchCriteria(supabase, user.id),
+    supabase
+      .from("tradie_watchlist")
+      .select("id, job_id, created_at, jobs(title, description, category, region, town, timeframe, created_at)")
+      .eq("tradie_id", user.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("lead_purchases")
+      .select("id, job_id, amount_cents, engagement_status, paid_at, jobs(title, region, town)")
+      .eq("tradie_id", user.id)
+      .eq("status", "paid")
+      .order("paid_at", { ascending: false }),
+    supabase
+      .from("tradie_portfolio_photos")
+      .select("id, storage_path, caption, photo_type, created_at")
+      .eq("tradie_id", user.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("tradie_qualification_documents")
+      .select("id, storage_path, file_name, created_at")
+      .eq("tradie_id", user.id)
+      .order("created_at", { ascending: false }),
+  ]);
 
   const { categories, areas, hasSetup } = criteria;
   const watchlist = (watchlistRows ?? []) as unknown as WatchlistRow[];
   const purchases = (purchaseRows ?? []) as unknown as PurchaseRow[];
   const photos = (photoRows ?? []) as PortfolioPhotoRow[];
+  const documents = (documentRows ?? []) as QualificationDocumentRow[];
 
   return (
     <main className="min-h-screen bg-paper-0 px-4 py-12 sm:py-16">
@@ -104,6 +118,10 @@ export default async function TradieDashboardPage() {
 
         <section className="mt-14 border-t border-line pt-10">
           <PortfolioSection photos={photos} />
+        </section>
+
+        <section className="mt-14 border-t border-line pt-10">
+          <QualificationDocumentsSection documents={documents} />
         </section>
 
         <section className="mt-14 border-t border-line pt-10">

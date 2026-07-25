@@ -199,3 +199,55 @@ export async function deletePortfolioPhoto(photoId: string, storagePath: string)
 
   revalidatePath("/tradie-dashboard");
 }
+
+export type AddQualificationDocumentResult = { error: string | null };
+
+export async function addQualificationDocument(
+  storagePath: string,
+  fileName: string
+): Promise<AddQualificationDocumentResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { error } = await supabase.from("tradie_qualification_documents").insert({
+    tradie_id: user.id,
+    storage_path: storagePath,
+    file_name: fileName,
+  });
+
+  if (error) {
+    return { error: "Something went wrong saving that document. Please try again." };
+  }
+
+  revalidatePath("/tradie-dashboard");
+  return { error: null };
+}
+
+export async function deleteQualificationDocument(documentId: string, storagePath: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  await supabase
+    .from("tradie_qualification_documents")
+    .delete()
+    .eq("id", documentId)
+    .eq("tradie_id", user.id);
+
+  // Storage delete-own RLS policy (step17 migration) scopes this to the
+  // caller's own "{tradie_id}/..." folder — no admin client needed.
+  await supabase.storage.from("tradie-qualifications").remove([storagePath]);
+
+  revalidatePath("/tradie-dashboard");
+}

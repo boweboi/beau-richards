@@ -3,7 +3,7 @@ import { isAuthenticated } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const ADMIN_TRADIE_COLUMNS =
-  "id, full_name, email, trade_type, service_region, phone, phone_verified, email_verified, nzbn, nzbn_verified, lbp_number, has_level4_qualification, qualifications_checked";
+  "id, full_name, email, trade_type, service_region, phone, phone_verified, email_verified, nzbn, nzbn_verified, lbp_number, has_level4_qualification, qualifications_checked, created_at, deactivated";
 
 export async function GET() {
   if (!(await isAuthenticated())) {
@@ -57,6 +57,44 @@ export async function GET() {
     reviewStatsByTradie.set(row.tradie_id, existing);
   }
 
+  // "Leads purchased" counts only paid purchases — pending/failed checkout
+  // attempts aren't a lead the tradie actually unlocked.
+  const { data: purchaseRows } = await supabase
+    .from("lead_purchases")
+    .select("tradie_id")
+    .eq("status", "paid");
+
+  const purchaseCountByTradie = new Map<string, number>();
+  for (const row of purchaseRows ?? []) {
+    purchaseCountByTradie.set(row.tradie_id, (purchaseCountByTradie.get(row.tradie_id) ?? 0) + 1);
+  }
+
+  // Qualification documents live in a private bucket (step17 migration) —
+  // the admin client bypasses RLS and can sign a URL for any tradie's
+  // object regardless of owner, unlike the tradie's own session client.
+  const { data: documentRows } = await supabase
+    .from("tradie_qualification_documents")
+    .select("id, tradie_id, storage_path, file_name, created_at");
+
+  const documentsByTradie = new Map<
+    string,
+    { id: string; file_name: string; created_at: string; url: string | null }[]
+  >();
+  for (const row of documentRows ?? []) {
+    const { data: signedUrlData } = await supabase.storage
+      .from("tradie-qualifications")
+      .createSignedUrl(row.storage_path, 60 * 10);
+
+    const existing = documentsByTradie.get(row.tradie_id) ?? [];
+    existing.push({
+      id: row.id,
+      file_name: row.file_name,
+      created_at: row.created_at,
+      url: signedUrlData?.signedUrl ?? null,
+    });
+    documentsByTradie.set(row.tradie_id, existing);
+  }
+
   const tradies = data.map((tradie) => {
     const stats = reviewStatsByTradie.get(tradie.id);
     return {
@@ -64,8 +102,26 @@ export async function GET() {
       review_count: stats?.count ?? 0,
       average_rating: stats ? stats.ratingSum / stats.count : null,
       service_areas: areasByTradie.get(tradie.id) ?? [],
+      leads_purchased_count: purchaseCountByTradie.get(tradie.id) ?? 0,
+      qualification_documents: documentsByTradie.get(tradie.id) ?? [],
     };
   });
 
-  return NextResponse.json({ tradies });
+  const [{ count: tradieCount }, { count: homeownerCount }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("role", "tradie")
+      .eq("deactivated", false),
+    supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("role", "homeowner")
+      .eq("deactivated", false),
+  ]);
+
+  return NextResponse.json({
+    tradies,
+    counts: { tradies: tradieCount ?? 0, homeowners: homeownerCount ?? 0 },
+  });
 }
