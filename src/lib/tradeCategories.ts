@@ -1,5 +1,5 @@
 export const TRADE_CATEGORIES = [
-  'Building & Construction',
+  'Building',
   'Plumbing',
   'Electrical',
   'Painting & Decorating',
@@ -14,6 +14,15 @@ export const TRADE_CATEGORIES = [
   'Glazing & Windows',
   'Handyman / General',
   'Cleaning',
+  'Waterproofing',
+  'Pest Control',
+  'Excavation',
+  'Heating & Cooling',
+  'Carpet Laying',
+  'Insulation',
+  'Solar',
+  'Arborists',
+  'Locksmiths',
 ];
 
 // Trades where NZ law restricts who can do the work (LBP scheme, licensed
@@ -21,7 +30,7 @@ export const TRADE_CATEGORIES = [
 // EWRB for electricians, PGDB for plumbers and gasfitters) at every
 // verification tier. Everything else in TRADE_CATEGORIES is non-regulated.
 export const REGULATED_TRADES = [
-  'Building & Construction',
+  'Building',
   'Plumbing',
   'Electrical',
   'Roofing',
@@ -39,8 +48,8 @@ export function isAnyRegulatedTrade(trades: string[]): boolean {
 // Beyond LBP, Electrical and Plumbing have their own separate registration
 // boards — this surfaces that alongside "relevant qualifications and/or
 // LBP" wherever a tradie's qualification status is displayed. Returns ""
-// for regulated trades without a separate board (Building & Construction,
-// Roofing, Bricklaying & Blocklaying).
+// for regulated trades without a separate board (Building, Roofing,
+// Bricklaying & Blocklaying).
 export function qualificationBoardSuffix(trades: (string | null)[]): string {
   const boards: string[] = [];
   if (trades.includes('Electrical')) boards.push('EWRB');
