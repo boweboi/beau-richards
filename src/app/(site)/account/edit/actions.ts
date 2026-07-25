@@ -5,6 +5,105 @@ import { createClient } from "@/lib/supabase/server";
 import { TRADE_CATEGORIES } from "@/lib/tradeCategories";
 import { parseAreaPairs, isValidAreaPair } from "@/lib/serviceAreas";
 
+export type UpdateContactDetailsState = { error: string | null };
+
+export async function updateContactDetails(
+  _prevState: UpdateContactDetailsState,
+  formData: FormData
+): Promise<UpdateContactDetailsState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  // Email is deliberately not part of this form — it's the Supabase Auth
+  // login identifier, and profiles.email is just a denormalized copy with
+  // no uniqueness constraint of its own. Changing it here would silently
+  // desync it from the real login email. Display-only until that's built.
+  const fullName = (formData.get("full_name") as string | null)?.trim() ?? "";
+  const phone = (formData.get("phone") as string | null)?.trim() ?? "";
+
+  if (!fullName) {
+    return { error: "Please enter your name." };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ full_name: fullName, phone: phone || null })
+    .eq("id", user.id);
+
+  if (error) {
+    return { error: "Something went wrong saving your details. Please try again." };
+  }
+
+  redirect("/account/edit?savedContact=1");
+}
+
+export type UpdateLocationState = { error: string | null };
+
+export async function updateLocation(
+  _prevState: UpdateLocationState,
+  formData: FormData
+): Promise<UpdateLocationState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const address = (formData.get("address") as string | null)?.trim() ?? "";
+  const region = formData.get("region") as string | null;
+  const town = formData.get("town") as string | null;
+
+  if (profile?.role === "homeowner") {
+    // Required — post-a-job's profile-completeness check depends on all
+    // three being set for homeowners.
+    if (!address) {
+      return { error: "Please enter your address." };
+    }
+    if (!region || !town || !isValidAreaPair({ region, town })) {
+      return { error: "Please select a valid region and town." };
+    }
+  } else {
+    // Optional for tradies — nothing tradie-facing reads a tradie's own
+    // address today (tradie_service_areas covers where they work). But a
+    // half-filled value (e.g. a region with no town) still gets rejected
+    // rather than silently saved wrong.
+    const anyProvided = Boolean(address || region || town);
+    if (anyProvided && (!region || !town || !isValidAreaPair({ region, town }))) {
+      return { error: "Please select a valid region and town, or leave both blank." };
+    }
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      address: address || null,
+      region: region || null,
+      town: town || null,
+    })
+    .eq("id", user.id);
+
+  if (error) {
+    return { error: "Something went wrong saving your location. Please try again." };
+  }
+
+  redirect("/account/edit?savedLocation=1");
+}
+
 export type UpdateTradeCategoriesState = { error: string | null };
 
 export async function updateTradeCategories(

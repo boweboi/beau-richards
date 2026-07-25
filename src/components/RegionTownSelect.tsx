@@ -6,9 +6,11 @@ import regionsData from "@/nz-regions.json";
 export default function RegionTownSelect({
   defaultRegion = "",
   defaultTown = "",
+  required = true,
 }: {
   defaultRegion?: string;
   defaultTown?: string;
+  required?: boolean;
 }) {
   const [region, setRegion] = useState(defaultRegion);
   const towns = regionsData.regions.find((r) => r.name === region)?.towns ?? [];
@@ -22,7 +24,7 @@ export default function RegionTownSelect({
         <select
           id="region"
           name="region"
-          required
+          required={required}
           value={region}
           onChange={(event) => setRegion(event.target.value)}
           className="mt-1 w-full rounded-md border border-line bg-white px-3 py-2 text-sm text-ink-900 focus:border-navy-700 focus:outline-none"
@@ -43,7 +45,7 @@ export default function RegionTownSelect({
         <select
           id="town"
           name="town"
-          required
+          required={required}
           disabled={!region}
           defaultValue={defaultTown}
           key={region}

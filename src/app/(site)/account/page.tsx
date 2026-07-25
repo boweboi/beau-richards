@@ -56,14 +56,12 @@ export default async function AccountPage() {
               {secondaryLink.label}
             </Link>
           )}
-          {isTradie && (
-            <Link
-              href="/account/edit"
-              className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
-            >
-              Edit your trades
-            </Link>
-          )}
+          <Link
+            href="/account/edit"
+            className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+          >
+            Edit your profile
+          </Link>
         </div>
 
         <form action={logout} className="mt-3">
