@@ -86,22 +86,22 @@ function nextTierUpgrade(tradie: Tradie): { label: string; patch: Partial<Tradie
   return null;
 }
 
-type ListTab = "all" | "silver" | "gold";
+type ListTab = "bronze" | "silver" | "gold";
 
 const TABS: { id: ListTab; label: string }[] = [
-  { id: "all", label: "All" },
+  { id: "bronze", label: "Bronze" },
   { id: "silver", label: "Silver" },
   { id: "gold", label: "Gold" },
 ];
 
 function matchesTab(tradie: Tradie, tab: ListTab): boolean {
-  if (tab === "silver") {
-    return tradie.qualifications_checked && tradie.review_count < 3;
-  }
-  if (tab === "gold") {
-    return tradie.review_count >= 3;
-  }
-  return true;
+  const isSilver = tradie.qualifications_checked && tradie.review_count < 3;
+  const isGold = tradie.review_count >= 3;
+
+  if (tab === "silver") return isSilver;
+  if (tab === "gold") return isGold;
+  // Bronze tab: email verified, and not already bucketed into Silver or Gold above.
+  return tradie.email_verified && !isSilver && !isGold;
 }
 
 export default function AdminTradiesPage() {
@@ -109,7 +109,7 @@ export default function AdminTradiesPage() {
   const [counts, setCounts] = useState<Counts | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [errorId, setErrorId] = useState<string | null>(null);
-  const [tab, setTab] = useState<ListTab>("all");
+  const [tab, setTab] = useState<ListTab>("bronze");
 
   useEffect(() => {
     fetch("/api/admin/tradies")
@@ -234,6 +234,9 @@ export default function AdminTradiesPage() {
                   <tr key={tradie.id} className="border-b border-line last:border-0">
                     <td className="px-4 py-3 font-medium text-navy-950">
                       {tradie.full_name}
+                      <span className="ml-2 text-xs font-normal text-ink-500">
+                        ({tradie.review_count} {tradie.review_count === 1 ? "review" : "reviews"})
+                      </span>
                       {tradie.deactivated && (
                         <span className="ml-2 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
                           Deactivated
