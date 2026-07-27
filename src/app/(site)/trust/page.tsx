@@ -14,7 +14,7 @@ export default function TrustPage() {
         </h1>
         <p className="mt-4 text-ink-700">
           Letting a stranger into your home for a quote — or a job — takes
-          trust. Before a tradie shows up on Trade Match NZ, we check who
+          trust. Before a tradie shows up on TradieMatch NZ, we check who
           they are, confirm they&apos;re qualified to do the work they&apos;re
           offering, and make sure they&apos;re a real, legitimate business.
           That&apos;s what earns them a badge.

@@ -13,7 +13,7 @@ const SECTIONS = [
   },
   {
     title: "What to Look for in a Tradie",
-    body: "Check their Trade Match NZ profile. Look at their reviews and their verification tier. A Bronze-verified tradie has been checked out. Ask questions if you're not sure about something. A good tradie will explain things clearly without making you feel silly.",
+    body: "Check their TradieMatch NZ profile. Look at their reviews and their verification tier. A Bronze-verified tradie has been checked out. Ask questions if you're not sure about something. A good tradie will explain things clearly without making you feel silly.",
   },
   {
     title: "When You Get Quotes",
@@ -25,7 +25,7 @@ const SECTIONS = [
   },
   {
     title: "After It's Done",
-    body: "Leave an honest review on Trade Match NZ. It helps other homeowners and helps good tradies build their reputation.",
+    body: "Leave an honest review on TradieMatch NZ. It helps other homeowners and helps good tradies build their reputation.",
   },
 ];
 
