@@ -1,0 +1,146 @@
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Hr,
+  Html,
+  Link,
+  Preview,
+  Section,
+  Text,
+} from "@react-email/components";
+
+export interface VerifyEmailProps {
+  firstName: string;
+  verifyUrl: string;
+}
+
+export default function VerifyEmail({
+  firstName = "there",
+  verifyUrl,
+}: VerifyEmailProps) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Verify your email to unlock Bronze tier</Preview>
+      <Body style={styles.body}>
+        <Container style={styles.container}>
+          <Section style={styles.header}>
+            <Text style={styles.headerMark}>TM</Text>
+            <Text style={styles.headerWordmark}>TradieMatch</Text>
+          </Section>
+
+          <Section style={styles.content}>
+            <Heading style={styles.heading}>Verify your email, {firstName}.</Heading>
+            <Text style={styles.paragraph}>
+              Confirm this address to unlock Bronze verification on your
+              TradieMatch profile — homeowners see it as a trust signal when
+              they're choosing who to hire.
+            </Text>
+
+            <Button href={verifyUrl} style={styles.button}>
+              Verify my email
+            </Button>
+
+            <Hr style={styles.hr} />
+
+            <Text style={styles.footer}>
+              Questions? Reach us any time at{" "}
+              <Link href="mailto:support@tradiematch.co.nz" style={styles.link}>
+                support@tradiematch.co.nz
+              </Link>
+              .
+            </Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  );
+}
+
+VerifyEmail.PreviewProps = {
+  firstName: "Sam",
+  verifyUrl: "https://tradiematch.co.nz/auth/confirm?token_hash=example&type=magiclink",
+} as VerifyEmailProps;
+
+const styles = {
+  body: {
+    backgroundColor: "#f6f8fa",
+    fontFamily: "Inter, Arial, Helvetica, sans-serif",
+    margin: 0,
+    padding: "24px 0",
+  },
+  container: {
+    backgroundColor: "#ffffff",
+    borderRadius: "12px",
+    margin: "0 auto",
+    maxWidth: "480px",
+    overflow: "hidden",
+  },
+  header: {
+    backgroundColor: "#0b2035",
+    padding: "20px 32px",
+  },
+  headerMark: {
+    backgroundColor: "#ff6a13",
+    borderRadius: "6px",
+    color: "#0b2035",
+    display: "inline-block",
+    fontSize: "14px",
+    fontWeight: 700,
+    lineHeight: "32px",
+    margin: "0 8px 0 0",
+    textAlign: "center" as const,
+    verticalAlign: "middle",
+    width: "32px",
+  },
+  headerWordmark: {
+    color: "#ffffff",
+    display: "inline-block",
+    fontSize: "18px",
+    fontWeight: 600,
+    margin: 0,
+    verticalAlign: "middle",
+  },
+  content: {
+    padding: "32px",
+  },
+  heading: {
+    color: "#0b2035",
+    fontSize: "22px",
+    fontWeight: 600,
+    margin: "0 0 12px",
+  },
+  paragraph: {
+    color: "#33475a",
+    fontSize: "15px",
+    lineHeight: "24px",
+    margin: "0 0 24px",
+  },
+  button: {
+    backgroundColor: "#ff6a13",
+    borderRadius: "6px",
+    color: "#0b2035",
+    display: "inline-block",
+    fontSize: "15px",
+    fontWeight: 600,
+    padding: "12px 24px",
+    textDecoration: "none",
+  },
+  hr: {
+    borderColor: "#dde5ea",
+    margin: "32px 0 16px",
+  },
+  footer: {
+    color: "#5c7286",
+    fontSize: "13px",
+    lineHeight: "20px",
+    margin: "0 0 4px",
+  },
+  link: {
+    color: "#e35a0a",
+    textDecoration: "underline",
+  },
+};

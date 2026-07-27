@@ -12,23 +12,14 @@ export type TradieVerification = {
   averageRating: number | null;
 };
 
-// A regulated trade's qualifications/LBP claim only counts once an admin
-// has checked it — an unverified self-report shouldn't be enough to
-// unlock Bronze, or the "verification" system wouldn't verify anything.
-function meetsQualificationRequirement(profile: TradieVerification): boolean {
-  const claimsQualification =
-    profile.hasLevel4Qualification || Boolean(profile.lbpNumber);
-  return claimsQualification && profile.qualificationsChecked;
-}
-
 export function getVerificationTier(
   profile: TradieVerification
 ): VerificationTier {
-  const meetsBronze = profile.regulated
-    ? profile.emailVerified &&
-      profile.phoneVerified &&
-      meetsQualificationRequirement(profile)
-    : profile.emailVerified && profile.phoneVerified;
+  // Bronze is granted automatically the moment a tradie confirms their
+  // email via the link sent at signup (see src/app/auth/confirm/route.ts)
+  // — phone/NZBN/qualifications no longer gate Bronze, they only affect
+  // Silver/Gold below.
+  const meetsBronze = profile.emailVerified;
 
   if (!meetsBronze) return "none";
 

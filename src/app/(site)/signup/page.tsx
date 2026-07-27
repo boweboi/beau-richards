@@ -108,6 +108,13 @@ export default function SignupPage() {
           {role === "tradie" && <TradeCategoryCheckboxes />}
           {role === "tradie" && <ServiceAreaCheckboxes />}
 
+          {role === "tradie" && (
+            <p className="text-xs text-ink-500">
+              We&apos;ll email you a link to verify your address — confirming it
+              unlocks Bronze tier on your profile.
+            </p>
+          )}
+
           <TermsCheckbox role={role} />
 
           {state.error && (

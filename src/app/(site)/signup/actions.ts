@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { TRADE_CATEGORIES } from "@/lib/tradeCategories";
 import { parseAreaPairs, isValidAreaPair } from "@/lib/serviceAreas";
 
@@ -92,15 +93,15 @@ export async function signup(
     };
   }
 
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
+  const origin = `${protocol}://${host}`;
+
   // Welcome email is a nice-to-have, not a signup blocker — the account is
   // already created and committed above, so a failure here must never
   // surface to the user or stop the rest of signup.
   try {
-    const requestHeaders = await headers();
-    const host = requestHeaders.get("host");
-    const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
-    const origin = `${protocol}://${host}`;
-
     const res = await fetch(`${origin}/api/emails/send-welcome`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -140,6 +141,45 @@ export async function signup(
         error:
           "Your account was created, but we couldn't save your service areas. Please contact support.",
       };
+    }
+
+    // Verification email is what unlocks Bronze tier, but — like the
+    // welcome email — must never block or fail signup itself. Sent via
+    // the Admin API's generateLink rather than signUp's built-in
+    // confirmation flow, so it doesn't touch Supabase's project-wide
+    // "Confirm email" setting and never blocks the tradie's own login.
+    try {
+      const admin = createAdminClient();
+      const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+        type: "magiclink",
+        email,
+        options: {
+          redirectTo: `${origin}/auth/confirm?next=/tradie-dashboard`,
+        },
+      });
+
+      if (linkError || !linkData) {
+        console.error("Failed to generate verification link:", linkError?.message);
+      } else {
+        const verifyUrl = `${origin}/auth/confirm?token_hash=${linkData.properties.hashed_token}&type=${linkData.properties.verification_type}&next=/tradie-dashboard`;
+
+        const res = await fetch(`${origin}/api/emails/send-verify-email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            firstName: fullName.trim().split(" ")[0],
+            verifyUrl,
+          }),
+        });
+
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          console.error("Failed to send verification email:", body.error ?? res.statusText);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to send verification email:", err);
     }
   }
 
