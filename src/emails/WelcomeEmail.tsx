@@ -38,7 +38,7 @@ const roleCopy = {
 export default function WelcomeEmail({
   firstName = "there",
   role = "homeowner",
-  siteUrl = process.env.NEXT_PUBLIC_SITE_URL,
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tradiematch.co.nz",
   // Placeholder — there's no /unsubscribe page in the app yet. Swap this
   // default for a real unsubscribe URL once one exists.
   unsubscribeUrl = "#",

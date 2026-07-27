@@ -6,6 +6,7 @@ import {
   Heading,
   Hr,
   Html,
+  Img,
   Link,
   Preview,
   Section,
@@ -15,11 +16,13 @@ import {
 export interface VerifyEmailProps {
   firstName: string;
   verifyUrl: string;
+  siteUrl?: string;
 }
 
 export default function VerifyEmail({
   firstName = "there",
   verifyUrl,
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tradiematch.co.nz",
 }: VerifyEmailProps) {
   return (
     <Html>
@@ -28,7 +31,13 @@ export default function VerifyEmail({
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Section style={styles.header}>
-            <Text style={styles.headerMark}>TM</Text>
+            <Img
+              src={`${siteUrl}/favicon.png`}
+              width="32"
+              height="32"
+              alt="TradieMatch"
+              style={styles.logo}
+            />
             <Text style={styles.headerWordmark}>TradieMatch</Text>
           </Section>
 
@@ -83,18 +92,11 @@ const styles = {
     backgroundColor: "#0b2035",
     padding: "20px 32px",
   },
-  headerMark: {
-    backgroundColor: "#ff6a13",
+  logo: {
     borderRadius: "6px",
-    color: "#0b2035",
     display: "inline-block",
-    fontSize: "14px",
-    fontWeight: 700,
-    lineHeight: "32px",
     margin: "0 8px 0 0",
-    textAlign: "center" as const,
     verticalAlign: "middle",
-    width: "32px",
   },
   headerWordmark: {
     color: "#ffffff",

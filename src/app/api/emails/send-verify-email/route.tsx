@@ -7,7 +7,7 @@ import { sendEmail } from "@/lib/email";
 // doesn't actually let the try/catch catch rendering errors (React defers
 // rendering), so the project's lint config flags it.
 function buildElement(props: VerifyEmailProps) {
-  return <VerifyEmail {...props} />;
+  return <VerifyEmail {...props} siteUrl={process.env.NEXT_PUBLIC_SITE_URL} />;
 }
 
 export async function POST(request: NextRequest) {
