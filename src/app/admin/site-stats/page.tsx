@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 type SiteStats = {
   verified_tradies: number;
   jobs_completed: number;
-  average_quote_hours: number;
 };
 
 export default function AdminSiteStatsPage() {
@@ -100,22 +99,6 @@ export default function AdminSiteStatsPage() {
             value={stats.jobs_completed}
             onChange={(event) =>
               setStats({ ...stats, jobs_completed: Number(event.target.value) })
-            }
-            className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm text-ink-900 focus:border-navy-700 focus:outline-none"
-          />
-        </div>
-
-        <div className="rounded-2xl bg-paper-0 p-6 shadow-sm">
-          <label className="block text-sm font-medium text-ink-700">
-            Average Quote Time (hours)
-          </label>
-          <input
-            type="number"
-            min={0}
-            step="0.1"
-            value={stats.average_quote_hours}
-            onChange={(event) =>
-              setStats({ ...stats, average_quote_hours: Number(event.target.value) })
             }
             className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm text-ink-900 focus:border-navy-700 focus:outline-none"
           />

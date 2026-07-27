@@ -13,14 +13,13 @@ export const dynamic = "force-dynamic";
 const FALLBACK_STATS: TrustStripStats = {
   verified_tradies: 0,
   jobs_completed: 0,
-  average_quote_hours: 0,
 };
 
 export default async function Home() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("site_stats")
-    .select("verified_tradies, jobs_completed, average_quote_hours")
+    .select("verified_tradies, jobs_completed")
     .eq("id", 1)
     .single();
 

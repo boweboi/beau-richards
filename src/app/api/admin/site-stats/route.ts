@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-const EDITABLE_FIELDS = ["verified_tradies", "jobs_completed", "average_quote_hours"] as const;
+const EDITABLE_FIELDS = ["verified_tradies", "jobs_completed"] as const;
 
 export async function GET() {
   if (!(await isAuthenticated())) {
@@ -12,7 +12,7 @@ export async function GET() {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("site_stats")
-    .select("verified_tradies, jobs_completed, average_quote_hours")
+    .select("verified_tradies, jobs_completed")
     .eq("id", 1)
     .single();
 
