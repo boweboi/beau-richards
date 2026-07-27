@@ -86,11 +86,30 @@ function nextTierUpgrade(tradie: Tradie): { label: string; patch: Partial<Tradie
   return null;
 }
 
+type ListTab = "all" | "silver" | "gold";
+
+const TABS: { id: ListTab; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "silver", label: "Silver" },
+  { id: "gold", label: "Gold" },
+];
+
+function matchesTab(tradie: Tradie, tab: ListTab): boolean {
+  if (tab === "silver") {
+    return tradie.qualifications_checked && tradie.review_count < 3;
+  }
+  if (tab === "gold") {
+    return tradie.review_count >= 3;
+  }
+  return true;
+}
+
 export default function AdminTradiesPage() {
   const [tradies, setTradies] = useState<Tradie[] | null>(null);
   const [counts, setCounts] = useState<Counts | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [errorId, setErrorId] = useState<string | null>(null);
+  const [tab, setTab] = useState<ListTab>("all");
 
   useEffect(() => {
     fetch("/api/admin/tradies")
@@ -168,7 +187,23 @@ export default function AdminTradiesPage() {
           </div>
         </div>
 
-        <div className="mt-8 overflow-x-auto rounded-2xl bg-paper-0 shadow-sm">
+        <div className="mt-8 flex gap-1 border-b border-line">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`px-4 py-2 text-sm font-medium transition ${
+                tab === t.id
+                  ? "border-b-2 border-navy-950 text-navy-950"
+                  : "text-ink-500 hover:text-navy-950"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="overflow-x-auto rounded-b-2xl bg-paper-0 shadow-sm">
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead>
               <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-500">
@@ -183,14 +218,14 @@ export default function AdminTradiesPage() {
               </tr>
             </thead>
             <tbody>
-              {tradies.length === 0 && (
+              {tradies.filter((tradie) => matchesTab(tradie, tab)).length === 0 && (
                 <tr>
                   <td colSpan={8} className="px-4 py-6 text-center text-ink-500">
-                    No tradie accounts yet.
+                    No tradie accounts in this tab.
                   </td>
                 </tr>
               )}
-              {tradies.map((tradie) => {
+              {tradies.filter((tradie) => matchesTab(tradie, tab)).map((tradie) => {
                 const tier = tierOf(tradie);
                 const upgrade = nextTierUpgrade(tradie);
                 const busy = busyId === tradie.id;
