@@ -36,9 +36,9 @@ export default function ToolkitFundThermometer({
 
         <div className="mt-10 flex flex-col items-center">
           <div className="flex flex-col items-center">
-            {/* Tube — markers and the CTA label are positioned relative to
-                this box specifically, so they track the tube regardless of
-                the bulb's size below it. */}
+            {/* Tube — markers are positioned relative to this box
+                specifically, so they track the tube regardless of the
+                bulb's size below it. */}
             <div className="relative">
               <div
                 role="progressbar"
@@ -62,14 +62,14 @@ export default function ToolkitFundThermometer({
                   {formatDollars(marker)}
                 </span>
               ))}
-
-              <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-navy-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-hivis-500">
-                Tap to learn more
-              </span>
             </div>
 
             {/* Bulb — always filled, like mercury pooling at the base. */}
             <div className="-mt-1 h-14 w-14 rounded-full border-2 border-navy-950/15 bg-hivis-500" />
+
+            <span className="mt-3 whitespace-nowrap rounded-full bg-navy-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-hivis-500">
+              Tap to learn more
+            </span>
           </div>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
             {formatDollars(amount)} of {formatDollars(TOOLKIT_FUND_TARGET)}
