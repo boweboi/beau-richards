@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { TOOLKIT_FUND_TARGET, type ToolkitDonation } from "@/lib/toolkitFund";
 
 function formatDollars(value: number) {
@@ -15,7 +16,10 @@ export default function ToolkitFundThermometer({
 
   return (
     <section className="border-b border-line bg-paper-0 py-16">
-      <div className="mx-auto max-w-4xl px-6 text-center">
+      <Link
+        href="/apprenticeship-fund"
+        className="mx-auto block max-w-4xl px-6 text-center transition hover:opacity-90"
+      >
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
           Community toolkit fund
         </p>
@@ -71,7 +75,7 @@ export default function ToolkitFundThermometer({
             </div>
           </div>
         )}
-      </div>
+      </Link>
     </section>
   );
 }

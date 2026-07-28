@@ -21,6 +21,7 @@ const columns = [
     title: "Company",
     links: [
       { label: "About us", href: "/about" },
+      { label: "Apprenticeship Fund", href: "/apprenticeship-fund" },
       { label: "Contact", href: "/contact" },
     ],
   },
