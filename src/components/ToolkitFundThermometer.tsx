@@ -33,21 +33,21 @@ export default function ToolkitFundThermometer({
         </p>
 
         <div className="mt-10 flex flex-col items-center">
-          <div
-            role="progressbar"
-            aria-valuenow={Math.round(amount)}
-            aria-valuemin={0}
-            aria-valuemax={TOOLKIT_FUND_TARGET}
-            className="relative h-64 w-16 overflow-hidden rounded-full border-2 border-navy-950/15 bg-paper"
-          >
+          <div className="relative">
             <div
-              className="absolute bottom-0 left-0 w-full rounded-full bg-hivis-500 transition-all duration-500"
-              style={{ height: `${pct}%` }}
-            />
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <span className="rotate-90 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.15em] text-navy-950">
-                Tap to learn more
-              </span>
+              role="progressbar"
+              aria-valuenow={Math.round(amount)}
+              aria-valuemin={0}
+              aria-valuemax={TOOLKIT_FUND_TARGET}
+              className="relative h-64 w-16 overflow-hidden rounded-full border-2 border-navy-950/15 bg-paper"
+            >
+              <div
+                className="absolute bottom-0 left-0 w-full rounded-full bg-hivis-500 transition-all duration-500"
+                style={{ height: `${pct}%` }}
+              />
+            </div>
+            <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-navy-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-hivis-500">
+              Tap to learn more
             </span>
           </div>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
