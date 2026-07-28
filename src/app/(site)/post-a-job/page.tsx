@@ -41,6 +41,10 @@ export default async function PostAJobPage({
           Tell us what you need done and get connected with verified Kiwi tradies in your area.
         </p>
       </div>
+      <div className="mx-auto mb-6 max-w-2xl rounded-xl border border-hivis-500/30 bg-hivis-500/10 px-4 py-3 text-sm text-navy-950">
+        <strong>Quick tip:</strong> Keep your contact details out of the job
+        description. We&apos;ll connect you with interested tradies.
+      </div>
       <JobPostingForm
         initialName={profile?.full_name ?? ""}
         initialEmail={profile?.email ?? ""}

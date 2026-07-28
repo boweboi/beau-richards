@@ -154,6 +154,10 @@ export default function JobPostingForm({
             placeholder="Size of the job, materials, access, timing — anything that helps tradies understand the work."
             className={`${inputClass} resize-y`}
           />
+          <p className="mt-1.5 text-xs text-[#0B1F3A]/50">
+            Your phone, email, and address stay private — tradies contact you
+            here on the platform.
+          </p>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
