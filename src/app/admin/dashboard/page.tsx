@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { SiteContent } from "@/lib/content";
+import MaintenanceModeToggle from "@/components/admin/MaintenanceModeToggle";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -142,6 +143,14 @@ export default function AdminDashboardPage() {
       </header>
 
       <div className="mx-auto mt-8 max-w-3xl space-y-10 px-6">
+        <Section title="Maintenance mode">
+          <p className="text-xs text-ink-500">
+            When on, every visitor is redirected to a maintenance page — the
+            admin panel stays reachable so you can turn it back off.
+          </p>
+          <MaintenanceModeToggle />
+        </Section>
+
         <Section title="Brand">
           <Field
             label="Site name"
