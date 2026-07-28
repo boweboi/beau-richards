@@ -2,7 +2,9 @@ import Hero from "@/components/Hero";
 import TradesCarousel from "@/components/TradesCarousel";
 import TrustStrip, { type TrustStripStats } from "@/components/TrustStrip";
 import HowItWorks from "@/components/HowItWorks";
+import ToolkitFundThermometer from "@/components/ToolkitFundThermometer";
 import { createClient } from "@/lib/supabase/server";
+import type { ToolkitDonation } from "@/lib/toolkitFund";
 
 // Without this, the fetched site_stats row can get baked into a cached
 // render at build/deploy time (or cached via Next's fetch Data Cache,
@@ -19,11 +21,15 @@ export default async function Home() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("site_stats")
-    .select("verified_tradies, jobs_completed")
+    .select("verified_tradies, jobs_completed, toolkit_fund_amount, toolkit_donations")
     .eq("id", 1)
     .single();
 
   const stats = data ?? FALLBACK_STATS;
+  const toolkitFundAmount = Number(data?.toolkit_fund_amount ?? 0);
+  const toolkitDonations: ToolkitDonation[] = Array.isArray(data?.toolkit_donations)
+    ? data.toolkit_donations
+    : [];
 
   return (
     <main className="flex-1">
@@ -31,6 +37,7 @@ export default async function Home() {
       <TradesCarousel />
       <TrustStrip stats={stats} />
       <HowItWorks />
+      <ToolkitFundThermometer amount={toolkitFundAmount} donations={toolkitDonations} />
     </main>
   );
 }

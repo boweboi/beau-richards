@@ -47,6 +47,25 @@ export async function POST(request: NextRequest) {
         .select("id, job_id, tradie_id, amount_cents")
         .single();
 
+      // Toolkit fund increment — like the receipt email below, this is a
+      // side effect of the purchase being marked paid above, not part of
+      // the payment flow itself, so a failure here must never affect the
+      // webhook's response to Stripe. Done via RPC (not a JS read/write)
+      // because a read-then-write here would race under concurrent
+      // Stripe events and silently drop increments.
+      if (updatedPurchase) {
+        try {
+          const { error: incrementError } = await admin.rpc("increment_toolkit_fund", {
+            amount: 2,
+          });
+          if (incrementError) {
+            console.error("Failed to increment toolkit fund:", incrementError.message);
+          }
+        } catch (err) {
+          console.error("Failed to increment toolkit fund:", err);
+        }
+      }
+
       // Receipt email is a nice-to-have, not part of the payment flow — the
       // purchase is already marked paid above, so any failure here (a
       // lookup miss, a Resend error) must never affect the webhook's

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ToolkitFundAdminForm from "@/components/admin/ToolkitFundAdminForm";
 
 type SiteStats = {
   verified_tradies: number;
@@ -102,6 +103,20 @@ export default function AdminSiteStatsPage() {
             }
             className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm text-ink-900 focus:border-navy-700 focus:outline-none"
           />
+        </div>
+
+        <div className="rounded-2xl bg-paper-0 p-6 shadow-sm">
+          <h2 className="font-display text-base font-semibold text-navy-950">
+            Toolkit fund
+          </h2>
+          <p className="mt-1 text-xs text-ink-500">
+            $2 of every lead purchase, tracked automatically. Log a photo
+            when a toolkit is funded to reset it and add it to the
+            homepage gallery.
+          </p>
+          <div className="mt-4">
+            <ToolkitFundAdminForm />
+          </div>
         </div>
       </div>
     </main>
