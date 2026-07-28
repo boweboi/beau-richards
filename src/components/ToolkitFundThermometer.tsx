@@ -44,6 +44,11 @@ export default function ToolkitFundThermometer({
               className="absolute bottom-0 left-0 w-full rounded-full bg-hivis-500 transition-all duration-500"
               style={{ height: `${pct}%` }}
             />
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <span className="rotate-90 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.15em] text-navy-950">
+                Tap to learn more
+              </span>
+            </span>
           </div>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
             {formatDollars(amount)} of {formatDollars(TOOLKIT_FUND_TARGET)}
