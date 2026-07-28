@@ -30,6 +30,32 @@ export default function ApprenticeshipFundPage() {
         </p>
       </div>
 
+      <div className="mx-auto mt-16 max-w-2xl rounded-2xl bg-navy-950 px-6 py-10 text-center sm:px-10">
+        <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">
+          This is just the beginning.
+        </h2>
+        <p className="mt-4 text-white/80">
+          Every lead we sell feeds the Apprenticeship Toolkit Fund. Not
+          because it&apos;s trendy, but because New Zealand&apos;s trades
+          need apprentices, and apprentices need support. We&apos;re not
+          running a campaign, we&apos;re building something that lasts.
+        </p>
+        <p className="mt-4 text-white/80">
+          For every tradie we connect with a homeowner, two dollars goes
+          straight into this fund. No asterisks, no fine print. It adds
+          up quietly, steadily, into real money that buys real tools for
+          real apprentices learning their craft.
+        </p>
+        <p className="mt-4 text-white/80">
+          We&apos;re committed to this for the long haul. As TradieMatch
+          grows, so does the fund. As more tradies join, more apprentices
+          get equipped. It&apos;s simple maths, and it&apos;s unstoppable.
+        </p>
+        <p className="mt-6 font-display text-lg font-semibold text-hivis-500">
+          This is how we do business in Aotearoā, New Zealand.
+        </p>
+      </div>
+
       <div className="mx-auto mt-16 max-w-2xl space-y-14">
         <section>
           <h2 className="font-display text-xl font-semibold text-navy-950">
