@@ -6,7 +6,7 @@ export default function AboutPage() {
           About us
         </p>
         <h1 className="mt-3 font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
-          Built for Aotearoā homeowners &amp; tradies.
+          Built for Aotearoā, New Zealand homeowners &amp; tradies.
         </h1>
         <p className="mt-4 text-ink-700">
           TradieMatch connects homeowners across Aotearoā with trusted
