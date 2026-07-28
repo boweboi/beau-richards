@@ -23,7 +23,7 @@ export interface WelcomeEmailProps {
 const roleCopy = {
   tradie: {
     intro:
-      "TradieMatch connects you with homeowners across Aotearoa who need work done in your trade — no cold calling, no chasing. Browse jobs in your area, buy the leads you want, and get in touch directly.",
+      "TradieMatch connects you with homeowners across Aotearoā who need work done in your trade — no cold calling, no chasing. Browse jobs in your area, buy the leads you want, and get in touch directly.",
     cta: "Start browsing jobs",
     ctaPath: "/jobs",
   },
