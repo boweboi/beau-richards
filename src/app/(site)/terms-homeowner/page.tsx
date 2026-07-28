@@ -41,6 +41,7 @@ const SECTIONS: Section[] = [
       "3.4 You must not post the same job multiple times or spam the Platform.",
       "3.5 Once a job is posted, verified local tradies can view it and purchase access to your contact details. Your contact details are locked until a tradie purchases access to them.",
       "3.6 You are responsible for communicating directly with tradies, comparing quotes, and deciding who to hire. TradieMatch does not vet the quality of tradie work or guarantee outcomes.",
+      "3.7 Job descriptions must not include your phone number, email address, physical address, or other contact or identifying details. This information is what tradies pay to unlock — including it in a public job description lets tradies bypass that system, which undermines the marketplace for everyone. Doing so is grounds for account suspension or termination under Section 7.",
     ],
   },
   {
@@ -87,6 +88,7 @@ const SECTIONS: Section[] = [
         "Spam or flood the Platform with duplicate jobs",
         "Attempt to bypass the Platform's systems or access tradies' information without paying",
         "Collect or use tradies' contact information for purposes other than the posted job",
+        "Include contact or identifying details (phone, email, address, or similar) in a job description to let tradies bypass the lead-purchase system",
       ],
       "7.2 Violation of these rules may result in account suspension or termination without refund.",
     ],
