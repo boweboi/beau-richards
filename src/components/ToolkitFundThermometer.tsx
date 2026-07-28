@@ -26,7 +26,7 @@ export default function ToolkitFundThermometer({
           Community toolkit fund
         </p>
         <h2 className="mt-3 font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
-          Every lead we sell chips in toward a tradie&apos;s toolkit.
+          Every lead we sell chips in towards an apprentice&apos;s toolkit.
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-ink-700">
           $2 from every lead purchase goes into this fund. When it hits
