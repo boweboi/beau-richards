@@ -18,6 +18,10 @@ export default function MaintenancePage() {
         TradieMatch is down for scheduled maintenance right now. Thanks for
         your patience — check back soon.
       </p>
+      <p className="mt-6 max-w-sm text-xs text-white/50">
+        If the page doesn&apos;t refresh once we&apos;re back, try opening the
+        site in a new browser tab.
+      </p>
     </main>
   );
 }
