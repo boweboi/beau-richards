@@ -21,6 +21,9 @@ export default function Hero() {
           <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] text-white sm:text-5xl lg:text-6xl">
             Find trusted Kiwi tradies for your home improvement jobs.
           </h1>
+          <p className="mt-3 text-sm text-white/60">
+            TradieMatch NZ is proudly owned and operated by Kiwis, for Kiwis.
+          </p>
           <p className="mt-6 max-w-xl text-lg text-white/70">
             Describe the job once. Verified local tradies send you quotes —
             no cold calls, no chasing callbacks, no guesswork on price.
