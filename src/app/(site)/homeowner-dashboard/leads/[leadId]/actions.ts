@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -78,6 +79,98 @@ export async function markAsHired(leadId: string) {
           .select();
 
         console.log("[markAsHired] decline-sibling result", { declineError, declineData });
+
+        // Hired/job-filled emails are a courtesy, not part of the hire
+        // flow itself — the engagement_status updates above already
+        // committed, so a failure here (a lookup miss, a Resend error)
+        // must never surface to the homeowner or undo the hire.
+        try {
+          const admin = createAdminClient();
+          const { data: job } = await admin
+            .from("jobs")
+            .select("title, category, region, town, description")
+            .eq("id", lead.job_id)
+            .single();
+
+          if (job) {
+            const requestHeaders = await headers();
+            const host = requestHeaders.get("host");
+            const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
+            const origin = `${protocol}://${host}`;
+            const location = `${job.town}, ${job.region}`;
+
+            const { data: hiredProfile } = await admin
+              .from("profiles")
+              .select("full_name, email")
+              .eq("id", lead.tradie_id)
+              .single();
+
+            if (hiredProfile) {
+              const res = await fetch(`${origin}/api/emails/send-hired-notification`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  email: hiredProfile.email,
+                  tradieName: hiredProfile.full_name,
+                  jobTitle: job.title,
+                  category: job.category,
+                  location,
+                  description: job.description,
+                }),
+              });
+
+              if (!res.ok) {
+                const body = await res.json().catch(() => ({}));
+                console.error(
+                  "Failed to send hired notification email:",
+                  body.error ?? res.statusText
+                );
+              }
+            }
+
+            const declinedTradieIds = (declineData ?? []).map((row) => row.tradie_id);
+
+            if (!declineError && declinedTradieIds.length > 0) {
+              const { data: declinedProfiles } = await admin
+                .from("profiles")
+                .select("id, full_name, email")
+                .in("id", declinedTradieIds);
+
+              await Promise.all(
+                (declinedProfiles ?? []).map(async (profile) => {
+                  try {
+                    const res = await fetch(
+                      `${origin}/api/emails/send-job-filled-notification`,
+                      {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          email: profile.email,
+                          tradieName: profile.full_name,
+                          jobTitle: job.title,
+                          category: job.category,
+                          location,
+                        }),
+                      }
+                    );
+
+                    if (!res.ok) {
+                      const body = await res.json().catch(() => ({}));
+                      console.error(
+                        "Failed to send job-filled notification email:",
+                        body.error ?? res.statusText
+                      );
+                    }
+                  } catch (err) {
+                    console.error("Failed to send job-filled notification email:", err);
+                  }
+                })
+              );
+            }
+          }
+        } catch (err) {
+          console.error("Failed to send hired/job-filled notification emails:", err);
+        }
       }
     }
   } catch (err) {
