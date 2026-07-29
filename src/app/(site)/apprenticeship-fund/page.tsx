@@ -60,24 +60,6 @@ export default function ApprenticeshipFundPage() {
 
         <section>
           <h2 className="font-display text-xl font-semibold text-navy-950">
-            The math
-          </h2>
-          <p className="mt-3 text-ink-700">
-            Every $20 lead purchased equals $2 toward a toolkit.
-          </p>
-          <div className="mt-4 rounded-2xl border border-hivis-500/30 bg-hivis-500/10 px-6 py-5 text-center">
-            <p className="font-display text-2xl font-semibold text-navy-950">
-              100 leads funded = 1 complete apprenticeship toolkit
-            </p>
-            <p className="mt-1 text-sm text-ink-700">
-              in the hands of a young apprentice ready to build their
-              career.
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="font-display text-xl font-semibold text-navy-950">
             Meet the apprentices
           </h2>
           <p className="mt-3 text-ink-700">
