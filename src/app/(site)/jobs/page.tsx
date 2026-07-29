@@ -30,7 +30,7 @@ function formatPostedAt(createdAt: string) {
 // Traffic-light priority: Urgent = go (green), Flexible = caution
 // (hivis orange), Quotes = stop / lowest tier (red).
 const TIMEFRAME_BADGE_STYLES: Record<string, string> = {
-  Urgent: "bg-iron-600/10 text-iron-600",
+  Urgent: "bg-green-500/10 text-green-600",
   Flexible: "bg-hivis-500/10 text-hivis-600",
   Quotes: "bg-red-100 text-red-700",
 };
