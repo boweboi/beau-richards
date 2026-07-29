@@ -66,6 +66,8 @@ export async function markAsHired(leadId: string) {
       if (hireError) {
         errorMessage = `Hire update failed: ${hireError.message}`;
       } else {
+        const admin = createAdminClient();
+
         // If a second tradie also purchased this lead and hasn't been
         // engaged past the tradie's own pipeline yet, auto-decline them —
         // the job's filled.
@@ -80,12 +82,26 @@ export async function markAsHired(leadId: string) {
 
         console.log("[markAsHired] decline-sibling result", { declineError, declineData });
 
+        // Marking the job completed is a derived effect of the hire
+        // above (already committed) — this drops it off the tradie job
+        // board (jobs/page.tsx filters on status = 'open') while it stays
+        // visible on the homeowner's own dashboard regardless of status.
+        // Logged on failure but doesn't block or error out the hire
+        // itself, since the tradie is correctly marked hired either way.
+        const { error: jobStatusError } = await admin
+          .from("jobs")
+          .update({ status: "completed" })
+          .eq("id", lead.job_id);
+
+        if (jobStatusError) {
+          console.error("[markAsHired] failed to mark job completed", jobStatusError);
+        }
+
         // Hired/job-filled emails are a courtesy, not part of the hire
         // flow itself — the engagement_status updates above already
         // committed, so a failure here (a lookup miss, a Resend error)
         // must never surface to the homeowner or undo the hire.
         try {
-          const admin = createAdminClient();
           const { data: job } = await admin
             .from("jobs")
             .select("title, category, region, town, description")

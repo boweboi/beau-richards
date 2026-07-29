@@ -23,6 +23,24 @@ function formatAmount(amountCents: number) {
   return `$${(amountCents / 100).toFixed(0)}`;
 }
 
+function OutcomeBadge({ engagementStatus }: { engagementStatus: string }) {
+  if (engagementStatus === "hired") {
+    return (
+      <span className="inline-flex items-center rounded-full bg-iron-600/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-iron-600">
+        Won
+      </span>
+    );
+  }
+  if (engagementStatus === "not_progressing") {
+    return (
+      <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-red-700">
+        Lost
+      </span>
+    );
+  }
+  return null;
+}
+
 export default function PurchasedLeadsList({ purchases }: { purchases: PurchaseRow[] }) {
   return (
     <div>
@@ -65,6 +83,7 @@ export default function PurchasedLeadsList({ purchases }: { purchases: PurchaseR
                 </div>
 
                 <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
+                  <OutcomeBadge engagementStatus={purchase.engagement_status} />
                   <LeadEngagementStatusSelect
                     leadId={purchase.id}
                     currentStatus={purchase.engagement_status}

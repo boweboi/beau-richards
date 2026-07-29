@@ -39,12 +39,20 @@ export async function purchaseLead(
 
   const { data: job } = await admin
     .from("jobs")
-    .select("id, title, homeowner_id")
+    .select("id, title, homeowner_id, status")
     .eq("id", jobId)
     .single();
 
   if (!job) {
     return { error: "This job no longer exists." };
+  }
+
+  // Guards against a tradie paying for a job that's already been filled —
+  // e.g. via an old job-alert email or a bookmarked link from before the
+  // homeowner hired someone. Checked before any lead_purchases row is
+  // created or Stripe is ever charged.
+  if (job.status !== "open") {
+    return { error: "This job has already been filled and is no longer accepting leads." };
   }
 
   if (job.homeowner_id === user.id) {
