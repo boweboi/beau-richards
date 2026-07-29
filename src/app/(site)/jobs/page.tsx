@@ -27,6 +27,25 @@ function formatPostedAt(createdAt: string) {
   };
 }
 
+// Urgent stands out (green), Flexible is moderate (hivis orange), Quotes
+// is the lowest-priority tier so it stays a plain neutral badge.
+const TIMEFRAME_BADGE_STYLES: Record<string, string> = {
+  Urgent: "bg-iron-600/10 text-iron-600",
+  Flexible: "bg-hivis-500/10 text-hivis-600",
+  Quotes: "border border-line bg-white text-ink-700",
+};
+
+function TimeframeBadge({ timeframe }: { timeframe: string }) {
+  const style = TIMEFRAME_BADGE_STYLES[timeframe] ?? "border border-line bg-white text-ink-700";
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide ${style}`}
+    >
+      {timeframe}
+    </span>
+  );
+}
+
 function JobGroups({
   groups,
   savedJobIds,
@@ -62,9 +81,12 @@ function JobGroups({
                         <Link href={`/jobs/${job.id}`} className="block">
                           <h4 className="font-semibold text-navy-950">{job.title}</h4>
                           <p className="mt-1 text-sm text-ink-700">{job.description}</p>
-                          <p className="mt-3 text-xs text-ink-500">
-                            Posted {date} at {time}
-                          </p>
+                          <div className="mt-3 flex flex-wrap items-center gap-2">
+                            <TimeframeBadge timeframe={job.timeframe} />
+                            <p className="text-xs text-ink-500">
+                              Posted {date} at {time}
+                            </p>
+                          </div>
                         </Link>
                         {purchasedJobIds.has(job.id) && (
                           <span className="mt-2 inline-flex items-center rounded-full bg-iron-600/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-iron-600">
@@ -202,7 +224,7 @@ export default async function JobsPage({
 
       let query = supabase
         .from("jobs")
-        .select("id, title, description, region, town, created_at", { count: "exact" })
+        .select("id, title, description, region, town, timeframe, created_at", { count: "exact" })
         .eq("status", "open")
         .in("category", categories)
         .in("region", regions)
@@ -238,7 +260,7 @@ export default async function JobsPage({
 
     let query = supabase
       .from("jobs")
-      .select("id, title, description, region, town, created_at", { count: "exact" })
+      .select("id, title, description, region, town, timeframe, created_at", { count: "exact" })
       .eq("status", "open")
       .order("created_at", { ascending: false })
       .range(from, to);

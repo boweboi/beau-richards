@@ -9,6 +9,7 @@ export type Job = {
   description: string;
   region: string;
   town: string;
+  timeframe: string;
   created_at: string;
 };
 
