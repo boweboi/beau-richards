@@ -5,10 +5,10 @@ import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe";
+import { getLeadPriceCents } from "@/lib/leadPricing";
 
 export type PurchaseLeadState = { error: string | null };
 
-const LEAD_PRICE_CENTS = 2000;
 const MAX_TRADIES_PER_LEAD = 2;
 
 export async function purchaseLead(
@@ -39,7 +39,7 @@ export async function purchaseLead(
 
   const { data: job } = await admin
     .from("jobs")
-    .select("id, title, homeowner_id, status")
+    .select("id, title, homeowner_id, status, timeframe")
     .eq("id", jobId)
     .single();
 
@@ -54,6 +54,13 @@ export async function purchaseLead(
   if (job.status !== "open") {
     return { error: "This job has already been filled and is no longer accepting leads." };
   }
+
+  // Server-derived from the job row just fetched from the database —
+  // never from the client (this action only ever receives jobId; nothing
+  // resembling a price crosses the wire from the browser) — so there's
+  // nothing here a tradie could tamper with to pay less than the tier
+  // actually costs.
+  const priceCents = getLeadPriceCents(job.timeframe);
 
   if (job.homeowner_id === user.id) {
     return { error: "You can't purchase your own lead." };
@@ -84,9 +91,12 @@ export async function purchaseLead(
   // Own-session client, not the admin client — RLS's "insert_own" policy
   // is what allows this (a tradie may only ever insert a row for
   // themselves; nothing here can mark it 'paid' but the webhook).
+  // amount_cents is set explicitly now that price varies by tier — the
+  // column's DB default (2000) is only ever a fallback for rows inserted
+  // outside this action, never the source of truth here.
   const { data: purchase, error: insertError } = await supabase
     .from("lead_purchases")
-    .insert({ job_id: jobId, tradie_id: user.id, status: "pending" })
+    .insert({ job_id: jobId, tradie_id: user.id, status: "pending", amount_cents: priceCents })
     .select("id")
     .single();
 
@@ -108,7 +118,7 @@ export async function purchaseLead(
         price_data: {
           currency: "nzd",
           product_data: { name: `Job lead: ${job.title}` },
-          unit_amount: LEAD_PRICE_CENTS,
+          unit_amount: priceCents,
         },
         quantity: 1,
       },
