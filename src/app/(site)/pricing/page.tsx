@@ -1,70 +1,74 @@
-import Link from "next/link";
-
 export default function PricingPage() {
   return (
     <main className="flex-1 bg-paper-0 px-4 py-16 sm:py-20">
-      <div className="mx-auto max-w-4xl text-center">
+      <div className="mx-auto max-w-2xl text-center">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
           Pricing
         </p>
         <h1 className="mt-3 font-display text-3xl font-semibold text-navy-950 sm:text-4xl">
-          Simple, fair pricing.
+          TradieMatch Pricing
         </h1>
         <p className="mt-4 text-ink-700">
-          Homeowners never pay a cent. Tradies only pay for the leads they
-          choose to respond to.
+          We believe in fair pricing that reflects the quality of the
+          lead. Every job on TradieMatch falls into one of three tiers
+          based on how urgent the homeowner is.
         </p>
       </div>
 
-      <div className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
-        <div className="rounded-2xl border border-line bg-white p-8">
-          <span className="inline-flex items-center rounded-full bg-navy-900/5 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-navy-700">
-            Homeowners
-          </span>
-          <p className="mt-4 font-display text-4xl font-semibold text-navy-950">
-            Free
+      <div className="mx-auto mt-16 max-w-2xl space-y-14">
+        <section>
+          <h2 className="font-display text-xl font-semibold text-navy-950">
+            Urgent — $25
+          </h2>
+          <p className="mt-3 text-ink-700">
+            The homeowner needs work done as soon as possible. These are
+            hot leads with real timeline pressure and high conversion
+            odds. You&apos;re competing with one tradie on our platform,
+            but if you quote fast and professionally, you&apos;ve got a
+            genuine shot at winning the job.
           </p>
-          <p className="mt-1 text-sm text-ink-500">
-            Always free to post a job.
-          </p>
-          <ul className="mt-6 space-y-3 text-sm text-ink-700">
-            <li>Post as many jobs as you need</li>
-            <li>Get quotes from verified local tradies</li>
-            <li>No fees, no commissions, ever</li>
-          </ul>
-          <Link
-            href="/post-a-job"
-            className="mt-8 inline-flex w-full items-center justify-center rounded-md bg-navy-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-navy-900"
-          >
-            Post a job — it&apos;s free
-          </Link>
-        </div>
+        </section>
 
-        <div className="rounded-2xl border border-white/10 bg-navy-950 p-8 text-white">
-          <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-hivis-400">
-            Tradies
-          </span>
-          <p className="mt-4 font-display text-4xl font-semibold">
-            $20{" "}
-            <span className="text-lg font-normal text-white/60">
-              / lead
-            </span>
+        <section>
+          <h2 className="font-display text-xl font-semibold text-navy-950">
+            Flexible — $15
+          </h2>
+          <p className="mt-3 text-ink-700">
+            The homeowner wants the work done, but they&apos;re not in a
+            rush. They&apos;ve got a few weeks or more to get it sorted.
+            These are solid leads with good conversion odds — you&apos;re
+            still competing, but the timeline is relaxed enough that
+            professionalism and a fair quote go a long way.
           </p>
-          <p className="mt-1 text-sm text-white/60">
-            Pay only when you respond to a job.
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl font-semibold text-navy-950">
+            Quotes — $10
+          </h2>
+          <p className="mt-3 text-ink-700">
+            The homeowner is gathering quotes and exploring options. They
+            might not hire anyone tomorrow, but they&apos;re serious
+            about eventually getting the work done. We price these lower
+            because the conversion odds are longer, but they&apos;re
+            still real opportunities — many tradies build their business
+            on quote-gathering leads that turn into jobs weeks later.
           </p>
-          <ul className="mt-6 space-y-3 text-sm text-white/80">
-            <li>Browse every job for free</li>
-            <li>No monthly fees or subscriptions</li>
-            <li>$20 flat, per lead, whenever you choose to respond</li>
-          </ul>
-          <Link
-            href="/signup"
-            className="mt-8 inline-flex w-full items-center justify-center rounded-md bg-hivis-500 px-5 py-3 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
-          >
-            Sign up as a tradie
-          </Link>
-        </div>
+        </section>
+
+        <section>
+          <h2 className="font-display text-xl font-semibold text-navy-950">
+            Why three tiers?
+          </h2>
+          <p className="mt-3 text-ink-700">
+            It&apos;s simple: we want to be honest with you about what
+            you&apos;re paying for. A homeowner saying &ldquo;I need this
+            next week&rdquo; is a different lead than one saying
+            &ldquo;I&apos;m just getting some quotes.&rdquo; The price
+            reflects that difference, and so do your odds of winning the
+            job.
+          </p>
+        </section>
       </div>
     </main>
   );
