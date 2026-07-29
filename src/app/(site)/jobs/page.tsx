@@ -27,12 +27,12 @@ function formatPostedAt(createdAt: string) {
   };
 }
 
-// Urgent stands out (green), Flexible is moderate (hivis orange), Quotes
-// is the lowest-priority tier so it stays a plain neutral badge.
+// Traffic-light priority: Urgent = go (green), Flexible = caution
+// (hivis orange), Quotes = stop / lowest tier (red).
 const TIMEFRAME_BADGE_STYLES: Record<string, string> = {
   Urgent: "bg-iron-600/10 text-iron-600",
   Flexible: "bg-hivis-500/10 text-hivis-600",
-  Quotes: "border border-line bg-white text-ink-700",
+  Quotes: "bg-red-100 text-red-700",
 };
 
 function TimeframeBadge({ timeframe }: { timeframe: string }) {
