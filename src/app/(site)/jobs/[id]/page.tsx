@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
+import { getLeadPriceCents } from "@/lib/leadPricing";
 import PurchaseLeadButton from "@/components/PurchaseLeadButton";
 
 function formatPostedAt(createdAt: string) {
@@ -43,6 +44,11 @@ export default async function JobDetailPage({
   }
 
   const { date, time } = formatPostedAt(job.created_at);
+
+  // Same source of truth as purchaseLead (src/app/(site)/jobs/[id]/actions.ts)
+  // — both derive the price from this job row's own timeframe, so the
+  // label shown here always matches what Stripe will actually charge.
+  const priceCents = getLeadPriceCents(job.timeframe);
 
   const isOwner = job.homeowner_id === user.id;
 
@@ -155,7 +161,7 @@ export default async function JobDetailPage({
                     {outsideMatchMessage}
                   </p>
                 )}
-                <PurchaseLeadButton jobId={id} />
+                <PurchaseLeadButton jobId={id} priceCents={priceCents} />
               </dd>
             )}
           </dl>
