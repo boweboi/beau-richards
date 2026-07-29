@@ -9,7 +9,7 @@ const FLOWS: Record<Audience, string> = {
   homeowner:
     "Sign up, post your job, and verified tradies in your region will browse it, reach out to discuss and view the project, and send you a quote — then you choose which tradie to hire.",
   tradie:
-    "Sign up and create your profile, browse jobs in your region, and as soon as a homeowner posts a job matching your trade and region, we'll email you the details so you never miss a lead — keep an eye on your inbox (and check your junk folder if you're not seeing them). Reach out to homeowners to discuss and view the project, submit a quote, and once you're hired, build your reputation through reviews.",
+    "Sign up and create your profile, browse jobs in your region, and as soon as a homeowner posts a job matching your trade and region, we'll email you the details so you never miss a lead. Reach out to homeowners to discuss and view the project, submit a quote, and once you're hired, build your reputation through reviews.",
 };
 
 const CTA: Record<Audience, { heading: string; body: string; label: string; href: string }> = {
