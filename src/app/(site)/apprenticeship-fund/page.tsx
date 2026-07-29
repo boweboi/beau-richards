@@ -23,9 +23,8 @@ export default function ApprenticeshipFundPage() {
         <p className="mt-4 text-ink-700">
           For every lead a tradie buys, two dollars goes into our
           apprenticeship toolkit fund. When that fund reaches $2,000, we
-          purchase a professional-grade toolkit and donate it to a
-          rangatahi apprentice through Māori and Pasifika Trades Training
-          (MPTT), helping a young Kiwi take their first real step into a
+          purchase a professional-grade toolkit and donate it to a young
+          apprentice, helping them take their first real step into a
           trades career.
         </p>
       </div>
@@ -37,11 +36,11 @@ export default function ApprenticeshipFundPage() {
           </h2>
           <p className="mt-3 text-ink-700">
             Aotearoā, New Zealand needs skilled tradies now more than
-            ever. But for many young people, especially Māori and
-            Pasifika rangatahi, the barrier isn&apos;t talent or drive.
-            It&apos;s access. Many complete their pre-trades training
-            only to get stuck at the next step, unable to afford the
-            tools they need to land an apprenticeship.
+            ever. But for many young people, the barrier isn&apos;t
+            talent or drive. It&apos;s access. Many complete their
+            pre-trades training only to get stuck at the next step,
+            unable to afford the tools they need to land an
+            apprenticeship.
           </p>
           <p className="mt-3 font-medium text-navy-950">
             We&apos;re here to help open that door.
@@ -71,7 +70,8 @@ export default function ApprenticeshipFundPage() {
               100 leads funded = 1 complete apprenticeship toolkit
             </p>
             <p className="mt-1 text-sm text-ink-700">
-              in the hands of a rangatahi ready to build their career.
+              in the hands of a young apprentice ready to build their
+              career.
             </p>
           </div>
         </section>
@@ -81,7 +81,7 @@ export default function ApprenticeshipFundPage() {
             Meet the apprentices
           </h2>
           <p className="mt-3 text-ink-700">
-            As we fund and donate toolkits, the rangatahi who receive
+            As we fund and donate toolkits, the apprentices who receive
             them will be featured here — their stories, their trades,
             their journey.
           </p>
