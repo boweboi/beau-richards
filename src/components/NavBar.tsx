@@ -39,9 +39,6 @@ export default async function NavBar() {
           <a className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/#how-it-works">
             How it works
           </a>
-          <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/pricing">
-            Pricing
-          </Link>
           <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/tradie-resources">
             Tradie resources
           </Link>
