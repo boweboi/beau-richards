@@ -12,7 +12,6 @@ const columns = [
     title: "Tradies",
     links: [
       { label: "Join as a tradie", href: "/signup" },
-      { label: "Pricing", href: "/pricing" },
       { label: "Trust & verification", href: "/trust" },
       { label: "Tradie resources", href: "/tradie-resources" },
     ],
