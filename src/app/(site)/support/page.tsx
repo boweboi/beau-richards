@@ -17,8 +17,9 @@ const FAQS = [
     question: "How much do tradies pay?",
     answer: (
       <>
-        $20 flat per lead, and only when you choose to respond to a job — no
-        subscriptions or monthly fees. See the full{" "}
+        $10 to $25 per lead depending on the job&apos;s urgency, and only
+        when you choose to respond to a job — no subscriptions or monthly
+        fees. See the full{" "}
         <Link href="/pricing" className="underline hover:text-navy-950">
           pricing breakdown
         </Link>

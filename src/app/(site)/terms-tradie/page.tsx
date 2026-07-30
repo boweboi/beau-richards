@@ -37,8 +37,8 @@ const SECTIONS: Section[] = [
   {
     heading: "3. Lead purchases and payments",
     body: [
-      "3.1 To contact a homeowner and view their details, you must purchase access to a lead for $20 NZD per job.",
-      "3.2 Payment is processed securely through our payment processor, Stripe. By purchasing a lead, you authorise the $20 charge to your payment method.",
+      "3.1 To contact a homeowner and view their details, you must purchase access to a lead. The price depends on the job's urgency tier — see our Pricing page (/pricing) for current rates.",
+      "3.2 Payment is processed securely through our payment processor, Stripe. By purchasing a lead, you authorise the charge shown at checkout to your payment method.",
       "3.3 Once you have paid, your purchase is final. No refunds are issued, including if:",
       [
         "You change your mind after purchase",

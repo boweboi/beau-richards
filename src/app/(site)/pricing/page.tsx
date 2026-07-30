@@ -31,7 +31,7 @@ export default function PricingPage() {
 
         <section>
           <h2 className="font-display text-xl font-semibold text-navy-950">
-            Flexible — $15
+            Flexible — $20
           </h2>
           <p className="mt-3 text-ink-700">
             The homeowner wants the work done, but they&apos;re not in a
