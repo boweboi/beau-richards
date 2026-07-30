@@ -35,7 +35,8 @@ export async function proxy(request: NextRequest) {
   if (
     pathname.startsWith("/admin/dashboard") ||
     pathname.startsWith("/admin/media") ||
-    pathname.startsWith("/admin/tradies")
+    pathname.startsWith("/admin/tradies") ||
+    pathname.startsWith("/admin/homeowners")
   ) {
     const isLoggedIn = await verifySignedSessionValue(
       request.cookies.get(SESSION_COOKIE)?.value
@@ -99,6 +100,7 @@ export const config = {
     "/admin/dashboard",
     "/admin/media",
     "/admin/tradies",
+    "/admin/homeowners",
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

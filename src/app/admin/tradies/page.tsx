@@ -40,18 +40,18 @@ export default function AdminTradiesPage() {
           <p className="text-xs text-ink-500">Manage tradie accounts and verification tiers.</p>
         </div>
         <div className="flex items-center gap-4">
-          <a
+          <Link
             href="/admin/homeowners"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
             Homeowners →
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/dashboard"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
             ← Site content
-          </a>
+          </Link>
         </div>
       </header>
 

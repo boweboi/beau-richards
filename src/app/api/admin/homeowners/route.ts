@@ -10,7 +10,7 @@ export async function GET() {
   const supabase = createAdminClient();
   const { data: homeowners, error } = await supabase
     .from("profiles")
-    .select("id, full_name, email, created_at, deactivated")
+    .select("id, full_name, email")
     .eq("role", "homeowner")
     .order("full_name", { ascending: true });
 
