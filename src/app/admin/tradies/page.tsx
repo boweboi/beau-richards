@@ -1,115 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isRegulatedTrade } from "@/lib/tradeCategories";
-import { getVerificationTier, type VerificationTier } from "@/lib/verificationTier";
-import VerificationBadge from "@/components/VerificationBadge";
+import Link from "next/link";
 
 type Tradie = {
   id: string;
   full_name: string;
   email: string;
-  trade_type: string | null;
-  phone_verified: boolean;
-  email_verified: boolean;
-  nzbn_verified: boolean;
-  lbp_number: string | null;
-  has_level4_qualification: boolean;
-  qualifications_checked: boolean;
-  review_count: number;
-  average_rating: number | null;
-  created_at: string;
-  deactivated: boolean;
-  leads_purchased_count: number;
-  qualification_documents: {
-    id: string;
-    file_name: string;
-    created_at: string;
-    url: string | null;
-  }[];
 };
 
 type Counts = { tradies: number; homeowners: number };
 
-function formatDate(value: string) {
-  return new Date(value).toLocaleDateString("en-NZ", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
-function tierOf(tradie: Tradie): VerificationTier {
-  return getVerificationTier({
-    regulated: isRegulatedTrade(tradie.trade_type),
-    emailVerified: tradie.email_verified,
-    phoneVerified: tradie.phone_verified,
-    nzbnVerified: tradie.nzbn_verified,
-    qualificationsChecked: tradie.qualifications_checked,
-    hasLevel4Qualification: tradie.has_level4_qualification,
-    lbpNumber: tradie.lbp_number,
-    reviewCount: tradie.review_count,
-    averageRating: tradie.average_rating,
-  });
-}
-
-// The next tier up is only ever unlocked by setting the fields an admin
-// can actually vouch for (email/phone/NZBN verified, qualifications
-// checked) — Silver/Gold also require real review volume/rating, which
-// no button can grant. When nothing togglable is left, there's no
-// shortcut to offer.
-function nextTierUpgrade(tradie: Tradie): { label: string; patch: Partial<Tradie> } | null {
-  const tier = tierOf(tradie);
-  const regulated = isRegulatedTrade(tradie.trade_type);
-
-  if (tier === "none") {
-    return regulated
-      ? {
-          label: "Verify for Bronze",
-          patch: {
-            email_verified: true,
-            phone_verified: true,
-            has_level4_qualification: true,
-            qualifications_checked: true,
-          },
-        }
-      : {
-          label: "Verify for Bronze",
-          patch: { email_verified: true, phone_verified: true },
-        };
-  }
-
-  if (tier === "bronze" && !tradie.nzbn_verified) {
-    return { label: "Verify NZBN (Silver)", patch: { nzbn_verified: true } };
-  }
-
-  return null;
-}
-
-type ListTab = "bronze" | "silver" | "gold";
-
-const TABS: { id: ListTab; label: string }[] = [
-  { id: "bronze", label: "Bronze" },
-  { id: "silver", label: "Silver" },
-  { id: "gold", label: "Gold" },
-];
-
-function matchesTab(tradie: Tradie, tab: ListTab): boolean {
-  const isSilver = tradie.qualifications_checked && tradie.review_count < 3;
-  const isGold = tradie.review_count >= 3;
-
-  if (tab === "silver") return isSilver;
-  if (tab === "gold") return isGold;
-  // Bronze tab: email verified, and not already bucketed into Silver or Gold above.
-  return tradie.email_verified && !isSilver && !isGold;
-}
-
 export default function AdminTradiesPage() {
   const [tradies, setTradies] = useState<Tradie[] | null>(null);
   const [counts, setCounts] = useState<Counts | null>(null);
-  const [busyId, setBusyId] = useState<string | null>(null);
-  const [errorId, setErrorId] = useState<string | null>(null);
-  const [tab, setTab] = useState<ListTab>("bronze");
 
   useEffect(() => {
     fetch("/api/admin/tradies")
@@ -119,30 +23,6 @@ export default function AdminTradiesPage() {
         setCounts(data.counts);
       });
   }, []);
-
-  async function patchTradie(id: string, patch: Partial<Tradie>) {
-    setBusyId(id);
-    setErrorId(null);
-
-    const response = await fetch(`/api/admin/tradies/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(patch),
-    });
-
-    setBusyId(null);
-
-    if (!response.ok) {
-      setErrorId(id);
-      return;
-    }
-
-    setTradies((current) =>
-      current
-        ? current.map((tradie) => (tradie.id === id ? { ...tradie, ...patch } : tradie))
-        : current
-    );
-  }
 
   if (!tradies || !counts) {
     return (
@@ -187,139 +67,42 @@ export default function AdminTradiesPage() {
           </div>
         </div>
 
-        <div className="mt-8 flex gap-1 border-b border-line">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`px-4 py-2 text-sm font-medium transition ${
-                tab === t.id
-                  ? "border-b-2 border-navy-950 text-navy-950"
-                  : "text-ink-500 hover:text-navy-950"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="overflow-x-auto rounded-b-2xl bg-paper-0 shadow-sm">
-          <table className="w-full min-w-[900px] text-left text-sm">
+        <div className="mt-8 overflow-x-auto rounded-2xl bg-paper-0 shadow-sm">
+          <table className="w-full min-w-[500px] text-left text-sm">
             <thead>
               <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-500">
                 <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Trade</th>
                 <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Signed up</th>
-                <th className="px-4 py-3 font-medium">Leads purchased</th>
-                <th className="px-4 py-3 font-medium">Tier</th>
-                <th className="px-4 py-3 font-medium">Qualification docs</th>
-                <th className="px-4 py-3 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {tradies.filter((tradie) => matchesTab(tradie, tab)).length === 0 && (
+              {tradies.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-6 text-center text-ink-500">
-                    No tradie accounts in this tab.
+                  <td colSpan={2} className="px-4 py-6 text-center text-ink-500">
+                    No tradie accounts yet.
                   </td>
                 </tr>
               )}
-              {tradies.filter((tradie) => matchesTab(tradie, tab)).map((tradie) => {
-                const tier = tierOf(tradie);
-                const upgrade = nextTierUpgrade(tradie);
-                const busy = busyId === tradie.id;
-
-                return (
-                  <tr key={tradie.id} className="border-b border-line last:border-0">
-                    <td className="px-4 py-3 font-medium text-navy-950">
+              {tradies.map((tradie) => (
+                <tr key={tradie.id} className="border-b border-line last:border-0">
+                  <td className="p-0">
+                    <Link
+                      href={`/admin/tradies/${tradie.id}`}
+                      className="block px-4 py-3 font-medium text-navy-950 hover:underline"
+                    >
                       {tradie.full_name}
-                      <span className="ml-2 text-xs font-normal text-ink-500">
-                        ({tradie.review_count} {tradie.review_count === 1 ? "review" : "reviews"})
-                      </span>
-                      {tradie.deactivated && (
-                        <span className="ml-2 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
-                          Deactivated
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-ink-700">{tradie.trade_type ?? "—"}</td>
-                    <td className="px-4 py-3 text-ink-700">{tradie.email}</td>
-                    <td className="px-4 py-3 text-ink-500">{formatDate(tradie.created_at)}</td>
-                    <td className="px-4 py-3 text-ink-700">{tradie.leads_purchased_count}</td>
-                    <td className="px-4 py-3">
-                      {tier !== "none" ? (
-                        <VerificationBadge tier={tier} />
-                      ) : (
-                        <span className="text-xs text-ink-500">Not verified</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3">
-                      {tradie.qualification_documents.length === 0 ? (
-                        <span className="text-xs text-ink-500">None uploaded</span>
-                      ) : (
-                        <ul className="space-y-1">
-                          {tradie.qualification_documents.map((document) => (
-                            <li key={document.id}>
-                              {document.url ? (
-                                <a
-                                  href={document.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-xs font-medium text-navy-950 underline"
-                                >
-                                  {document.file_name}
-                                </a>
-                              ) : (
-                                <span className="text-xs text-ink-500">{document.file_name}</span>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <label className="flex items-center gap-1.5 text-xs text-ink-700">
-                          <input
-                            type="checkbox"
-                            checked={tradie.qualifications_checked}
-                            disabled={busy}
-                            onChange={(event) =>
-                              patchTradie(tradie.id, {
-                                qualifications_checked: event.target.checked,
-                              })
-                            }
-                            className="accent-navy-950"
-                          />
-                          Qualifications checked
-                        </label>
-                        {upgrade && (
-                          <button
-                            onClick={() => patchTradie(tradie.id, upgrade.patch)}
-                            disabled={busy}
-                            className="rounded-md bg-hivis-500 px-3 py-1.5 text-xs font-semibold text-navy-950 transition hover:bg-hivis-400 disabled:opacity-60"
-                          >
-                            {upgrade.label}
-                          </button>
-                        )}
-                        <button
-                          onClick={() =>
-                            patchTradie(tradie.id, { deactivated: !tradie.deactivated })
-                          }
-                          disabled={busy}
-                          className="rounded-md border border-line px-3 py-1.5 text-xs font-semibold text-ink-700 transition hover:bg-navy-950/5 disabled:opacity-60"
-                        >
-                          {tradie.deactivated ? "Reactivate" : "Deactivate"}
-                        </button>
-                        {errorId === tradie.id && (
-                          <span className="text-xs text-red-600">Failed — try again.</span>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                    </Link>
+                  </td>
+                  <td className="p-0">
+                    <Link
+                      href={`/admin/tradies/${tradie.id}`}
+                      className="block px-4 py-3 text-ink-700"
+                    >
+                      {tradie.email}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
