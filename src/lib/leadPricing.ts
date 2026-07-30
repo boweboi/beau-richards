@@ -5,7 +5,7 @@
 // tamper with it to pay less than the tier actually costs.
 export const LEAD_PRICE_CENTS_BY_TIMEFRAME: Record<string, number> = {
   Urgent: 2500,
-  Flexible: 1500,
+  Flexible: 2000,
   Quotes: 1000,
 };
 
