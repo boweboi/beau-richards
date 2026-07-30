@@ -21,7 +21,7 @@ const CTA: Record<Audience, { heading: string; body: string; label: string; href
   },
   tradie: {
     heading: "Ready to start winning jobs?",
-    body: "For urgent repairs, first to quote often wins. For planned work, your professionalism and price matter most. Your return on investment could be 100 to 500 times the cost of unlocking a lead. Leads start at just $10, and even an urgent job at $25 is less than you'd spend on smoko a day, while the work itself could be worth thousands. You only pay for the leads you choose, on the jobs that suit your trade and region. Sign up and start browsing.",
+    body: "For urgent repairs, first to quote often wins. For planned work, your professionalism matters most. Every lead is a genuine opportunity with huge potential return on investment. Browse jobs that suit your trade and region. Sign up and get all the information you need, including our transparent pricing, to start winning jobs.",
     label: "Sign up as a tradie",
     href: "/signup",
   },
