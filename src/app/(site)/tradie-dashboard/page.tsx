@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
 import WatchlistSection, { type WatchlistRow } from "./WatchlistSection";
 import PurchasedLeadsList, { type PurchaseRow } from "./PurchasedLeadsList";
+import BusinessDetailsSection from "./BusinessDetailsSection";
 import PortfolioSection, { type PortfolioPhotoRow } from "./PortfolioSection";
 import QualificationDocumentsSection, {
   type QualificationDocumentRow,
@@ -23,7 +24,7 @@ export default async function TradieDashboardPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, email, business_name, nzbn, phone")
     .eq("id", user.id)
     .single();
 
@@ -117,6 +118,15 @@ export default async function TradieDashboardPage() {
 
         <section className="mt-14 border-t border-line pt-10">
           <PurchasedLeadsList purchases={purchases} />
+        </section>
+
+        <section className="mt-14 border-t border-line pt-10">
+          <BusinessDetailsSection
+            email={profile.email}
+            defaultBusinessName={profile.business_name ?? ""}
+            defaultNzbn={profile.nzbn ?? ""}
+            defaultPhone={profile.phone ?? ""}
+          />
         </section>
 
         <section className="mt-14 border-t border-line pt-10">

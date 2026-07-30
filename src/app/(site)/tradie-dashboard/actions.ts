@@ -54,6 +54,61 @@ export async function updateLeadEngagementStatus(
   return { error: null };
 }
 
+export type UpdateBusinessDetailsState = { error: string | null; saved?: boolean };
+
+export async function updateBusinessDetails(
+  _prevState: UpdateBusinessDetailsState,
+  formData: FormData
+): Promise<UpdateBusinessDetailsState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  // Email is deliberately not part of this update — it's the Supabase
+  // Auth login identifier, and profiles.email is just a denormalized
+  // copy with no uniqueness constraint of its own. Changing it here
+  // would silently desync it from the real login email (same reasoning
+  // as account/edit/actions.ts's updateContactDetails).
+  const businessName = (formData.get("business_name") as string | null)?.trim() ?? "";
+  const nzbn = (formData.get("nzbn") as string | null)?.trim() ?? "";
+  const phone = (formData.get("phone") as string | null)?.trim() ?? "";
+
+  // If the NZBN value actually changes, drop nzbn_verified — otherwise a
+  // tradie could type in a different number and keep an admin's earlier
+  // verification checkmark from the old one.
+  const { data: currentProfile } = await supabase
+    .from("profiles")
+    .select("nzbn")
+    .eq("id", user.id)
+    .single();
+
+  const nzbnChanged = (currentProfile?.nzbn ?? "") !== nzbn;
+
+  // Own-session client, not the admin client — RLS's profiles_update_own
+  // policy (step2 migration) is what allows this.
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      business_name: businessName || null,
+      nzbn: nzbn || null,
+      phone: phone || null,
+      ...(nzbnChanged ? { nzbn_verified: false } : {}),
+    })
+    .eq("id", user.id);
+
+  if (error) {
+    return { error: "Something went wrong saving your business details. Please try again." };
+  }
+
+  revalidatePath("/tradie-dashboard");
+  return { error: null, saved: true };
+}
+
 export type AddPortfolioPhotoResult = { error: string | null };
 
 export async function addPortfolioPhoto(
