@@ -3,6 +3,7 @@ import TradesCarousel from "@/components/TradesCarousel";
 import TrustStrip, { type TrustStripStats } from "@/components/TrustStrip";
 import HowItWorks from "@/components/HowItWorks";
 import ToolkitFundThermometer from "@/components/ToolkitFundThermometer";
+import EnvironmentalFundCard from "@/components/EnvironmentalFundCard";
 import { createClient } from "@/lib/supabase/server";
 import type { ToolkitDonation } from "@/lib/toolkitFund";
 
@@ -21,7 +22,9 @@ export default async function Home() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("site_stats")
-    .select("verified_tradies, jobs_completed, toolkit_fund_amount, toolkit_donations")
+    .select(
+      "verified_tradies, jobs_completed, toolkit_fund_amount, toolkit_donations, environmental_fund_amount"
+    )
     .eq("id", 1)
     .single();
 
@@ -30,6 +33,7 @@ export default async function Home() {
   const toolkitDonations: ToolkitDonation[] = Array.isArray(data?.toolkit_donations)
     ? data.toolkit_donations
     : [];
+  const environmentalFundAmount = Number(data?.environmental_fund_amount ?? 0);
 
   return (
     <main className="flex-1">
@@ -38,6 +42,7 @@ export default async function Home() {
       <TrustStrip stats={stats} />
       <HowItWorks />
       <ToolkitFundThermometer amount={toolkitFundAmount} donations={toolkitDonations} />
+      <EnvironmentalFundCard amount={environmentalFundAmount} />
     </main>
   );
 }
