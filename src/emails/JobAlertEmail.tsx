@@ -36,7 +36,7 @@ function truncate(text: string, max = 140) {
 export default function JobAlertEmail({
   tradieName = "there",
   jobs,
-  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tradiematch.co.nz",
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradiematch.co.nz",
   // Placeholder — there's no /settings/alerts page in the app yet. Swap
   // this default for a real preferences URL once one exists.
   preferencesUrl = "#",
@@ -114,7 +114,7 @@ JobAlertEmail.PreviewProps = {
       description:
         "Rear deck has several loose boards and needs a full sand and restain before summer. Roughly 25sqm.",
       postedAt: "2 hours ago",
-      url: "https://tradiematch.co.nz/jobs/1",
+      url: "https://www.tradiematch.co.nz/jobs/1",
     },
     {
       title: "Bathroom vanity installation",
@@ -122,7 +122,7 @@ JobAlertEmail.PreviewProps = {
       description:
         "New vanity and mirror purchased, need someone to remove the old unit and install the new one plus reseal.",
       postedAt: "5 hours ago",
-      url: "https://tradiematch.co.nz/jobs/2",
+      url: "https://www.tradiematch.co.nz/jobs/2",
     },
   ],
 } as JobAlertEmailProps;

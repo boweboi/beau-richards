@@ -41,7 +41,7 @@ export default function LeadPurchaseReceipt({
   location,
   price = 20,
   estimatedResponseTime = "within 24 hours",
-  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tradiematch.co.nz",
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradiematch.co.nz",
   dashboardUrl = `${siteUrl}/dashboard`,
 }: LeadPurchaseReceiptProps) {
   const previewText = `Receipt ${receiptNumber}: you unlocked "${jobTitle}" for ${formatNzd(

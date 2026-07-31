@@ -26,7 +26,7 @@ export default function JobFilledNotificationEmail({
   jobTitle,
   category,
   location,
-  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tradiematch.co.nz",
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradiematch.co.nz",
 }: JobFilledNotificationEmailProps) {
   return (
     <Html>

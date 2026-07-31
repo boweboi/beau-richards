@@ -22,7 +22,7 @@ export interface VerifyEmailProps {
 export default function VerifyEmail({
   firstName = "there",
   verifyUrl,
-  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tradiematch.co.nz",
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradiematch.co.nz",
 }: VerifyEmailProps) {
   return (
     <Html>
@@ -71,7 +71,7 @@ export default function VerifyEmail({
 
 VerifyEmail.PreviewProps = {
   firstName: "Sam",
-  verifyUrl: "https://tradiematch.co.nz/auth/confirm?token_hash=example&type=magiclink",
+  verifyUrl: "https://www.tradiematch.co.nz/auth/confirm?token_hash=example&type=magiclink",
 } as VerifyEmailProps;
 
 const styles = {
