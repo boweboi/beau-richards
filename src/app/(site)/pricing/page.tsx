@@ -13,6 +13,14 @@ export default function PricingPage() {
           lead. Every job on TradieMatch falls into one of three tiers
           based on how urgent the homeowner is.
         </p>
+
+        <p className="mt-6 rounded-md bg-hivis-500/10 px-4 py-3 text-sm text-navy-950">
+          <strong>Every lead is capped at 2 tradies, max.</strong> Once you
+          buy a lead, you&apos;ll be competing with at most one other
+          tradie on the platform for that job — never more. If 2 tradies
+          have already bought a lead, it&apos;s closed to further
+          purchases.
+        </p>
       </div>
 
       <div className="mx-auto mt-16 max-w-2xl space-y-14">

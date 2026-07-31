@@ -34,26 +34,28 @@ export async function POST(request: NextRequest) {
 
     if (purchaseId) {
       const admin = createAdminClient();
-      const { data: updatedPurchase, error: updateError } = await admin
-        .from("lead_purchases")
-        .update({
-          status: "paid",
-          paid_at: new Date().toISOString(),
-          stripe_payment_intent_id:
-            typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id,
-        })
-        .eq("id", purchaseId)
-        .eq("stripe_checkout_session_id", session.id)
-        .select("id, job_id, tradie_id, amount_cents")
-        .single();
+      const paymentIntentId =
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id;
 
-      // A failed or no-op update must not be swallowed — returning 200 here
-      // would tell Stripe the event was handled when the purchase was
-      // never actually marked paid, and Stripe would never retry.
-      if (updateError || !updatedPurchase) {
+      // mark_lead_purchase_paid (step23-lead-purchases-two-tradie-cap.sql)
+      // is the real 2-tradies-per-lead guarantee — it locks the job row
+      // and re-checks the paid count inside the same transaction, so two
+      // near-simultaneous purchases of the same lead can't both slip past
+      // a plain "count then update" race the way a direct .update() here
+      // could.
+      const { data: rpcRows, error: rpcError } = await admin.rpc("mark_lead_purchase_paid", {
+        p_purchase_id: purchaseId,
+        p_session_id: session.id,
+        p_payment_intent_id: paymentIntentId,
+      });
+      const result = rpcRows?.[0];
+
+      if (rpcError || !result) {
         console.error(
-          `Failed to mark lead_purchases paid for purchase_id=${purchaseId}, session=${session.id}:`,
-          updateError?.message ?? "update matched no rows"
+          `mark_lead_purchase_paid failed for purchase_id=${purchaseId}, session=${session.id}:`,
+          rpcError?.message ?? "no result returned"
         );
         return NextResponse.json(
           { error: "Failed to record the paid purchase." },
@@ -61,6 +63,69 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      if (result.outcome === "not_found") {
+        console.error(
+          `mark_lead_purchase_paid found no matching pending purchase for purchase_id=${purchaseId}, session=${session.id}`
+        );
+        return NextResponse.json(
+          { error: "Failed to record the paid purchase." },
+          { status: 500 }
+        );
+      }
+
+      if (result.outcome === "already_refunded") {
+        // Stripe redelivering an event we already fully handled (refund
+        // included) — acknowledge without re-attempting the refund.
+        console.log(
+          `mark_lead_purchase_paid: purchase_id=${purchaseId} already refunded, acknowledging replay.`
+        );
+        return NextResponse.json({ received: true });
+      }
+
+      if (result.outcome === "cap_reached") {
+        // This lead already had 2 paid tradies by the time this payment's
+        // webhook landed — a genuine (rare) race between two near-
+        // simultaneous purchases. The tradie was really charged for a
+        // lead they can never access, so refund them rather than leave
+        // them stuck paying for nothing.
+        console.warn(
+          `Lead purchase cap already reached for purchase_id=${purchaseId} — refunding payment_intent=${paymentIntentId}`
+        );
+
+        if (!paymentIntentId) {
+          console.error(`No payment_intent to refund for purchase_id=${purchaseId} after cap_reached.`);
+          return NextResponse.json({ error: "Missing payment intent to refund." }, { status: 500 });
+        }
+
+        try {
+          await getStripe().refunds.create({ payment_intent: paymentIntentId });
+        } catch (err) {
+          console.error(`Failed to refund payment_intent=${paymentIntentId} after cap_reached:`, err);
+          return NextResponse.json({ error: "Failed to refund an over-cap purchase." }, { status: 500 });
+        }
+
+        const { error: refundStatusError } = await admin
+          .from("lead_purchases")
+          .update({ status: "refunded", stripe_payment_intent_id: paymentIntentId })
+          .eq("id", purchaseId)
+          .eq("stripe_checkout_session_id", session.id)
+          .eq("status", "pending");
+
+        if (refundStatusError) {
+          // The Stripe refund already succeeded — don't fail the webhook,
+          // or Stripe will retry and attempt to refund an already-refunded
+          // payment intent. Log loudly for manual follow-up instead.
+          console.error(
+            `Refunded payment_intent=${paymentIntentId} but failed to mark lead_purchases refunded for purchase_id=${purchaseId}:`,
+            refundStatusError.message
+          );
+        }
+
+        return NextResponse.json({ received: true });
+      }
+
+      // outcome === "paid"
+      const updatedPurchase = result;
       console.log(
         `Marked lead_purchases paid: purchase_id=${updatedPurchase.id}, job_id=${updatedPurchase.job_id}, tradie_id=${updatedPurchase.tradie_id}`
       );
