@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     if (purchaseId) {
       const admin = createAdminClient();
-      const { data: updatedPurchase } = await admin
+      const { data: updatedPurchase, error: updateError } = await admin
         .from("lead_purchases")
         .update({
           status: "paid",
@@ -47,69 +47,83 @@ export async function POST(request: NextRequest) {
         .select("id, job_id, tradie_id, amount_cents")
         .single();
 
+      // A failed or no-op update must not be swallowed — returning 200 here
+      // would tell Stripe the event was handled when the purchase was
+      // never actually marked paid, and Stripe would never retry.
+      if (updateError || !updatedPurchase) {
+        console.error(
+          `Failed to mark lead_purchases paid for purchase_id=${purchaseId}, session=${session.id}:`,
+          updateError?.message ?? "update matched no rows"
+        );
+        return NextResponse.json(
+          { error: "Failed to record the paid purchase." },
+          { status: 500 }
+        );
+      }
+
+      console.log(
+        `Marked lead_purchases paid: purchase_id=${updatedPurchase.id}, job_id=${updatedPurchase.job_id}, tradie_id=${updatedPurchase.tradie_id}`
+      );
+
       // Toolkit fund increment — like the receipt email below, this is a
       // side effect of the purchase being marked paid above, not part of
       // the payment flow itself, so a failure here must never affect the
       // webhook's response to Stripe. Done via RPC (not a JS read/write)
       // because a read-then-write here would race under concurrent
       // Stripe events and silently drop increments.
-      if (updatedPurchase) {
-        try {
-          const { error: incrementError } = await admin.rpc("increment_toolkit_fund", {
-            amount: 2,
-          });
-          if (incrementError) {
-            console.error("Failed to increment toolkit fund:", incrementError.message);
-          }
-        } catch (err) {
-          console.error("Failed to increment toolkit fund:", err);
+      try {
+        const { error: incrementError } = await admin.rpc("increment_toolkit_fund", {
+          amount: 2,
+        });
+        if (incrementError) {
+          console.error("Failed to increment toolkit fund:", incrementError.message);
         }
+      } catch (err) {
+        console.error("Failed to increment toolkit fund:", err);
       }
 
       // Receipt email is a nice-to-have, not part of the payment flow — the
       // purchase is already marked paid above, so any failure here (a
       // lookup miss, a Resend error) must never affect the webhook's
       // response to Stripe.
-      if (updatedPurchase) {
-        try {
-          const [{ data: job }, { data: tradieProfile }] = await Promise.all([
-            admin
-              .from("jobs")
-              .select("title, category, region, town")
-              .eq("id", updatedPurchase.job_id)
-              .single(),
-            admin
-              .from("profiles")
-              .select("full_name, email")
-              .eq("id", updatedPurchase.tradie_id)
-              .single(),
-          ]);
+      try {
+        const [{ data: job }, { data: tradieProfile }] = await Promise.all([
+          admin
+            .from("jobs")
+            .select("title, category, region, town")
+            .eq("id", updatedPurchase.job_id)
+            .single(),
+          admin
+            .from("profiles")
+            .select("full_name, email")
+            .eq("id", updatedPurchase.tradie_id)
+            .single(),
+        ]);
 
-          if (job && tradieProfile) {
-            const receiptNumber = `TM-${updatedPurchase.id.slice(0, 8).toUpperCase()}`;
+        if (job && tradieProfile) {
+          const receiptNumber = `TM-${updatedPurchase.id.slice(0, 8).toUpperCase()}`;
 
-            const res = await fetch(`${request.nextUrl.origin}/api/emails/send-lead-receipt`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: tradieProfile.email,
-                tradieName: tradieProfile.full_name,
-                receiptNumber,
-                jobTitle: job.title,
-                category: job.category,
-                location: `${job.town}, ${job.region}`,
-                price: updatedPurchase.amount_cents / 100,
-              }),
-            });
+          const res = await fetch(`${request.nextUrl.origin}/api/emails/send-lead-receipt`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: tradieProfile.email,
+              tradieName: tradieProfile.full_name,
+              receiptNumber,
+              jobTitle: job.title,
+              category: job.category,
+              location: `${job.town}, ${job.region}`,
+              price: updatedPurchase.amount_cents / 100,
+            }),
+          });
 
-            if (!res.ok) {
-              const body = await res.json().catch(() => ({}));
-              console.error("Failed to send lead receipt email:", body.error ?? res.statusText);
-            }
+          if (!res.ok) {
+            const body = await res.json().catch(() => ({}));
+            console.error("Failed to send lead receipt email:", body.error ?? res.statusText);
           }
-        } catch (err) {
-          console.error("Failed to send lead receipt email:", err);
         }
+      } catch (err) {
+        console.error("Failed to send lead receipt email:", err);
       }
     }
   }
