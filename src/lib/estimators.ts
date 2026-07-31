@@ -55,8 +55,7 @@ export type EstimatorCategory =
   | "Outdoor & structural"
   | "Exterior"
   | "Renovations"
-  | "Interior systems"
-  | "Specialist";
+  | "Interior systems";
 
 export type EstimatorConfig = {
   slug: string;
@@ -305,32 +304,6 @@ const ESTIMATOR_LIST: EstimatorConfig[] = [
       };
     },
   },
-  {
-    slug: "landscaping_outdoors",
-    name: "Landscaping & outdoor living",
-    category: "Outdoor & structural",
-    description: "General landscaping, planting, and outdoor living projects.",
-    fields: [
-      {
-        type: "select",
-        key: "work_type",
-        label: "Type of work",
-        defaultValue: "general",
-        options: [
-          { value: "general", label: "General tidy-up / planting" },
-          { value: "paving", label: "Paving or hard landscaping" },
-          { value: "full", label: "Full outdoor living redesign" },
-        ],
-      },
-    ],
-    calculate() {
-      return {
-        breakdown: [],
-        note: "Landscaping costs vary too widely for a reliable ballpark — from a weekend tidy-up to a full outdoor renovation. Post a job and get direct quotes from local landscapers instead.",
-      };
-    },
-  },
-
   // ---------------------------------------------------------------
   // Exterior
   // ---------------------------------------------------------------
@@ -775,41 +748,6 @@ const ESTIMATOR_LIST: EstimatorConfig[] = [
       };
     },
   },
-
-  // ---------------------------------------------------------------
-  // Specialist
-  // ---------------------------------------------------------------
-  {
-    slug: "asbestos_removal",
-    name: "Asbestos removal",
-    category: "Specialist",
-    description: "Licensed asbestos removal.",
-    fields: [
-      {
-        type: "select",
-        key: "area_size",
-        label: "Area affected",
-        defaultValue: "small",
-        options: [
-          { value: "small", label: "Small area (e.g. single room / garage)" },
-          { value: "medium", label: "Medium area (e.g. full roof / exterior cladding)" },
-        ],
-      },
-    ],
-    calculate(inputs) {
-      const buckets: Record<string, [number, number]> = {
-        small: [1500, 3000],
-        medium: [6000, 12000],
-      };
-      const [min, max] = buckets[asString(inputs.area_size)] ?? buckets.small;
-      return {
-        min,
-        max,
-        breakdown: [`Typical range for this area: ${formatNzd(min)}-${formatNzd(max)}`],
-        note: "Asbestos removal is legally regulated in NZ — always use a licensed asbestos removalist (WorkSafe requirements apply above certain thresholds).",
-      };
-    },
-  },
 ];
 
 export const ESTIMATORS: Record<string, EstimatorConfig> = Object.fromEntries(
@@ -821,12 +759,14 @@ export const ESTIMATOR_CATEGORY_ORDER: EstimatorCategory[] = [
   "Exterior",
   "Renovations",
   "Interior systems",
-  "Specialist",
 ];
 
+// Filters out any category with zero estimators, so removing the last
+// estimator in a category (as happened with "Specialist") doesn't leave a
+// dangling empty heading on the landing page.
 export function getEstimatorsByCategory(): { category: EstimatorCategory; estimators: EstimatorConfig[] }[] {
   return ESTIMATOR_CATEGORY_ORDER.map((category) => ({
     category,
     estimators: ESTIMATOR_LIST.filter((config) => config.category === category),
-  }));
+  })).filter((group) => group.estimators.length > 0);
 }
