@@ -1,3 +1,4 @@
+import Link from "next/link";
 import CorrugatedPattern from "./CorrugatedPattern";
 
 export default function Hero() {
@@ -28,6 +29,13 @@ export default function Hero() {
             Describe the job once. Verified local tradies send you quotes —
             no cold calls, no chasing callbacks, no guesswork on price.
           </p>
+
+          <Link
+            href="/estimators"
+            className="mt-6 inline-flex items-center justify-center rounded-md bg-hivis-500 px-5 py-3 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
+          >
+            Estimate Your Project Cost
+          </Link>
         </div>
 
         {/* The fork in the road: two doors, one page. */}
