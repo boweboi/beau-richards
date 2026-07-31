@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { logout } from "@/lib/supabase/actions";
+import GivingBackMenu from "./GivingBackMenu";
 
 export default async function NavBar() {
   const supabase = await createClient();
@@ -23,7 +24,7 @@ export default async function NavBar() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-paper-0/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <span
             aria-hidden="true"
             className="grid h-8 w-8 place-items-center rounded-md bg-navy-900 text-sm font-bold text-hivis-500"
@@ -33,21 +34,19 @@ export default async function NavBar() {
           <span className="font-display text-lg font-semibold tracking-tight text-navy-950">
             TradieMatch
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-ink-700 md:flex">
-          <a className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/#how-it-works">
+          <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/#how-it-works">
             How it works
-          </a>
+          </Link>
           <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/tradie-resources">
             Tradie resources
           </Link>
           <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/homeowner-resources">
             Homeowner resources
           </Link>
-          <Link className="hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8" href="/apprenticeship-fund">
-            Apprenticeship Fund
-          </Link>
+          <GivingBackMenu />
         </nav>
 
         <div className="flex items-center gap-4">
