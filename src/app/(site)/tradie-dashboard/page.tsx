@@ -11,6 +11,7 @@ import QualificationDocumentsSection, {
 } from "./QualificationDocumentsSection";
 import ResourceLinksSection from "./ResourceLinksSection";
 import CompleteProfileSection from "./CompleteProfileSection";
+import ReviewsSection, { type ReviewRow } from "./ReviewsSection";
 
 export default async function TradieDashboardPage() {
   const supabase = await createClient();
@@ -38,6 +39,7 @@ export default async function TradieDashboardPage() {
     { data: purchaseRows },
     { data: photoRows },
     { data: documentRows },
+    { data: reviewRows },
   ] = await Promise.all([
     getTradieMatchCriteria(supabase, user.id),
     supabase
@@ -61,6 +63,13 @@ export default async function TradieDashboardPage() {
       .select("id, storage_path, file_name, created_at")
       .eq("tradie_id", user.id)
       .order("created_at", { ascending: false }),
+    supabase
+      .from("reviews")
+      .select(
+        "id, job_id, homeowner_id, created_at, communication_rating, quality_rating, timeliness_rating, value_rating, professionalism_rating, jobs(title)"
+      )
+      .eq("tradie_id", user.id)
+      .order("created_at", { ascending: false }),
   ]);
 
   const { categories, areas, hasSetup } = criteria;
@@ -68,6 +77,41 @@ export default async function TradieDashboardPage() {
   const purchases = (purchaseRows ?? []) as unknown as PurchaseRow[];
   const photos = (photoRows ?? []) as PortfolioPhotoRow[];
   const documents = (documentRows ?? []) as QualificationDocumentRow[];
+
+  // reviews.homeowner_id and reviews.tradie_id both FK to profiles, which
+  // makes a nested `profiles(...)` select on homeowner_id ambiguous (same
+  // issue as the admin tradie detail API) — fetch homeowner names
+  // separately instead.
+  const homeownerIds = Array.from(
+    new Set((reviewRows ?? []).map((row) => row.homeowner_id))
+  );
+  const { data: homeownerRows } =
+    homeownerIds.length > 0
+      ? await supabase.from("profiles").select("id, full_name").in("id", homeownerIds)
+      : { data: [] as { id: string; full_name: string }[] };
+
+  const homeownerNameById = new Map(
+    (homeownerRows ?? []).map((row) => [row.id, row.full_name])
+  );
+
+  const reviews: ReviewRow[] = (reviewRows ?? []).map((row) => ({
+    id: row.id,
+    created_at: row.created_at,
+    homeowner_name: homeownerNameById.get(row.homeowner_id) ?? "Homeowner",
+    job_title: (row.jobs as unknown as { title: string } | null)?.title ?? null,
+    communication_rating: row.communication_rating,
+    quality_rating: row.quality_rating,
+    timeliness_rating: row.timeliness_rating,
+    value_rating: row.value_rating,
+    professionalism_rating: row.professionalism_rating,
+    overall_rating:
+      (row.communication_rating +
+        row.quality_rating +
+        row.timeliness_rating +
+        row.value_rating +
+        row.professionalism_rating) /
+      5,
+  }));
 
   return (
     <main className="min-h-screen bg-paper-0 px-4 py-12 sm:py-16">
@@ -135,6 +179,10 @@ export default async function TradieDashboardPage() {
 
         <section className="mt-14 border-t border-line pt-10">
           <QualificationDocumentsSection documents={documents} />
+        </section>
+
+        <section className="mt-14 border-t border-line pt-10">
+          <ReviewsSection reviews={reviews} />
         </section>
 
         <section className="mt-14 border-t border-line pt-10">
