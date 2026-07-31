@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import MaintenanceModeToggle from "@/components/admin/MaintenanceModeToggle";
 
 export default function AdminDashboardPage() {
@@ -22,30 +23,36 @@ export default function AdminDashboardPage() {
           <p className="text-xs text-ink-500">Manage the live site.</p>
         </div>
         <div className="flex items-center gap-3">
-          <a
+          <Link
             href="/admin/media"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
             Media manager
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/tradies"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
             Tradies
-          </a>
-          <a
+          </Link>
+          <Link
+            href="/admin/tradies/by-region"
+            className="text-sm font-medium text-ink-700 hover:text-navy-950"
+          >
+            Trade &amp; region
+          </Link>
+          <Link
             href="/admin/homeowners"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
             Homeowners
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/site-stats"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
             Site stats
-          </a>
+          </Link>
           <a
             href="/"
             target="_blank"

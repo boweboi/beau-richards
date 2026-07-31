@@ -41,6 +41,12 @@ export default function AdminTradiesPage() {
         </div>
         <div className="flex items-center gap-4">
           <Link
+            href="/admin/tradies/by-region"
+            className="text-sm font-medium text-ink-700 hover:text-navy-950"
+          >
+            By trade &amp; region →
+          </Link>
+          <Link
             href="/admin/homeowners"
             className="text-sm font-medium text-ink-700 hover:text-navy-950"
           >
