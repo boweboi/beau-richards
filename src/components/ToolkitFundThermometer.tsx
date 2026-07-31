@@ -1,10 +1,68 @@
 import Link from "next/link";
 import { TOOLKIT_FUND_TARGET, type ToolkitDonation } from "@/lib/toolkitFund";
 
-const MARKER_AMOUNTS = [0, 500, 1000, 1500, 2000];
-
 function formatDollars(value: number) {
   return `$${Math.round(value).toLocaleString("en-NZ")}`;
+}
+
+function HammerIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className}>
+      <g transform="rotate(45 12 12)">
+        <rect x="8.5" y="2.5" width="7" height="5" rx="1.2" fill="currentColor" />
+        <rect x="10.7" y="7" width="2.6" height="13.5" rx="1.2" fill="currentColor" />
+      </g>
+    </svg>
+  );
+}
+
+const GAUGE_SIZE = 176;
+const GAUGE_STROKE = 12;
+const GAUGE_RADIUS = (GAUGE_SIZE - GAUGE_STROKE) / 2;
+const GAUGE_CIRCUMFERENCE = 2 * Math.PI * GAUGE_RADIUS;
+
+function ProgressGauge({ pct }: { pct: number }) {
+  const offset = GAUGE_CIRCUMFERENCE * (1 - pct / 100);
+
+  return (
+    <div className="relative" style={{ width: GAUGE_SIZE, height: GAUGE_SIZE }}>
+      <svg
+        width={GAUGE_SIZE}
+        height={GAUGE_SIZE}
+        viewBox={`0 0 ${GAUGE_SIZE} ${GAUGE_SIZE}`}
+        className="-rotate-90"
+        role="progressbar"
+        aria-valuenow={Math.round(pct)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <circle
+          cx={GAUGE_SIZE / 2}
+          cy={GAUGE_SIZE / 2}
+          r={GAUGE_RADIUS}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={GAUGE_STROKE}
+          className="text-navy-950/10"
+        />
+        <circle
+          cx={GAUGE_SIZE / 2}
+          cy={GAUGE_SIZE / 2}
+          r={GAUGE_RADIUS}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={GAUGE_STROKE}
+          strokeLinecap="round"
+          strokeDasharray={GAUGE_CIRCUMFERENCE}
+          strokeDashoffset={offset}
+          className="text-hivis-500 transition-all duration-500"
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <HammerIcon className="h-14 w-14 text-navy-950" />
+      </div>
+    </div>
+  );
 }
 
 export default function ToolkitFundThermometer({
@@ -38,42 +96,11 @@ export default function ToolkitFundThermometer({
         </p>
 
         <div className="mt-10 flex flex-col items-center">
-          <div className="flex flex-col items-center">
-            {/* Tube — markers are positioned relative to this box
-                specifically, so they track the tube regardless of the
-                bulb's size below it. */}
-            <div className="relative">
-              <div
-                role="progressbar"
-                aria-valuenow={Math.round(amount)}
-                aria-valuemin={0}
-                aria-valuemax={TOOLKIT_FUND_TARGET}
-                className="relative h-56 w-10 overflow-hidden rounded-t-full border-2 border-b-0 border-navy-950/15 bg-paper"
-              >
-                <div
-                  className="absolute bottom-0 left-0 w-full bg-hivis-500 transition-all duration-500"
-                  style={{ height: `${pct}%` }}
-                />
-              </div>
+          <ProgressGauge pct={pct} />
 
-              {MARKER_AMOUNTS.map((marker) => (
-                <span
-                  key={marker}
-                  className="absolute right-full mr-2 -translate-y-1/2 whitespace-nowrap text-[10px] font-medium text-ink-500"
-                  style={{ bottom: `${(marker / TOOLKIT_FUND_TARGET) * 100}%` }}
-                >
-                  {formatDollars(marker)}
-                </span>
-              ))}
-            </div>
-
-            {/* Bulb — always filled, like mercury pooling at the base. */}
-            <div className="-mt-1 h-14 w-14 rounded-full border-2 border-navy-950/15 bg-hivis-500" />
-
-            <span className="mt-3 whitespace-nowrap rounded-full bg-navy-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-hivis-500">
-              Tap to learn more
-            </span>
-          </div>
+          <span className="mt-4 whitespace-nowrap rounded-full bg-navy-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-hivis-500">
+            Tap to learn more
+          </span>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
             {formatDollars(amount)} of {formatDollars(TOOLKIT_FUND_TARGET)}
           </p>

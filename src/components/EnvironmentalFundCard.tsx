@@ -5,6 +5,14 @@ function formatDollars(value: number) {
   return `$${Math.round(value).toLocaleString("en-NZ")}`;
 }
 
+function TreeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M12 2 L17 9 H14.3 L18.5 15 H13.2 V22 H10.8 V15 H5.5 L9.7 9 H7 Z" />
+    </svg>
+  );
+}
+
 export default function EnvironmentalFundCard({ amount }: { amount: number }) {
   const trees = treesFunded(amount);
 
@@ -26,11 +34,12 @@ export default function EnvironmentalFundCard({ amount }: { amount: number }) {
         <div className="mt-10 flex flex-col items-center">
           {/* Same h-56 height as the toolkit fund's thermometer tube, for
               visual size parity between the two homepage cards. */}
-          <div className="flex h-56 w-40 flex-col items-center justify-center rounded-2xl border-2 border-navy-950/15 bg-paper">
+          <div className="flex h-56 w-40 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-navy-950/15 bg-paper">
+            <TreeIcon className="h-10 w-10 text-iron-600" />
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-iron-600">
               Trees funded
             </p>
-            <p className="mt-2 font-display text-5xl font-semibold text-navy-950">
+            <p className="font-display text-5xl font-semibold text-navy-950">
               {trees.toLocaleString("en-NZ")}
             </p>
           </div>
