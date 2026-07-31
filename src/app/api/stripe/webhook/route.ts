@@ -138,13 +138,27 @@ export async function POST(request: NextRequest) {
       // Stripe events and silently drop increments.
       try {
         const { error: incrementError } = await admin.rpc("increment_toolkit_fund", {
-          amount: 2,
+          amount: 1,
         });
         if (incrementError) {
           console.error("Failed to increment toolkit fund:", incrementError.message);
         }
       } catch (err) {
         console.error("Failed to increment toolkit fund:", err);
+      }
+
+      // Environmental fund increment — same rationale and RPC pattern as
+      // the toolkit fund above, kept as its own try/catch so a failure in
+      // one fund's increment can never take out the other's.
+      try {
+        const { error: envIncrementError } = await admin.rpc("increment_environmental_fund", {
+          amount: 1,
+        });
+        if (envIncrementError) {
+          console.error("Failed to increment environmental fund:", envIncrementError.message);
+        }
+      } catch (err) {
+        console.error("Failed to increment environmental fund:", err);
       }
 
       // Receipt email is a nice-to-have, not part of the payment flow — the

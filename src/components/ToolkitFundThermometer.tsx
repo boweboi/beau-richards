@@ -29,7 +29,7 @@ export default function ToolkitFundThermometer({
           Every lead we sell chips in towards an apprentice&apos;s toolkit.
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-ink-700">
-          $2 from every lead purchase goes into the Kiwi Trade Toolkit
+          $1 from every lead purchase goes into the Kiwi Trade Toolkit
           Fund. It&apos;s the TradieMatch community working together,
           building up the next generation of tradespeople. When it hits
           $2,000, we buy a complete toolkit, everything a tradie starting

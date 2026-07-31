@@ -21,7 +21,7 @@ export default function ApprenticeshipFundPage() {
           the next generation of Kiwi tradies.
         </p>
         <p className="mt-4 text-ink-700">
-          For every lead a tradie buys, two dollars goes into our
+          For every lead a tradie buys, one dollar goes into our
           apprenticeship toolkit fund. When that fund reaches $2,000, we
           purchase a professional-grade toolkit and donate it to a young
           apprentice, helping them take their first real step into a

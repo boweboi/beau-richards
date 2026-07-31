@@ -22,6 +22,7 @@ const columns = [
     links: [
       { label: "About us", href: "/about" },
       { label: "Apprenticeship Fund", href: "/apprenticeship-fund" },
+      { label: "Environmental Impact", href: "/environmental-impact" },
       { label: "Contact", href: "/contact" },
     ],
   },

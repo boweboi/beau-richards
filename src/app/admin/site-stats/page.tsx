@@ -110,7 +110,7 @@ export default function AdminSiteStatsPage() {
             Toolkit fund
           </h2>
           <p className="mt-1 text-xs text-ink-500">
-            $2 of every lead purchase, tracked automatically. Log a photo
+            $1 of every lead purchase, tracked automatically. Log a photo
             when a toolkit is funded to reset it and add it to the
             homepage gallery.
           </p>
