@@ -5,63 +5,87 @@ function formatDollars(value: number) {
   return `$${Math.round(value).toLocaleString("en-NZ")}`;
 }
 
-function HammerIcon({ className }: { className?: string }) {
+// A side-profile claw hammer: flat striking face + shaft on the right,
+// a forked claw on the left, handle offset under the face (not centered
+// under the whole head) — the asymmetry is what reads as "hammer" rather
+// than a symmetric double-ended gavel head.
+const HAMMER_HEAD_PATH =
+  "M20.5 2 H14 C10.8 2 7.2 2.9 3.8 5.6 L9 6.1 L3.8 8.4 C7.2 10.5 10.8 11.4 14 11.4 H20.5 C21.3 11.4 22 10.7 22 9.9 V3.5 C22 2.7 21.3 2 20.5 2 Z";
+const HAMMER_HANDLE = { x: 11, y: 9.5, width: 3, height: 20.5, rx: 1.5 };
+const HAMMER_VIEW_W = 24;
+const HAMMER_VIEW_H = 32;
+// Fixed, not generated — fine as long as this component only renders
+// once per page (true today, on the homepage). A second instance would
+// need a unique id per instance to avoid the two <clipPath>s colliding.
+const HAMMER_CLIP_ID = "toolkit-hammer-fill-clip";
+
+function HammerSilhouette({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className}>
-      <g transform="rotate(45 12 12)">
-        <rect x="8.5" y="2.5" width="7" height="5" rx="1.2" fill="currentColor" />
-        <rect x="10.7" y="7" width="2.6" height="13.5" rx="1.2" fill="currentColor" />
-      </g>
-    </svg>
+    <g className={className}>
+      <path d={HAMMER_HEAD_PATH} fill="currentColor" />
+      <rect
+        x={HAMMER_HANDLE.x}
+        y={HAMMER_HANDLE.y}
+        width={HAMMER_HANDLE.width}
+        height={HAMMER_HANDLE.height}
+        rx={HAMMER_HANDLE.rx}
+        fill="currentColor"
+      />
+    </g>
   );
 }
 
-const GAUGE_SIZE = 176;
-const GAUGE_STROKE = 12;
-const GAUGE_RADIUS = (GAUGE_SIZE - GAUGE_STROKE) / 2;
-const GAUGE_CIRCUMFERENCE = 2 * Math.PI * GAUGE_RADIUS;
-
-function ProgressGauge({ pct }: { pct: number }) {
-  const offset = GAUGE_CIRCUMFERENCE * (1 - pct / 100);
+// The hammer's own outline is the gauge — it fills with hi-vis orange from
+// the bottom up as the fund grows, rather than a separate ring around a
+// static icon. A <clipPath> masks the hi-vis copy of the same silhouette
+// down to the bottom pct% of the viewBox.
+function HammerFillGauge({ pct }: { pct: number }) {
+  const clamped = Math.max(0, Math.min(100, pct));
+  const fillHeight = (HAMMER_VIEW_H * clamped) / 100;
+  const fillY = HAMMER_VIEW_H - fillHeight;
 
   return (
-    <div className="relative" style={{ width: GAUGE_SIZE, height: GAUGE_SIZE }}>
-      <svg
-        width={GAUGE_SIZE}
-        height={GAUGE_SIZE}
-        viewBox={`0 0 ${GAUGE_SIZE} ${GAUGE_SIZE}`}
-        className="-rotate-90"
-        role="progressbar"
-        aria-valuenow={Math.round(pct)}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
-        <circle
-          cx={GAUGE_SIZE / 2}
-          cy={GAUGE_SIZE / 2}
-          r={GAUGE_RADIUS}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={GAUGE_STROKE}
-          className="text-navy-950/10"
-        />
-        <circle
-          cx={GAUGE_SIZE / 2}
-          cy={GAUGE_SIZE / 2}
-          r={GAUGE_RADIUS}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={GAUGE_STROKE}
-          strokeLinecap="round"
-          strokeDasharray={GAUGE_CIRCUMFERENCE}
-          strokeDashoffset={offset}
-          className="text-hivis-500 transition-all duration-500"
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <HammerIcon className="h-14 w-14 text-navy-950" />
-      </div>
-    </div>
+    <svg
+      width={140}
+      height={(140 * HAMMER_VIEW_H) / HAMMER_VIEW_W}
+      viewBox={`0 0 ${HAMMER_VIEW_W} ${HAMMER_VIEW_H}`}
+      role="progressbar"
+      aria-valuenow={Math.round(clamped)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
+      <defs>
+        <clipPath id={HAMMER_CLIP_ID}>
+          <rect x={0} y={fillY} width={HAMMER_VIEW_W} height={fillHeight} />
+        </clipPath>
+      </defs>
+
+      <HammerSilhouette className="text-navy-950/10" />
+
+      <g clipPath={`url(#${HAMMER_CLIP_ID})`}>
+        <HammerSilhouette className="text-hivis-500 transition-all duration-500" />
+      </g>
+
+      {/* Outline so the hammer still reads clearly at low fill levels. */}
+      <path
+        d={HAMMER_HEAD_PATH}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        className="text-navy-950/25"
+      />
+      <rect
+        x={HAMMER_HANDLE.x}
+        y={HAMMER_HANDLE.y}
+        width={HAMMER_HANDLE.width}
+        height={HAMMER_HANDLE.height}
+        rx={HAMMER_HANDLE.rx}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        className="text-navy-950/25"
+      />
+    </svg>
   );
 }
 
@@ -96,9 +120,9 @@ export default function ToolkitFundThermometer({
         </p>
 
         <div className="mt-10 flex flex-col items-center">
-          <ProgressGauge pct={pct} />
+          <HammerFillGauge pct={pct} />
 
-          <span className="mt-4 whitespace-nowrap rounded-full bg-navy-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-hivis-500">
+          <span className="mt-4 inline-block rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400">
             Tap to learn more
           </span>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
