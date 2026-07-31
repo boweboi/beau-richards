@@ -4,9 +4,9 @@
 // database, never from anything the client sends, so a tradie can't
 // tamper with it to pay less than the tier actually costs.
 export const LEAD_PRICE_CENTS_BY_TIMEFRAME: Record<string, number> = {
-  Urgent: 100,
-  Flexible: 100,
-  Quotes: 100,
+  Urgent: 2500,
+  Flexible: 2000,
+  Quotes: 1000,
 };
 
 // Falls back to the old flat rate for any job whose timeframe predates
