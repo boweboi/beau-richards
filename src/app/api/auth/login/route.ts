@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
   const supabase = await createClient();
   const {
-    data: { user },
+    data: { user, session },
     error,
   } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -63,5 +63,17 @@ export async function POST(request: NextRequest) {
         ? "/homeowner-dashboard"
         : "/account";
 
-  return NextResponse.json({ role: profile?.role ?? null, redirectTo });
+  // access_token/refresh_token are included so a caller running in its own
+  // request context (like the login server action) can establish the real
+  // browser session via supabase.auth.setSession(...) — the cookies this
+  // route's own createClient() sets only apply to this route's own
+  // response, which a server-to-server fetch() never forwards to the
+  // browser. When this endpoint is hit directly from a browser instead,
+  // those cookies land normally and the tokens are simply unused.
+  return NextResponse.json({
+    role: profile?.role ?? null,
+    redirectTo,
+    access_token: session?.access_token,
+    refresh_token: session?.refresh_token,
+  });
 }
