@@ -31,13 +31,14 @@ const STEPS = [
   {
     number: "1",
     title: "Post a Job",
-    description: "Tell us what needs doing, where, and when.",
+    description:
+      "Tell us what needs doing, where, and when. Include a detailed description.",
   },
   {
     number: "2",
     title: "Get Matched",
     description:
-      "Verified tradies matching your job see it and buy it as a lead — up to 2 per job, so you're never swamped.",
+      "Verified tradies matching your job will respond with a quote. Up to two tradies can take on your job at a time, so you get real options without your inbox getting flooded.",
   },
   {
     number: "3",
@@ -53,8 +54,7 @@ const FAQS = [
     answer: (
       <>
         Posting a job and receiving quotes is completely free for
-        homeowners. Tradies pay a small fee to unlock your job as a
-        lead — that&apos;s how we keep it free for you.
+        homeowners.
       </>
     ),
   },
