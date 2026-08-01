@@ -129,13 +129,7 @@ export default function HomeownerRecruitmentPage() {
         />
 
         <div className="relative mx-auto max-w-2xl">
-          {/* Hero imagery placeholder — swap for a photo/video of a
-              homeowner browsing quotes once that asset is produced. */}
-          <div className="mx-auto flex aspect-[4/3] w-full max-w-sm items-center justify-center rounded-2xl border border-dashed border-white/20 bg-white/5 text-sm text-white/40">
-            Hero image coming soon
-          </div>
-
-          <h1 className="mt-8 font-display text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
             Get Multiple Quotes from Local Tradies
           </h1>
           <p className="mt-4 text-white/70">
