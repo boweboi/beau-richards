@@ -1,92 +1,10 @@
 import Link from "next/link";
 import { TOOLKIT_FUND_TARGET, type ToolkitDonation } from "@/lib/toolkitFund";
 
+const MARKER_AMOUNTS = [0, 500, 1000, 1500, 2000];
+
 function formatDollars(value: number) {
   return `$${Math.round(value).toLocaleString("en-NZ")}`;
-}
-
-// A side-profile claw hammer: flat striking face + shaft on the right,
-// a forked claw on the left, handle offset under the face (not centered
-// under the whole head) — the asymmetry is what reads as "hammer" rather
-// than a symmetric double-ended gavel head.
-const HAMMER_HEAD_PATH =
-  "M20.5 2 H14 C10.8 2 7.2 2.9 3.8 5.6 L9 6.1 L3.8 8.4 C7.2 10.5 10.8 11.4 14 11.4 H20.5 C21.3 11.4 22 10.7 22 9.9 V3.5 C22 2.7 21.3 2 20.5 2 Z";
-const HAMMER_HANDLE = { x: 11, y: 9.5, width: 3, height: 20.5, rx: 1.5 };
-const HAMMER_VIEW_W = 24;
-const HAMMER_VIEW_H = 32;
-// Fixed, not generated — fine as long as this component only renders
-// once per page (true today, on the homepage). A second instance would
-// need a unique id per instance to avoid the two <clipPath>s colliding.
-const HAMMER_CLIP_ID = "toolkit-hammer-fill-clip";
-
-function HammerSilhouette({ className }: { className?: string }) {
-  return (
-    <g className={className}>
-      <path d={HAMMER_HEAD_PATH} fill="currentColor" />
-      <rect
-        x={HAMMER_HANDLE.x}
-        y={HAMMER_HANDLE.y}
-        width={HAMMER_HANDLE.width}
-        height={HAMMER_HANDLE.height}
-        rx={HAMMER_HANDLE.rx}
-        fill="currentColor"
-      />
-    </g>
-  );
-}
-
-// The hammer's own outline is the gauge — it fills with hi-vis orange from
-// the bottom up as the fund grows, rather than a separate ring around a
-// static icon. A <clipPath> masks the hi-vis copy of the same silhouette
-// down to the bottom pct% of the viewBox.
-function HammerFillGauge({ pct }: { pct: number }) {
-  const clamped = Math.max(0, Math.min(100, pct));
-  const fillHeight = (HAMMER_VIEW_H * clamped) / 100;
-  const fillY = HAMMER_VIEW_H - fillHeight;
-
-  return (
-    <svg
-      width={140}
-      height={(140 * HAMMER_VIEW_H) / HAMMER_VIEW_W}
-      viewBox={`0 0 ${HAMMER_VIEW_W} ${HAMMER_VIEW_H}`}
-      role="progressbar"
-      aria-valuenow={Math.round(clamped)}
-      aria-valuemin={0}
-      aria-valuemax={100}
-    >
-      <defs>
-        <clipPath id={HAMMER_CLIP_ID}>
-          <rect x={0} y={fillY} width={HAMMER_VIEW_W} height={fillHeight} />
-        </clipPath>
-      </defs>
-
-      <HammerSilhouette className="text-navy-950/10" />
-
-      <g clipPath={`url(#${HAMMER_CLIP_ID})`}>
-        <HammerSilhouette className="text-hivis-500 transition-all duration-500" />
-      </g>
-
-      {/* Outline so the hammer still reads clearly at low fill levels. */}
-      <path
-        d={HAMMER_HEAD_PATH}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="0.6"
-        className="text-navy-950/25"
-      />
-      <rect
-        x={HAMMER_HANDLE.x}
-        y={HAMMER_HANDLE.y}
-        width={HAMMER_HANDLE.width}
-        height={HAMMER_HANDLE.height}
-        rx={HAMMER_HANDLE.rx}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="0.6"
-        className="text-navy-950/25"
-      />
-    </svg>
-  );
 }
 
 export default function ToolkitFundThermometer({
@@ -120,11 +38,42 @@ export default function ToolkitFundThermometer({
         </p>
 
         <div className="mt-10 flex flex-col items-center">
-          <HammerFillGauge pct={pct} />
+          <div className="flex flex-col items-center">
+            {/* Tube — markers are positioned relative to this box
+                specifically, so they track the tube regardless of the
+                bulb's size below it. */}
+            <div className="relative">
+              <div
+                role="progressbar"
+                aria-valuenow={Math.round(amount)}
+                aria-valuemin={0}
+                aria-valuemax={TOOLKIT_FUND_TARGET}
+                className="relative h-56 w-10 overflow-hidden rounded-t-full border-2 border-b-0 border-navy-950/15 bg-paper"
+              >
+                <div
+                  className="absolute bottom-0 left-0 w-full bg-hivis-500 transition-all duration-500"
+                  style={{ height: `${pct}%` }}
+                />
+              </div>
 
-          <span className="mt-4 inline-block rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400">
-            Tap to learn more
-          </span>
+              {MARKER_AMOUNTS.map((marker) => (
+                <span
+                  key={marker}
+                  className="absolute right-full mr-2 -translate-y-1/2 whitespace-nowrap text-[10px] font-medium text-ink-500"
+                  style={{ bottom: `${(marker / TOOLKIT_FUND_TARGET) * 100}%` }}
+                >
+                  {formatDollars(marker)}
+                </span>
+              ))}
+            </div>
+
+            {/* Bulb — always filled, like mercury pooling at the base. */}
+            <div className="-mt-1 h-14 w-14 rounded-full border-2 border-navy-950/15 bg-hivis-500" />
+
+            <span className="mt-3 inline-block rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400">
+              Tap to learn more
+            </span>
+          </div>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
             {formatDollars(amount)} of {formatDollars(TOOLKIT_FUND_TARGET)}
           </p>
