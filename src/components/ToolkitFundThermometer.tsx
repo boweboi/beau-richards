@@ -69,10 +69,6 @@ export default function ToolkitFundThermometer({
 
             {/* Bulb — always filled, like mercury pooling at the base. */}
             <div className="-mt-1 h-14 w-14 rounded-full border-2 border-navy-950/15 bg-hivis-500" />
-
-            <span className="mt-3 inline-block rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400">
-              Tap to learn more
-            </span>
           </div>
           <p className="mt-4 font-display text-xl font-semibold text-navy-950">
             {formatDollars(amount)} of {formatDollars(TOOLKIT_FUND_TARGET)}
@@ -104,6 +100,10 @@ export default function ToolkitFundThermometer({
             </div>
           </div>
         )}
+
+        <span className="mt-8 inline-block rounded-md bg-hivis-500 px-5 py-2.5 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400">
+          Learn More
+        </span>
       </Link>
     </section>
   );
