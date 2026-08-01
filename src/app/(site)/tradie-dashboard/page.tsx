@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
+import { getVerificationTier } from "@/lib/verificationTier";
 import WatchlistSection, { type WatchlistRow } from "./WatchlistSection";
 import PurchasedLeadsList, { type PurchaseRow } from "./PurchasedLeadsList";
 import BusinessDetailsSection from "./BusinessDetailsSection";
@@ -12,6 +13,8 @@ import QualificationDocumentsSection, {
 import ResourceLinksSection from "./ResourceLinksSection";
 import CompleteProfileSection from "./CompleteProfileSection";
 import ReviewsSection, { type ReviewRow } from "./ReviewsSection";
+import VerificationTierSection from "./VerificationTierSection";
+import { isAnyRegulatedTrade } from "@/lib/tradeCategories";
 
 export default async function TradieDashboardPage() {
   const supabase = await createClient();
@@ -25,7 +28,9 @@ export default async function TradieDashboardPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, email, business_name, nzbn, phone")
+    .select(
+      "role, email, business_name, nzbn, phone, email_verified, phone_verified, nzbn_verified, qualifications_checked, has_level4_qualification, lbp_number"
+    )
     .eq("id", user.id)
     .single();
 
@@ -113,6 +118,24 @@ export default async function TradieDashboardPage() {
       5,
   }));
 
+  const reviewCount = reviews.length;
+  const averageRating =
+    reviewCount > 0
+      ? reviews.reduce((sum, review) => sum + review.overall_rating, 0) / reviewCount
+      : null;
+
+  const tier = getVerificationTier({
+    regulated: isAnyRegulatedTrade(categories),
+    emailVerified: profile.email_verified,
+    phoneVerified: profile.phone_verified,
+    nzbnVerified: profile.nzbn_verified,
+    qualificationsChecked: profile.qualifications_checked,
+    hasLevel4Qualification: profile.has_level4_qualification,
+    lbpNumber: profile.lbp_number,
+    reviewCount,
+    averageRating,
+  });
+
   return (
     <main className="min-h-screen bg-paper-0 px-4 py-12 sm:py-16">
       <div className="mx-auto max-w-5xl">
@@ -179,6 +202,15 @@ export default async function TradieDashboardPage() {
 
         <section className="mt-14 border-t border-line pt-10">
           <QualificationDocumentsSection documents={documents} />
+        </section>
+
+        <section className="mt-14 border-t border-line pt-10">
+          <VerificationTierSection
+            tier={tier}
+            nzbnVerified={profile.nzbn_verified}
+            reviewCount={reviewCount}
+            averageRating={averageRating}
+          />
         </section>
 
         <section className="mt-14 border-t border-line pt-10">
