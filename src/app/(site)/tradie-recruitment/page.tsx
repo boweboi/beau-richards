@@ -158,7 +158,7 @@ export default function TradieRecruitmentPage() {
             {/* Silent hero footage — text captions are burned in
                 server-side, not a WebVTT track. */}
             <video
-              className="aspect-[9/16] w-full bg-navy-900 object-cover"
+              className="aspect-[9/16] w-full bg-navy-900 object-cover opacity-50"
               src="/videos/tradie-recruitment-hero.mp4"
               poster="/videos/tradie-recruitment-hero-poster.jpg"
               autoPlay
