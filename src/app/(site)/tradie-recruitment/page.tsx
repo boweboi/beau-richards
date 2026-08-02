@@ -50,7 +50,7 @@ const STEPS = [
   {
     number: "3",
     title: "Buy and Quote",
-    description: `Buy a lead for Urgent (${formatLeadPrice(LEAD_PRICE_CENTS_BY_TIMEFRAME.Urgent)}), Flexible (${formatLeadPrice(LEAD_PRICE_CENTS_BY_TIMEFRAME.Flexible)}), or Quotes (${formatLeadPrice(LEAD_PRICE_CENTS_BY_TIMEFRAME.Quotes)}). Call the homeowner, quote in person, win the job.`,
+    description: `Buy a lead from ${formatLeadPrice(Math.min(...Object.values(LEAD_PRICE_CENTS_BY_TIMEFRAME)))}. Call the homeowner, quote in person, win the job.`,
   },
 ];
 
