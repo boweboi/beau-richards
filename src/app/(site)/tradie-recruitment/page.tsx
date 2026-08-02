@@ -59,15 +59,13 @@ const FAQS = [
     question: "How much does it cost?",
     answer: (
       <>
-        No subscription, no monthly fee. You only pay when you buy a lead:{" "}
-        {formatLeadPrice(LEAD_PRICE_CENTS_BY_TIMEFRAME.Urgent)} for Urgent
-        jobs, {formatLeadPrice(LEAD_PRICE_CENTS_BY_TIMEFRAME.Flexible)} for
-        Flexible jobs, {formatLeadPrice(LEAD_PRICE_CENTS_BY_TIMEFRAME.Quotes)}{" "}
-        for jobs where the homeowner is gathering Quotes. See the full{" "}
-        <Link href="/pricing" className="font-medium text-navy-950 underline">
-          pricing breakdown
-        </Link>
-        .
+        No subscription, no monthly fee. Every job falls into one of
+        three timeframes based on how urgent the homeowner is: Urgent
+        (they need it done as soon as possible), Flexible (they want it
+        done, but there&apos;s no rush), or Quotes (they&apos;re
+        gathering quotes and exploring options). Pricing starts from{" "}
+        {formatLeadPrice(Math.min(...Object.values(LEAD_PRICE_CENTS_BY_TIMEFRAME)))}{" "}
+        per lead — see the full pricing breakdown when you sign up.
       </>
     ),
   },

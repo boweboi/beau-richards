@@ -1,4 +1,16 @@
-export default function PricingPage() {
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+
+export default async function PricingPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   return (
     <main className="flex-1 bg-paper-0 px-4 py-16 sm:py-20">
       <div className="mx-auto max-w-2xl text-center">
