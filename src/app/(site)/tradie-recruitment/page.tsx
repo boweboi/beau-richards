@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CorrugatedPattern from "@/components/CorrugatedPattern";
 import { LEAD_PRICE_CENTS_BY_TIMEFRAME } from "@/lib/leadPricing";
-import { TOOLKIT_FUND_TARGET } from "@/lib/toolkitFund";
-import { DOLLARS_PER_TREE } from "@/lib/environmentalFund";
 
 export const metadata: Metadata = {
   title: "Join as a Tradie | TradieMatch",
@@ -54,90 +52,11 @@ const STEPS = [
   },
 ];
 
-const FAQS = [
-  {
-    question: "How much does it cost?",
-    answer: (
-      <>
-        No subscription, no monthly fee. Every job falls into one of
-        three timeframes based on how urgent the homeowner is: Urgent
-        (they need it done as soon as possible), Flexible (they want it
-        done, but there&apos;s no rush), or Quotes (they&apos;re
-        gathering quotes and exploring options). Pricing starts from{" "}
-        {formatLeadPrice(Math.min(...Object.values(LEAD_PRICE_CENTS_BY_TIMEFRAME)))}{" "}
-        per lead — see the full pricing breakdown when you sign up.
-      </>
-    ),
-  },
-  {
-    question: "How do leads work?",
-    answer: (
-      <>
-        Browse jobs that match your trade and service areas, then buy the
-        ones you want to quote on. Buying a lead unlocks the homeowner&apos;s
-        contact details so you can call them directly. Every lead is capped
-        at 2 tradies, max — once 2 tradies have bought it, it&apos;s closed
-        to further purchases, so you&apos;re never competing with a crowd.
-      </>
-    ),
-  },
-  {
-    question: "How does verification work?",
-    answer: (
-      <>
-        Every tradie moves through three tiers as we confirm more about
-        them — Bronze (email and phone verified, plus qualifications for
-        regulated trades), Silver (NZBN verified with 3+ customer reviews),
-        and Gold (10+ reviews). Homeowners see your badge before they even
-        request a quote. Read more on{" "}
-        <Link href="/trust" className="font-medium text-navy-950 underline">
-          trust &amp; verification
-        </Link>
-        .
-      </>
-    ),
-  },
-  {
-    question: "What's the apprenticeship fund?",
-    answer: (
-      <>
-        $1 from every lead purchased goes into our apprenticeship toolkit
-        fund. Once it reaches {`$${TOOLKIT_FUND_TARGET.toLocaleString("en-NZ")}`}, we buy
-        a professional-grade toolkit and donate it to a young apprentice
-        starting their trade career.{" "}
-        <Link
-          href="/apprenticeship-fund"
-          className="font-medium text-navy-950 underline"
-        >
-          Learn more
-        </Link>
-        .
-      </>
-    ),
-  },
-  {
-    question: "What's the environmental fund?",
-    answer: (
-      <>
-        Another $1 from every lead goes toward native tree planting in
-        Aotearoā — ${DOLLARS_PER_TREE} raised funds one tree. It&apos;s part
-        of practising kaitiakitanga, the Māori principle of guardianship
-        over the land.{" "}
-        <Link
-          href="/environmental-impact"
-          className="font-medium text-navy-950 underline"
-        >
-          See the live counter
-        </Link>
-        .
-      </>
-    ),
-  },
-  {
-    question: "What makes TradieMatch different?",
-    answer:
-      "We're not a subscription service and we don't stack ten tradies onto the same lead — every job is capped at 2 buyers. Every tradie is verified before homeowners see them, and part of every lead you buy goes straight back into the trade: funding apprentice toolkits and native tree planting. Built by Kiwis, for Kiwis in the trades.",
-  },
+const STORY_CHECKLIST = [
+  "No more overpaying for leads that go nowhere.",
+  "Transparent pricing you can see before you commit.",
+  "You'll only ever compete with one other tradie per lead.",
+  "Built by real tradies, not some corporate suit who's never swung a hammer.",
 ];
 
 export default function TradieRecruitmentPage() {
@@ -172,6 +91,80 @@ export default function TradieRecruitmentPage() {
           <p className="mt-4 text-white/70">
             Browse jobs matching your trade, pay only for the leads you buy,
             set your own rates. No subscriptions, no contracts.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-paper px-4 py-16 sm:py-20">
+        <div className="mx-auto max-w-2xl">
+          <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
+            Our Story
+          </p>
+          <h2 className="mt-3 text-center font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
+            Built by tradies, for tradies.
+          </h2>
+
+          <div className="mt-6 space-y-4 text-ink-700">
+            <p>
+              We&apos;re Wellington tradies, and we&apos;ve been in the game
+              for over twenty five years. We know how hard it is out there
+              right now, we&apos;ve seen the ups and the downs firsthand.
+            </p>
+            <p>
+              You work so hard for what you earn, and it feels like
+              everyone&apos;s got their hand in your pocket. And let&apos;s
+              be honest, most of these platforms are run by some corporate
+              suit who&apos;s never done a real day&apos;s work in his life,
+              sitting behind a screen working out how to squeeze a bigger
+              profit off the backs of tradies, because let&apos;s face it,
+              they don&apos;t actually care, they&apos;re just parasites.
+            </p>
+            <p>
+              We know what it&apos;s like coming up in these trades, and
+              we&apos;re committed to putting as many resources in your
+              hands as we can, because it&apos;s what we wished we had when
+              we were starting out. That&apos;s why we&apos;re always adding
+              new trade resources, guides, tools, support, whatever helps
+              you get ahead. We want to take away as many of those pain
+              points as we can by sharing these resources, and it&apos;ll be
+              an ongoing effort, we&apos;re never done building for you.
+              Because we&apos;re not just building a lead platform,
+              we&apos;re building something for the whole trade community.
+            </p>
+            <p>
+              That&apos;s exactly why we built this. TradieMatch is a
+              genuine opportunity to get in early with a new Wellington born
+              platform, built by tradies, for tradies.
+            </p>
+          </div>
+
+          <ul className="mt-8 space-y-3">
+            {STORY_CHECKLIST.map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-green-600"
+                >
+                  <circle cx="10" cy="10" r="10" fill="currentColor" opacity="0.15" />
+                  <path
+                    d="M6 10.5l2.5 2.5L14 7.5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-sm text-ink-700">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-8 rounded-md bg-hivis-500/10 px-4 py-3 text-sm text-navy-950">
+            <strong>
+              Sign up today and see the full pricing breakdown for yourself.
+            </strong>
           </p>
         </div>
       </section>
@@ -232,34 +225,6 @@ export default function TradieRecruitmentPage() {
         </div>
       </section>
 
-      <section className="bg-paper-0 px-4 py-16 sm:py-20">
-        <div className="mx-auto max-w-2xl">
-          <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-hivis-600">
-            FAQ
-          </p>
-          <h2 className="mt-3 text-center font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
-            Questions tradies ask us.
-          </h2>
-
-          <div className="mt-10 divide-y divide-line border-y border-line">
-            {FAQS.map((faq) => (
-              <details key={faq.question} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-navy-950 marker:content-none">
-                  {faq.question}
-                  <span
-                    aria-hidden="true"
-                    className="shrink-0 text-xl leading-none text-hivis-500 transition-transform group-open:rotate-45"
-                  >
-                    +
-                  </span>
-                </summary>
-                <p className="mt-3 text-sm text-ink-700">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="relative overflow-hidden bg-navy-950 px-4 py-16 text-center sm:py-20">
         <CorrugatedPattern
           id="tradie-recruitment-cta-corrugation"
@@ -277,7 +242,7 @@ export default function TradieRecruitmentPage() {
           </p>
           <Link
             href="/signup?role=tradie"
-            className="mt-8 inline-block rounded-md bg-hivis-500 px-8 py-4 text-base font-semibold text-navy-950 transition hover:bg-hivis-400"
+            className="mt-10 inline-block rounded-lg bg-hivis-500 px-12 py-6 font-display text-xl font-bold text-navy-950 shadow-[0_20px_50px_-15px_rgba(255,106,19,0.6)] transition hover:scale-105 hover:bg-hivis-400 sm:text-2xl"
           >
             Sign Up as a Tradie
           </Link>
