@@ -13,7 +13,12 @@ type LeadRow = {
   profiles: { full_name: string; trade_type: string | null } | null;
 };
 
-export default async function HomeownerDashboardPage() {
+export default async function HomeownerDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ closeError?: string }>;
+}) {
+  const { closeError } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -85,6 +90,11 @@ export default async function HomeownerDashboardPage() {
         </p>
 
         <section className="mt-10">
+          {closeError && (
+            <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+              {closeError}
+            </p>
+          )}
           {hasProfile ? (
             <PostedJobsList jobs={jobs} leadsByJob={leadsByJob} />
           ) : (

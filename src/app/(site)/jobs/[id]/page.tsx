@@ -35,7 +35,9 @@ export default async function JobDetailPage({
 
   const { data: job } = await supabase
     .from("jobs")
-    .select("title, description, category, region, town, budget, timeframe, created_at, homeowner_id")
+    .select(
+      "title, description, category, region, town, budget, timeframe, created_at, homeowner_id, status"
+    )
     .eq("id", id)
     .single();
 
@@ -147,6 +149,14 @@ export default async function JobDetailPage({
                   <dd className="mt-1 text-navy-950">{contact.contact_phone}</dd>
                 )}
               </>
+            ) : job.status === "closed" ? (
+              <dd className="mt-2 text-sm text-ink-700">
+                This job has been closed and is no longer available.
+              </dd>
+            ) : job.status !== "open" ? (
+              <dd className="mt-2 text-sm text-ink-700">
+                This job has already been filled and is no longer available.
+              </dd>
             ) : (paidCount ?? 0) >= 2 ? (
               <dd className="mt-2 text-sm text-ink-700">
                 This lead has already been claimed by 2 tradies.

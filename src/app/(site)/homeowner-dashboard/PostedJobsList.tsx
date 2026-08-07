@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { closeJobNotHired } from "./actions";
 
 export type HomeownerJob = {
   id: string;
@@ -88,12 +89,24 @@ export default function PostedJobsList({
                     </div>
                   </dl>
                 </div>
-                <Link
-                  href={`/jobs/${job.id}`}
-                  className="shrink-0 rounded-md border border-line px-4 py-2 text-center text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
-                >
-                  View details →
-                </Link>
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                  <Link
+                    href={`/jobs/${job.id}`}
+                    className="rounded-md border border-line px-4 py-2 text-center text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+                  >
+                    View details →
+                  </Link>
+                  {job.status === "open" && (
+                    <form action={closeJobNotHired.bind(null, job.id)}>
+                      <button
+                        type="submit"
+                        className="w-full rounded-md border border-line px-4 py-2 text-center text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+                      >
+                        Close job — not hired here
+                      </button>
+                    </form>
+                  )}
+                </div>
               </div>
 
               {(leadsByJob[job.id]?.length ?? 0) > 0 && (
