@@ -3,9 +3,9 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { TRADE_CATEGORIES } from "@/lib/tradeCategories";
 import { parseAreaPairs, isValidAreaPair } from "@/lib/serviceAreas";
+import { sendAccountVerificationEmail } from "@/lib/accountVerification";
 
 export type SignupState = { error: string | null };
 
@@ -49,6 +49,18 @@ export async function signup(
     }
   }
 
+  const address = (formData.get("address") as string | null)?.trim() ?? "";
+  const region = formData.get("region") as string | null;
+  const town = formData.get("town") as string | null;
+  if (role === "homeowner") {
+    if (!address) {
+      return { error: "Please enter your property address." };
+    }
+    if (!region || !town || !isValidAreaPair({ region, town })) {
+      return { error: "Please select a valid region and town." };
+    }
+  }
+
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -83,7 +95,7 @@ export async function signup(
     // checklist keep working unchanged.
     ...(role === "tradie"
       ? { trade_type: categories[0], service_region: areas[0].region }
-      : {}),
+      : { address, region, town }),
   });
 
   if (profileError) {
@@ -148,39 +160,28 @@ export async function signup(
     // the Admin API's generateLink rather than signUp's built-in
     // confirmation flow, so it doesn't touch Supabase's project-wide
     // "Confirm email" setting and never blocks the tradie's own login.
-    try {
-      const admin = createAdminClient();
-      const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
-        type: "magiclink",
-        email,
-        options: {
-          redirectTo: `${origin}/auth/confirm?next=/tradie-dashboard`,
-        },
-      });
+    await sendAccountVerificationEmail({
+      email,
+      firstName: fullName.trim().split(" ")[0],
+      origin,
+      next: "/tradie-dashboard",
+      context: "tradie-bronze",
+    });
+  }
 
-      if (linkError || !linkData) {
-        console.error("Failed to generate verification link:", linkError?.message);
-      } else {
-        const verifyUrl = `${origin}/auth/confirm?token_hash=${linkData.properties.hashed_token}&type=${linkData.properties.verification_type}&next=/tradie-dashboard`;
-
-        const res = await fetch(`${origin}/api/emails/send-verify-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            firstName: fullName.trim().split(" ")[0],
-            verifyUrl,
-          }),
-        });
-
-        if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          console.error("Failed to send verification email:", body.error ?? res.statusText);
-        }
-      }
-    } catch (err) {
-      console.error("Failed to send verification email:", err);
-    }
+  if (role === "homeowner") {
+    // Unlike the tradie email above, this one is a real account-activation
+    // gate — homeowner-dashboard/post-a-job block on email_verified — but
+    // sending it must still never block or fail signup itself; a homeowner
+    // whose email bounces can always retry from the "resend" prompt on
+    // their dashboard instead of being stuck mid-signup.
+    await sendAccountVerificationEmail({
+      email,
+      firstName: fullName.trim().split(" ")[0],
+      origin,
+      next: "/homeowner-dashboard",
+      context: "homeowner-signup",
+    });
   }
 
   if (role === "tradie") {

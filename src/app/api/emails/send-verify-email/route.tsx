@@ -10,9 +10,14 @@ function buildElement(props: VerifyEmailProps) {
   return <VerifyEmail {...props} siteUrl={process.env.NEXT_PUBLIC_SITE_URL} />;
 }
 
+const SUBJECTS: Record<NonNullable<VerifyEmailProps["context"]>, string> = {
+  "tradie-bronze": "Verify your email to unlock Bronze tier",
+  "homeowner-signup": "Verify your email to activate your account",
+};
+
 export async function POST(request: NextRequest) {
   try {
-    const { email, firstName, verifyUrl } = await request.json();
+    const { email, firstName, verifyUrl, context } = await request.json();
 
     if (!email || !firstName || !verifyUrl) {
       return NextResponse.json(
@@ -21,11 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const html = await render(buildElement({ firstName, verifyUrl }));
+    const html = await render(buildElement({ firstName, verifyUrl, context }));
 
     await sendEmail({
       to: email,
-      subject: "Verify your email to unlock Bronze tier",
+      subject: SUBJECTS[context as NonNullable<VerifyEmailProps["context"]>] ?? SUBJECTS["tradie-bronze"],
       html,
     });
 

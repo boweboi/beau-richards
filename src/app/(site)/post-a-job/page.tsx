@@ -20,13 +20,13 @@ export default async function PostAJobPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, address, region, town, full_name, email, phone")
+    .select("role, address, region, town, full_name, email, phone, email_verified")
     .eq("id", user.id)
     .single();
 
   if (profile?.role === "homeowner") {
     const hasProfile = Boolean(profile.address && profile.region && profile.town);
-    if (!hasProfile) {
+    if (!hasProfile || !profile.email_verified) {
       redirect("/homeowner-dashboard");
     }
   }

@@ -33,6 +33,29 @@ export async function createJob(payload: JobPayload): Promise<CreateJobState> {
     return { error: "Please sign in to post a job." };
   }
 
+  // Defense in depth — post-a-job/page.tsx already redirects a homeowner
+  // here if their profile isn't complete, but this action has no way to
+  // know the caller went through that page rather than calling it directly.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, address, region, town, email_verified")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role === "homeowner") {
+    const hasProfile = Boolean(profile.address && profile.region && profile.town);
+    if (!hasProfile) {
+      return {
+        error: "Please add your property address in your dashboard before posting a job.",
+      };
+    }
+    if (!profile.email_verified) {
+      return {
+        error: "Please verify your email in your dashboard before posting a job.",
+      };
+    }
+  }
+
   const { data: job, error } = await supabase
     .from("jobs")
     .insert({

@@ -17,17 +17,34 @@ export interface VerifyEmailProps {
   firstName: string;
   verifyUrl: string;
   siteUrl?: string;
+  context?: "tradie-bronze" | "homeowner-signup";
 }
+
+const COPY = {
+  "tradie-bronze": {
+    preview: "Verify your email to unlock Bronze tier",
+    paragraph:
+      "Confirm this address to unlock Bronze verification on your TradieMatch profile — homeowners see it as a trust signal when they're choosing who to hire.",
+  },
+  "homeowner-signup": {
+    preview: "Verify your email to activate your TradieMatch account",
+    paragraph:
+      "Confirm this address to activate your TradieMatch account — you'll need to verify before you can post a job.",
+  },
+} as const;
 
 export default function VerifyEmail({
   firstName = "there",
   verifyUrl,
   siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.tradiematch.co.nz",
+  context = "tradie-bronze",
 }: VerifyEmailProps) {
+  const copy = COPY[context];
+
   return (
     <Html>
       <Head />
-      <Preview>Verify your email to unlock Bronze tier</Preview>
+      <Preview>{copy.preview}</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Section style={styles.header}>
@@ -43,11 +60,7 @@ export default function VerifyEmail({
 
           <Section style={styles.content}>
             <Heading style={styles.heading}>Verify your email, {firstName}.</Heading>
-            <Text style={styles.paragraph}>
-              Confirm this address to unlock Bronze verification on your
-              TradieMatch profile — homeowners see it as a trust signal when
-              they're choosing who to hire.
-            </Text>
+            <Text style={styles.paragraph}>{copy.paragraph}</Text>
 
             <Button href={verifyUrl} style={styles.button}>
               Verify my email

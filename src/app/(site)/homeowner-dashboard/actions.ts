@@ -2,9 +2,11 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isValidAreaPair } from "@/lib/serviceAreas";
+import { sendAccountVerificationEmail } from "@/lib/accountVerification";
 
 export type CompleteHomeownerProfileState = { error: string | null };
 
@@ -52,6 +54,42 @@ export async function completeHomeownerProfile(
   }
 
   redirect("/homeowner-dashboard");
+}
+
+export async function resendHomeownerVerification() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("email, full_name, role, email_verified")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile || profile.role !== "homeowner" || profile.email_verified) {
+    redirect("/homeowner-dashboard");
+  }
+
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
+  const origin = `${protocol}://${host}`;
+
+  await sendAccountVerificationEmail({
+    email: profile.email,
+    firstName: profile.full_name.trim().split(" ")[0],
+    origin,
+    next: "/homeowner-dashboard",
+    context: "homeowner-signup",
+  });
+
+  redirect("/homeowner-dashboard?verifyResent=1");
 }
 
 export async function closeJobNotHired(jobId: string) {

@@ -4,9 +4,12 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 // Landing point for the "Verify my email" link sent by
-// /api/emails/send-verify-email. The token is verified here rather than
-// relying on Supabase's own confirmation gate, so a tradie's session/login
-// is never blocked by this — clicking the link only unlocks Bronze tier.
+// /api/emails/send-verify-email, for both tradie and homeowner accounts.
+// The token is verified here rather than relying on Supabase's own
+// confirmation gate, so login itself is never blocked by this route —
+// for tradies clicking the link only unlocks Bronze tier; for homeowners
+// it flips the email_verified flag that homeowner-dashboard/post-a-job
+// gate on separately.
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const tokenHash = searchParams.get("token_hash");
@@ -25,12 +28,11 @@ export async function GET(request: NextRequest) {
       await admin
         .from("profiles")
         .update({ email_verified: true })
-        .eq("id", data.user.id)
-        .eq("role", "tradie");
+        .eq("id", data.user.id);
 
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
 
-  return NextResponse.redirect(`${origin}/tradie-dashboard?verify=error`);
+  return NextResponse.redirect(`${origin}/login?verify=error`);
 }

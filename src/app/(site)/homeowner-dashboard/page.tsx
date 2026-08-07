@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import CompleteProfileSection from "./CompleteProfileSection";
+import VerifyEmailSection from "./VerifyEmailSection";
 import PostedJobsList, { type HomeownerJob, type PurchasingTradie } from "./PostedJobsList";
 
 type LeadRow = {
@@ -16,9 +17,9 @@ type LeadRow = {
 export default async function HomeownerDashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ closeError?: string }>;
+  searchParams: Promise<{ closeError?: string; verifyResent?: string }>;
 }) {
-  const { closeError } = await searchParams;
+  const { closeError, verifyResent } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -30,7 +31,7 @@ export default async function HomeownerDashboardPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, address, region, town")
+    .select("role, address, region, town, email, email_verified")
     .eq("id", user.id)
     .single();
 
@@ -39,10 +40,11 @@ export default async function HomeownerDashboardPage({
   }
 
   const hasProfile = Boolean(profile.address && profile.region && profile.town);
+  const isVerified = hasProfile && profile.email_verified;
 
   let jobs: HomeownerJob[] = [];
   const leadsByJob: Record<string, PurchasingTradie[]> = {};
-  if (hasProfile) {
+  if (isVerified) {
     const { data } = await supabase
       .from("jobs")
       .select("id, title, category, region, town, status, created_at")
@@ -95,14 +97,16 @@ export default async function HomeownerDashboardPage({
               {closeError}
             </p>
           )}
-          {hasProfile ? (
-            <PostedJobsList jobs={jobs} leadsByJob={leadsByJob} />
-          ) : (
+          {!hasProfile ? (
             <CompleteProfileSection
               defaultAddress={profile.address ?? ""}
               defaultRegion={profile.region ?? ""}
               defaultTown={profile.town ?? ""}
             />
+          ) : !profile.email_verified ? (
+            <VerifyEmailSection email={profile.email} resent={verifyResent === "1"} />
+          ) : (
+            <PostedJobsList jobs={jobs} leadsByJob={leadsByJob} />
           )}
         </section>
       </div>

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { signup, SignupState } from "./actions";
 import TradeCategoryCheckboxes from "@/components/TradeCategoryCheckboxes";
 import ServiceAreaCheckboxes from "@/components/ServiceAreaCheckboxes";
+import RegionTownSelect from "@/components/RegionTownSelect";
 import TermsCheckbox from "@/components/TermsCheckbox";
 
 const initialState: SignupState = { error: null };
@@ -120,6 +121,33 @@ export default function SignupForm() {
             <p className="text-xs text-ink-500">
               We&apos;ll email you a link to verify your address — confirming it
               unlocks Bronze tier on your profile.
+            </p>
+          )}
+
+          {role === "homeowner" && (
+            <div>
+              <label htmlFor="address" className="block text-sm font-medium text-ink-700">
+                Property address
+              </label>
+              <input
+                id="address"
+                name="address"
+                type="text"
+                required
+                autoComplete="street-address"
+                placeholder="e.g. 12 Queen Street"
+                className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm text-ink-900 focus:border-navy-700 focus:outline-none"
+              />
+            </div>
+          )}
+
+          {role === "homeowner" && <RegionTownSelect />}
+
+          {role === "homeowner" && (
+            <p className="text-xs text-ink-500">
+              We use your address to show tradies where the job is, and
+              we&apos;ll email you a link to verify your account before you can
+              post a job.
             </p>
           )}
 
