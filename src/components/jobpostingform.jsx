@@ -6,6 +6,8 @@ import { createJob } from '@/app/(site)/post-a-job/actions';
 import { TRADE_CATEGORIES } from '@/lib/tradeCategories';
 import { TIMEFRAMES } from '@/lib/timeframes';
 
+const MIN_DESCRIPTION_LENGTH = 80;
+
 const EMPTY_JOB_FIELDS = {
   title: '',
   category: '',
@@ -48,8 +50,16 @@ export default function JobPostingForm({
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setSubmitting(true);
     setError(null);
+
+    if (form.description.trim().length < MIN_DESCRIPTION_LENGTH) {
+      setError(
+        `Please add more detail to your job description (at least ${MIN_DESCRIPTION_LENGTH} characters) — for example, what needs doing and any relevant details like size, materials, or access.`
+      );
+      return;
+    }
+
+    setSubmitting(true);
     const result = await createJob(form);
     setSubmitting(false);
     if (result.error) {
@@ -155,8 +165,10 @@ export default function JobPostingForm({
             className={`${inputClass} resize-y`}
           />
           <p className="mt-1.5 text-xs text-[#0B1F3A]/50">
-            Your phone, email, and address stay private — tradies contact you
-            here on the platform.
+            At least {MIN_DESCRIPTION_LENGTH} characters — the more detail
+            tradies have, the better their quotes will be. Your phone, email,
+            and address stay private — tradies contact you here on the
+            platform.
           </p>
         </div>
 

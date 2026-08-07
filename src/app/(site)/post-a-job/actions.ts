@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createSignedEmailToken } from "@/lib/session-crypto";
 
 const UNSUBSCRIBE_TOKEN_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days
+const MIN_DESCRIPTION_LENGTH = 80;
 
 export type JobPayload = {
   title: string;
@@ -31,6 +32,15 @@ export async function createJob(payload: JobPayload): Promise<CreateJobState> {
 
   if (!user) {
     return { error: "Please sign in to post a job." };
+  }
+
+  // Defense in depth — the form already blocks this client-side, but this
+  // action has no way to know the caller went through the form rather than
+  // calling it directly.
+  if (payload.description.trim().length < MIN_DESCRIPTION_LENGTH) {
+    return {
+      error: `Please add more detail to your job description (at least ${MIN_DESCRIPTION_LENGTH} characters) — for example, what needs doing and any relevant details like size, materials, or access.`,
+    };
   }
 
   // Defense in depth — post-a-job/page.tsx already redirects a homeowner
