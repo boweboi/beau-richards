@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+
+// Gated behind login — not indexable regardless, but marking it explicitly
+// rather than relying on the redirect alone.
+export const metadata: Metadata = {
+  title: "Tradie Pricing | Pay Per Lead | TradieMatch",
+  description:
+    "Fair, flat-fee pricing for tradies — pay only for the leads you choose to respond to, capped at 2 tradies per job.",
+  robots: { index: false, follow: false },
+};
 
 export default async function PricingPage() {
   const supabase = await createClient();

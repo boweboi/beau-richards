@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import SignupForm from "./SignupForm";
+
+export const metadata: Metadata = {
+  title: "Sign Up | Join TradieMatch as a Homeowner or Tradie",
+  description:
+    "Create a free TradieMatch account as a homeowner to post jobs, or as a tradie to browse and quote on local work.",
+};
 
 // SignupForm reads ?role= via useSearchParams(), which requires a Suspense
 // boundary here — without one, a static production build fails with

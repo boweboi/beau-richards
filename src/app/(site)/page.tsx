@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import TradesCarousel from "@/components/TradesCarousel";
 import TrustStrip, { type TrustStripStats } from "@/components/TrustStrip";
@@ -6,6 +7,12 @@ import ToolkitFundThermometer from "@/components/ToolkitFundThermometer";
 import EnvironmentalFundCard from "@/components/EnvironmentalFundCard";
 import { createClient } from "@/lib/supabase/server";
 import type { ToolkitDonation } from "@/lib/toolkitFund";
+
+export const metadata: Metadata = {
+  title: "TradieMatch | Find Trusted Kiwi Tradies",
+  description:
+    "Post a job free and get quotes from verified NZ tradies, or sign up as a tradie to browse and quote on local jobs.",
+};
 
 // Without this, the fetched site_stats row can get baked into a cached
 // render at build/deploy time (or cached via Next's fetch Data Cache,

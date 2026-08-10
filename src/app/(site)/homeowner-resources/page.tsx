@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Homeowner Resources | Hiring a Tradie | TradieMatch",
+  description:
+    "A homeowner's guide to briefing a job, budgeting, checking a tradie's verification, comparing quotes, and reviewing the work.",
+};
+
 const SECTIONS = [
   {
     title: "Get Your Job Brief Ready",

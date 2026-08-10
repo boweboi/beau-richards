@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { TRADIE_RESOURCE_GUIDES as GUIDES } from "@/lib/tradieResourceGuides";
+
+export const metadata: Metadata = {
+  title: "Tradie Resources | Guides for NZ Tradies | TradieMatch",
+  description:
+    "Practical guides for NZ tradies on quoting, invoicing, pricing your work, building your profile, and winning more jobs.",
+};
 
 export default function TradieResourcesPage() {
   return (

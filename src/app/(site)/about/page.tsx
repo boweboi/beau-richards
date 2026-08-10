@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About TradieMatch | Kiwi-Owned Trade Marketplace",
+  description:
+    "TradieMatch is Kiwi-owned and built by someone who knows the trade — fair flat-fee pricing, no subscriptions, free job posting for homeowners.",
+};
+
 export default function AboutPage() {
   return (
     <main className="flex-1 bg-paper-0 px-4 py-16 sm:py-20">

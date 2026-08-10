@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Success Stories | TradieMatch",
+  description:
+    "Real stories from tradies growing their business through TradieMatch — coming soon as more jobs get done through the platform.",
+};
 
 export default function SuccessStoriesPage() {
   return (

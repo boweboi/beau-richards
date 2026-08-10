@@ -1,6 +1,16 @@
-﻿import { redirect } from "next/navigation";
+﻿import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import JobPostingForm from "@/components/jobpostingform.jsx";
+
+// Gated behind login — not indexable regardless, but marking it explicitly
+// rather than relying on the redirect alone.
+export const metadata: Metadata = {
+  title: "Post a Job Free | TradieMatch",
+  description:
+    "Describe your job once and get connected with verified Kiwi tradies in your area — free to post, no obligation to hire.",
+  robots: { index: false, follow: false },
+};
 
 export default async function PostAJobPage({
   searchParams,

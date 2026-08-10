@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
+
 const CONTACT_EMAIL = "beaurichards01@gmail.com";
+
+export const metadata: Metadata = {
+  title: "Careers at TradieMatch",
+  description:
+    "TradieMatch isn't hiring right now, but we'd love to hear from you — get in touch and we'll keep you in mind as we grow.",
+};
 
 export default function CareersPage() {
   return (

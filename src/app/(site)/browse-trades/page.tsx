@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { TRADE_CATEGORIES } from "@/lib/tradeCategories";
+
+export const metadata: Metadata = {
+  title: "Browse Trades | Post a Job by Category | TradieMatch",
+  description:
+    "Browse every trade category on TradieMatch, from builders to electricians, and post your job straight to the tradies who do that work.",
+};
 
 export default function BrowseTradesPage() {
   return (

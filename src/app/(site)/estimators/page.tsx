@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getEstimatorsByCategory } from "@/lib/estimators";
+
+export const metadata: Metadata = {
+  title: "Cost Estimators | Ballpark NZ Trade Prices | TradieMatch",
+  description:
+    "Get a rough NZ price range for decks, renovations, roofing, and more before you post a job and get real quotes from tradies.",
+};
 
 export default function EstimatorsLandingPage() {
   const groups = getEstimatorsByCategory();

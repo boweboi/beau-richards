@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Tradie Reviews | TradieMatch",
+  description:
+    "Real reviews from homeowners will appear here once jobs are completed through TradieMatch — we don't fabricate ratings.",
+};
 
 export default function ReviewsPage() {
   return (

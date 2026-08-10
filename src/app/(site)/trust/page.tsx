@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { REGULATED_TRADES } from "@/lib/tradeCategories";
 import VerificationBadge from "@/components/VerificationBadge";
 import type { VerificationTier } from "@/lib/verificationTier";
+
+export const metadata: Metadata = {
+  title: "Trust and Verification | TradieMatch",
+  description:
+    "How TradieMatch verifies every tradie's identity, qualifications, and business registration, and what Bronze, Silver, and Gold badges mean.",
+};
 
 export default function TrustPage() {
   return (

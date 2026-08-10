@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Support and FAQs | TradieMatch",
+  description:
+    "Answers to common questions about posting a job, tradie pricing, signing up, and browsing jobs on TradieMatch.",
+};
 
 const FAQS = [
   {

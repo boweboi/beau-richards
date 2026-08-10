@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
@@ -6,6 +7,15 @@ import { getTradieMatchCriteria } from "@/lib/tradieJobMatch";
 import regionsData from "@/nz-regions.json";
 import SaveJobButton from "./SaveJobButton";
 import Pagination, { buildJobsUrl } from "./Pagination";
+
+// Gated behind login (tradie-only) — not indexable regardless, but marking
+// it explicitly rather than relying on the redirect alone.
+export const metadata: Metadata = {
+  title: "Browse Jobs | TradieMatch",
+  description:
+    "Browse open jobs matching your trade and service area, grouped by region and town, and quote on the ones you want.",
+  robots: { index: false, follow: false },
+};
 
 type Tab = "matching" | "all";
 

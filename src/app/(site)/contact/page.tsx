@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
+
 const CONTACT_EMAIL = "support@tradiematch.co.nz";
+
+export const metadata: Metadata = {
+  title: "Contact Us | TradieMatch",
+  description:
+    "Got a question, a problem, or feedback? Email the TradieMatch team and we'll get back to you.",
+};
 
 export default function ContactPage() {
   return (
