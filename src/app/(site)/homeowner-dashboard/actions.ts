@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isValidAreaPair } from "@/lib/serviceAreas";
 import { sendAccountVerificationEmail } from "@/lib/accountVerification";
+import { closeJobRecord } from "@/lib/jobClosing";
 
 export type CompleteHomeownerProfileState = { error: string | null };
 
@@ -123,11 +124,7 @@ export async function closeJobNotHired(jobId: string) {
   }
 
   const admin = createAdminClient();
-
-  const { error: jobStatusError } = await admin
-    .from("jobs")
-    .update({ status: "closed" })
-    .eq("id", jobId);
+  const { error: jobStatusError } = await closeJobRecord(admin, jobId);
 
   if (jobStatusError) {
     redirect(
@@ -136,17 +133,6 @@ export async function closeJobNotHired(jobId: string) {
       )}`
     );
   }
-
-  // Paid tradies still mid-pipeline won't hear from this homeowner again —
-  // flag them not_progressing so their own dashboard reflects that, same
-  // value markAsHired already uses for auto-declined sibling leads. Their
-  // lead_purchases payment row (status, amount_cents, etc.) is untouched.
-  await admin
-    .from("lead_purchases")
-    .update({ engagement_status: "not_progressing" })
-    .eq("job_id", jobId)
-    .eq("status", "paid")
-    .in("engagement_status", ["pending_response", "quoted"]);
 
   revalidatePath("/homeowner-dashboard");
 }

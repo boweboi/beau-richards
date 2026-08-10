@@ -17,9 +17,9 @@ type LeadRow = {
 export default async function HomeownerDashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ closeError?: string; verifyResent?: string }>;
+  searchParams: Promise<{ closeError?: string; verifyResent?: string; followupAck?: string }>;
 }) {
-  const { closeError, verifyResent } = await searchParams;
+  const { closeError, verifyResent, followupAck } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -95,6 +95,11 @@ export default async function HomeownerDashboardPage({
           {closeError && (
             <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
               {closeError}
+            </p>
+          )}
+          {followupAck === "1" && (
+            <p className="mb-4 rounded-md bg-hivis-500/10 px-3 py-2 text-sm text-navy-950" role="status">
+              Thanks for letting us know — good luck with your job!
             </p>
           )}
           {!hasProfile ? (

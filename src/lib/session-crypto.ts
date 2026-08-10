@@ -136,3 +136,49 @@ export async function verifySignedEmailToken(
 
   return payload.email;
 }
+
+interface JobTokenPayload {
+  jobId: string;
+  exp: number; // unix seconds
+}
+
+/** Creates a signed, time-limited token embedding a job id (e.g. for a "still looking?" follow-up email link). */
+export async function createSignedJobToken(
+  jobId: string,
+  expiresInSeconds: number
+): Promise<string> {
+  const payload: JobTokenPayload = {
+    jobId,
+    exp: Math.floor(Date.now() / 1000) + expiresInSeconds,
+  };
+  const encodedPayload = toBase64Url(encoder.encode(JSON.stringify(payload)));
+  const signature = await sign(encodedPayload);
+  return `${encodedPayload}.${signature}`;
+}
+
+/**
+ * Verifies a signed job token. Returns the embedded job id if the signature
+ * checks out and it hasn't expired, otherwise null.
+ */
+export async function verifySignedJobToken(
+  token: string | undefined | null
+): Promise<string | null> {
+  if (!token) return null;
+  const [encodedPayload, signature] = token.split(".");
+  if (!encodedPayload || !signature) return null;
+
+  const expected = await sign(encodedPayload);
+  if (!timingSafeEqual(expected, signature)) return null;
+
+  let payload: JobTokenPayload;
+  try {
+    payload = JSON.parse(new TextDecoder().decode(fromBase64Url(encodedPayload)));
+  } catch {
+    return null;
+  }
+
+  if (typeof payload.jobId !== "string" || typeof payload.exp !== "number") return null;
+  if (Math.floor(Date.now() / 1000) > payload.exp) return null;
+
+  return payload.jobId;
+}
