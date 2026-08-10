@@ -18,6 +18,29 @@ const FALLBACK_STATS: TrustStripStats = {
   jobs_completed: 0,
 };
 
+// LocalBusiness already covers Organization's fields (name/description/url)
+// plus address/areaServed — one node, not two competing ones. No
+// aggregateRating: no platform-level rating aggregate exists (see
+// /reviews). No telephone/logo/sameAs: none of that exists on the site.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "TradieMatch",
+  description:
+    "Post your home improvement job, compare quotes from verified New Zealand tradies, and hire with confidence.",
+  url: "https://www.tradiematch.co.nz",
+  email: "support@tradiematch.co.nz",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "Wellington",
+    addressCountry: "NZ",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "New Zealand",
+  },
+};
+
 export default async function Home() {
   const supabase = await createClient();
   const { data } = await supabase
@@ -37,6 +60,10 @@ export default async function Home() {
 
   return (
     <main className="flex-1">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <Hero />
       <TradesCarousel />
       <TrustStrip stats={stats} />
