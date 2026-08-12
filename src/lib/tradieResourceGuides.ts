@@ -12,6 +12,12 @@ export const TRADIE_RESOURCE_GUIDES: TradieResourceGuide[] = [
     href: "/tradie-resources/invoices-quotes",
   },
   {
+    title: "Getting paid: a practical guide",
+    description:
+      "Contracts, deposits, and progress payments, invoicing and follow-up, and your options — Disputes Tribunal, Construction Contracts Act — if a client won't pay.",
+    href: "/tradie-resources/getting-paid",
+  },
+  {
     title: "Growing your skills and trade career",
     description:
       "Apprenticeships and formal training, becoming a licensed builder, electrical and plumbing registration, and how to keep upskilling around a full workload.",
