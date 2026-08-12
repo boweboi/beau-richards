@@ -59,4 +59,10 @@ export const TRADIE_RESOURCE_GUIDES: TradieResourceGuide[] = [
       "Photos, bio, qualifications, reviews, and verification status — how to stand out among tradies bidding the same job.",
     href: "/tradie-resources/build-your-profile",
   },
+  {
+    title: "Backing our tradies",
+    description:
+      "The trade takes a toll — long days, business pressure, and the expectation to just harden up. Why looking out for your mates is part of the job, and where to get free support.",
+    href: "/tradie-resources/tradie-wellbeing",
+  },
 ];

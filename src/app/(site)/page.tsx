@@ -4,6 +4,7 @@ import TradesCarousel from "@/components/TradesCarousel";
 import TrustStrip, { type TrustStripStats } from "@/components/TrustStrip";
 import HowItWorks from "@/components/HowItWorks";
 import ToolkitFundThermometer from "@/components/ToolkitFundThermometer";
+import TradieWellbeingCard from "@/components/TradieWellbeingCard";
 import EnvironmentalFundCard from "@/components/EnvironmentalFundCard";
 import { createClient } from "@/lib/supabase/server";
 import type { ToolkitDonation } from "@/lib/toolkitFund";
@@ -76,6 +77,7 @@ export default async function Home() {
       <TrustStrip stats={stats} />
       <HowItWorks />
       <ToolkitFundThermometer amount={toolkitFundAmount} donations={toolkitDonations} />
+      <TradieWellbeingCard />
       <EnvironmentalFundCard amount={environmentalFundAmount} />
     </main>
   );
