@@ -3,117 +3,76 @@ import Link from "next/link";
 import CorrugatedPattern from "@/components/CorrugatedPattern";
 
 export const metadata: Metadata = {
-  title: "Post a Job Free | TradieMatch",
+  title: "Post your job free | TradieMatch",
   description:
-    "Post a job, get matched with verified tradies in your area, compare quotes, and choose who you trust. Free for homeowners.",
+    "Post your job once and local Wellington tradies come to you. No ringing around, no chasing, no dead ends.",
   robots: { index: true, follow: true },
 };
 
 const BENEFITS = [
   {
-    title: "Verified Tradies Only",
+    title: "Post your job once",
     description:
-      "All tradies are verified and reviewed by real homeowners. Check ratings and reviews before you choose.",
+      "Describe your job in detail. Local tradies who do that work see it and get in touch. No more leaving voicemails that never get returned.",
   },
   {
-    title: "No Upfront Costs",
+    title: "Real local Wellington tradies",
     description:
-      "Posting a job is free. Get quotes, compare, and only pay when you hire.",
+      "No call centre, just real tradespeople working in your area, ready to quote your job.",
   },
   {
-    title: "Local and Fast",
+    title: "Free for homeowners",
     description:
-      "Get matched with tradies in your area who can start soon. Browse their availability and experience.",
+      "Posting a job costs you nothing. Compare quotes, ask questions, and choose the tradie that's right for you.",
   },
 ];
 
 const STEPS = [
   {
     number: "1",
-    title: "Post a Job",
+    title: "Post your job",
     description:
-      "Tell us what needs doing, where, and when. Include a detailed description.",
+      "Tell us what you need done and where. Takes a couple of minutes.",
   },
   {
     number: "2",
-    title: "Get Matched",
+    title: "Local tradies get in touch",
     description:
-      "Verified tradies matching your job will respond with a quote. Up to two tradies can take on your job at a time, so you get real options without your inbox getting flooded.",
+      "Tradies who cover your area and your type of work reach out to discuss the job and quote it.",
   },
   {
     number: "3",
-    title: "Choose Your Tradie",
+    title: "Compare and choose",
     description:
-      "Compare quotes, check ratings, and mark the tradie you trust as hired.",
+      "Weigh up your quotes, pick the tradie you're comfortable with, and get the job done.",
   },
 ];
 
 const FAQS = [
   {
-    question: "How much does it cost?",
-    answer: (
-      <>
-        Posting a job and receiving quotes is completely free for
-        homeowners.
-      </>
-    ),
+    question: "Is it really free for homeowners?",
+    answer:
+      "Yes. Posting a job and receiving quotes costs you nothing. There's no cost to you at any point.",
   },
   {
-    question: "How long does it take to get quotes?",
-    answer: (
-      <>
-        It depends on how urgent you say the job is. Urgent jobs tend to
-        get a response fastest, since the tradies who buy them are
-        motivated to act quickly — jobs marked Flexible or Quotes may
-        take a little longer to hear back on.
-      </>
-    ),
+    question: "Can I talk to tradies before hiring?",
+    answer:
+      "Absolutely. Interested tradies contact you directly to talk through the job and quote it in person. You're never locked in — only go ahead with the tradie you're happy with.",
   },
   {
-    question: "Can I message tradies before hiring?",
-    answer: (
-      <>
-        There&apos;s no in-app chat. Once you post a job, matching
-        tradies will contact you directly by phone or email to discuss
-        the work and give you a quote.
-      </>
-    ),
+    question: "How quickly will I hear back?",
+    answer:
+      "It depends on your job and how many local tradies cover that trade. Once your job's posted, tradies in your area can see it straight away.",
   },
   {
-    question: "What if I'm not happy with the quote?",
-    answer: (
-      <>
-        You&apos;re never obligated to hire anyone. Every job is capped
-        at 2 tradies, so you can compare both quotes and only mark
-        someone as hired once you&apos;re happy with their price and
-        approach.
-      </>
-    ),
+    question: "What areas do you cover?",
+    answer:
+      "We're focused on the Wellington region right now — real local tradies for local jobs.",
   },
   {
-    question: "How do I know tradies are verified?",
-    answer: (
-      <>
-        Every tradie moves through Bronze, Silver, and Gold verification
-        tiers as we confirm their email, NZBN, and review history from
-        real homeowners. You&apos;ll see their badge on their profile
-        before you decide who to work with. Read more on{" "}
-        <Link href="/trust" className="font-medium text-navy-950 underline">
-          trust &amp; verification
-        </Link>
-        .
-      </>
-    ),
-  },
-  {
-    question: "What happens after I book a tradie?",
-    answer: (
-      <>
-        Once you&apos;ve agreed on a price, mark them as hired from your
-        dashboard. After the work&apos;s done, you can leave a review to
-        help other homeowners choose with confidence.
-      </>
-    ),
+    question: "What if I don't get any quotes?",
+    answer:
+      "It costs you nothing to try, so there's no risk. If your trade is one we're still building numbers in, feel free to check back as more tradies join.",
   },
 ];
 
@@ -130,12 +89,17 @@ export default function HomeownerRecruitmentPage() {
 
         <div className="relative mx-auto max-w-2xl">
           <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
-            Get Multiple Quotes from Local Tradies
+            Need a tradie in Wellington?
           </h1>
           <p className="mt-4 text-white/70">
-            Post a job, get matched with verified tradies in your area,
-            compare quotes, choose who you trust.
+            Post your job once and local tradies come to you. No ringing around, no chasing, no dead ends.
           </p>
+          <Link
+            href="/signup?role=homeowner"
+            className="mt-10 inline-block rounded-lg bg-hivis-500 px-12 py-6 font-display text-xl font-bold text-navy-950 shadow-[0_20px_50px_-15px_rgba(255,106,19,0.6)] transition hover:scale-105 hover:bg-hivis-400 sm:text-2xl"
+          >
+            Post your job — it's free
+          </Link>
         </div>
       </section>
 
@@ -170,7 +134,7 @@ export default function HomeownerRecruitmentPage() {
               How it works
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
-              Three steps to your next job done.
+              Three simple steps.
             </h2>
           </div>
 
@@ -230,19 +194,18 @@ export default function HomeownerRecruitmentPage() {
           color="#ffffff"
           opacity={0.05}
         />
-        <div className="relative mx-auto max-w-xl">
+        <div className="relative mx-auto max-w-3xl">
           <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">
-            Ready to get your job done?
+            More than just a job board
           </h2>
-          <p className="mt-3 text-white/70">
-            Post your job free and start comparing quotes from verified
-            tradies in your area today.
+          <p className="mt-4 text-white/70">
+            Every job posted on TradieMatch gives something back. Two dollars from each lead splits evenly between two community funds: one dollar into our apprenticeship toolkit fund, and one dollar toward planting native trees here in Aotearoā. Kaitiakitanga (guardianship of the land), looking after the land we all share. So when you find your tradie, you're also backing the next generation of tradies.
           </p>
           <Link
             href="/signup?role=homeowner"
-            className="mt-8 inline-block rounded-md bg-hivis-500 px-8 py-4 text-base font-semibold text-navy-950 transition hover:bg-hivis-400"
+            className="mt-10 inline-block rounded-lg bg-hivis-500 px-12 py-6 font-display text-xl font-bold text-navy-950 shadow-[0_20px_50px_-15px_rgba(255,106,19,0.6)] transition hover:scale-105 hover:bg-hivis-400 sm:text-2xl"
           >
-            Post a Job Free
+            Post your job — it's free
           </Link>
         </div>
       </section>
