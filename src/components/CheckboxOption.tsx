@@ -16,7 +16,7 @@ export default function CheckboxOption({
   return (
     <label
       className={[
-        "flex w-full min-w-0 cursor-pointer items-start gap-2 rounded-md border border-line px-3 py-2 text-[0.75rem] leading-snug text-ink-900 sm:text-sm has-[:checked]:border-navy-700 has-[:checked]:bg-navy-950/5",
+        "flex w-full min-w-0 cursor-pointer items-start gap-2 rounded-md border border-line px-3 py-2 text-[0.7rem] leading-snug text-ink-900 sm:text-sm has-[:checked]:border-navy-700 has-[:checked]:bg-navy-950/5",
         labelClassName,
         className,
       ].join(" ")}
