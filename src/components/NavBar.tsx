@@ -23,15 +23,15 @@ export default async function NavBar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-paper-0/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
+        <Link href="/" className="flex min-w-0 shrink-0 items-center gap-1.5 sm:gap-2">
           <span
             aria-hidden="true"
-            className="grid h-8 w-8 place-items-center rounded-md bg-navy-900 text-sm font-bold text-hivis-500"
+            className="grid h-7 w-7 place-items-center rounded-md bg-navy-900 text-[0.7rem] font-bold text-hivis-500 sm:h-8 sm:w-8 sm:text-sm"
           >
             TM
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight text-navy-950">
+          <span className="truncate font-display text-base font-semibold tracking-tight text-navy-950 sm:text-lg">
             TradieMatch
           </span>
         </Link>
@@ -49,7 +49,7 @@ export default async function NavBar() {
           <GivingBackMenu />
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           {user ? (
             <div className="hidden items-center gap-3 sm:flex">
               <span className="text-sm font-medium text-ink-700">
@@ -77,7 +77,7 @@ export default async function NavBar() {
           {user && (
             <Link
               href={isTradie ? "/tradie-dashboard" : "/homeowner-dashboard"}
-              className="text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
+              className="whitespace-nowrap text-sm font-medium text-ink-700 hover:text-navy-950 hover:underline hover:decoration-hivis-500 decoration-2 underline-offset-8"
             >
               Dashboard
             </Link>
