@@ -52,7 +52,7 @@ export default function ServiceAreaCheckboxes({
                   was checked inside (uncontrolled inputs don't survive
                   unmount). */}
               <div
-                className={`grid grid-cols-2 gap-2 border-t border-line p-3 sm:grid-cols-3 ${isOpen ? "" : "hidden"}`}
+                className={`grid grid-cols-1 gap-2 border-t border-line p-3 sm:grid-cols-2 md:grid-cols-3 ${isOpen ? "" : "hidden"}`}
               >
                 {region.towns.map((town) => {
                   const value = `${region.name}|${town}`;

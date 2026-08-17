@@ -11,7 +11,7 @@ export default function TradeCategoryCheckboxes({
       <legend className="block text-sm font-medium text-ink-700">
         Which trades do you do?
       </legend>
-      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
         {TRADE_CATEGORIES.map((category) => (
           <CheckboxOption
             key={category}
