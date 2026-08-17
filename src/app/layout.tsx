@@ -20,6 +20,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  colorScheme: "light",
+  themeColor: "#f6f8fa",
 };
 
 export default function RootLayout({
@@ -28,8 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-paper text-ink">
+    <html
+      lang="en"
+      className="h-full antialiased"
+      style={{ colorScheme: "light", WebkitTextSizeAdjust: "100%", textSizeAdjust: "100%" }}
+    >
+      <body
+        className="min-h-full flex flex-col bg-paper text-ink"
+        style={{ colorScheme: "light", WebkitTextSizeAdjust: "100%", textSizeAdjust: "100%" }}
+      >
         {children}
       </body>
     </html>

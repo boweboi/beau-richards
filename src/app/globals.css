@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
+
   /* Ink navy — evening sky over the harbour */
   --navy-950: #0b2035;
   --navy-900: #0f2a45;
