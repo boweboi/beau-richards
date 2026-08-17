@@ -1,5 +1,6 @@
 "use client";
 
+import CheckboxOption from "@/components/CheckboxOption";
 import { useState } from "react";
 import regionsData from "@/nz-regions.json";
 
@@ -56,19 +57,15 @@ export default function ServiceAreaCheckboxes({
                 {region.towns.map((town) => {
                   const value = `${region.name}|${town}`;
                   return (
-                    <label
+                    <CheckboxOption
                       key={town}
-                      className="flex cursor-pointer items-center gap-2 rounded-md border border-line px-3 py-2 text-sm text-ink-900 has-[:checked]:border-navy-700 has-[:checked]:bg-navy-950/5"
+                      name="areas"
+                      value={value}
+                      defaultChecked={defaultSelected.includes(value)}
+                      labelClassName="h-full"
                     >
-                      <input
-                        type="checkbox"
-                        name="areas"
-                        value={value}
-                        defaultChecked={defaultSelected.includes(value)}
-                        className="accent-navy-950"
-                      />
                       {town}
-                    </label>
+                    </CheckboxOption>
                   );
                 })}
               </div>
