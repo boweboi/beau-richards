@@ -24,7 +24,7 @@ export default async function AccountPage() {
     ? { href: "/jobs", label: "Find jobs" }
     : { href: "/post-a-job", label: "Post a job" };
   const secondaryLink = isTradie
-    ? { href: "/post-a-job", label: "Post a job" }
+    ? null
     : { href: "/jobs", label: "Find jobs" };
 
   return (
@@ -48,7 +48,7 @@ export default async function AccountPage() {
           >
             {primaryLink.label}
           </Link>
-          {isTradie && (
+          {secondaryLink && (
             <Link
               href={secondaryLink.href}
               className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
