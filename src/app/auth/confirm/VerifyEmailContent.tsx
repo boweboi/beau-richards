@@ -35,10 +35,46 @@ export default function VerifyEmailContent() {
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState("");
+  const [pageUrl, setPageUrl] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type");
   const next = searchParams.get("next") ?? "/tradie-dashboard";
+
+  useEffect(() => {
+    setPageUrl(window.location.href);
+  }, []);
+
+  const openPreferredBrowser = () => {
+    const url = window.location.href;
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+
+    if (!opened) {
+      window.location.href = url;
+    }
+  };
+
+  const copyPageUrl = async () => {
+    const url = pageUrl || window.location.href;
+
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const input = document.createElement("textarea");
+      input.value = url;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   useEffect(() => {
     if (!tokenHash || !type) {
@@ -189,6 +225,91 @@ export default function VerifyEmailContent() {
           </p>
         </div>
       )}
+      <div
+        style={{
+          borderTop: "1px solid #dde5ea",
+          marginTop: "2rem",
+          paddingTop: "1.5rem",
+          textAlign: "center",
+        }}
+      >
+        <p
+          className="text-xs text-ink-500"
+          style={{ margin: 0, fontSize: "0.75rem", lineHeight: 1.5, color: "#5c7286" }}
+        >
+          Email apps sometimes display pages incorrectly. Open this page in your preferred
+          browser for the best experience.
+        </p>
+        <button
+          type="button"
+          onClick={openPreferredBrowser}
+          style={{
+            width: "100%",
+            marginTop: "1rem",
+            border: 0,
+            borderRadius: "0.375rem",
+            backgroundColor: "#ff6a13",
+            color: "#0b2035",
+            cursor: "pointer",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            padding: "0.75rem 1rem",
+          }}
+        >
+          Open in your preferred browser
+        </button>
+        <label
+          htmlFor="verification-page-url"
+          style={{
+            display: "block",
+            marginTop: "1rem",
+            marginBottom: "0.375rem",
+            textAlign: "left",
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            color: "#33475a",
+          }}
+        >
+          Or copy this link
+        </label>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "stretch" }}>
+          <input
+            id="verification-page-url"
+            type="text"
+            value={pageUrl}
+            readOnly
+            aria-label="Verification page link"
+            onFocus={(event) => event.currentTarget.select()}
+            style={{
+              minWidth: 0,
+              flex: 1,
+              border: "1px solid #dde5ea",
+              borderRadius: "0.375rem",
+              backgroundColor: "#f6f8fa",
+              color: "#33475a",
+              fontSize: "0.6875rem",
+              padding: "0.625rem 0.5rem",
+            }}
+          />
+          <button
+            type="button"
+            onClick={copyPageUrl}
+            style={{
+              flexShrink: 0,
+              border: "1px solid #0b2035",
+              borderRadius: "0.375rem",
+              backgroundColor: "#ffffff",
+              color: "#0b2035",
+              cursor: "pointer",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              padding: "0.625rem 0.75rem",
+            }}
+          >
+            {copied ? "Copied" : "Copy"}
+          </button>
+        </div>
+      </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
