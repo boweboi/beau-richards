@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "@fontsource/space-grotesk/500.css";
 import "@fontsource/space-grotesk/600.css";
 import "@fontsource/space-grotesk/700.css";
@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   title: "TradieMatch | Find Trusted Kiwi Tradies",
   description:
     "Post your home improvement job, compare quotes from verified New Zealand tradies, and hire with confidence.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({

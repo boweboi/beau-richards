@@ -67,27 +67,66 @@ export default function VerifyEmailContent() {
   }, [tokenHash, type, next, router]);
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-line bg-paper-0 p-8 shadow-sm">
+    <div
+      className="w-full max-w-sm rounded-2xl border border-line bg-paper-0 p-8 shadow-sm"
+      style={{
+        maxWidth: "28rem",
+        width: "100%",
+        borderRadius: "1rem",
+        border: "1px solid #dde5ea",
+        backgroundColor: "#ffffff",
+        padding: "2rem",
+        boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      }}
+    >
       {status === "loading" && (
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-line border-t-navy-950"></div>
-          <h1 className="font-display text-xl font-semibold text-navy-950">
+        <div className="text-center" style={{ textAlign: "center" }}>
+          <div
+            className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-line border-t-navy-950"
+            style={{
+              width: "2rem",
+              height: "2rem",
+              borderRadius: "9999px",
+              border: "4px solid #dde5ea",
+              borderTopColor: "#0b2035",
+              animation: "spin 1s linear infinite",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginBottom: "1rem",
+            }}
+          />
+          <h1 className="font-display text-xl font-semibold text-navy-950" style={{ fontSize: "1.25rem", fontWeight: 600, color: "#0b2035" }}>
             Verifying your email
           </h1>
-          <p className="mt-2 text-sm text-ink-500">
+          <p className="mt-2 text-sm text-ink-500" style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#5c7286" }}>
             Please wait while we confirm your email address…
           </p>
         </div>
       )}
 
       {status === "success" && (
-        <div className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+        <div className="text-center" style={{ textAlign: "center" }}>
+          <div
+            className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100"
+            style={{
+              width: "3rem",
+              height: "3rem",
+              borderRadius: "9999px",
+              backgroundColor: "#dcfce7",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginBottom: "1rem",
+            }}
+          >
             <svg
               className="h-6 w-6 text-green-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              style={{ width: "1.5rem", height: "1.5rem", color: "#16a34a", stroke: "currentColor" }}
             >
               <path
                 strokeLinecap="round"
@@ -97,23 +136,38 @@ export default function VerifyEmailContent() {
               />
             </svg>
           </div>
-          <h1 className="font-display text-xl font-semibold text-navy-950">
+          <h1 className="font-display text-xl font-semibold text-navy-950" style={{ fontSize: "1.25rem", fontWeight: 600, color: "#0b2035" }}>
             Email verified!
           </h1>
-          <p className="mt-2 text-sm text-ink-500">
+          <p className="mt-2 text-sm text-ink-500" style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#5c7286" }}>
             Thank you for verifying your email. Redirecting you now…
           </p>
         </div>
       )}
 
       {status === "error" && (
-        <div className="text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+        <div className="text-center" style={{ textAlign: "center" }}>
+          <div
+            className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100"
+            style={{
+              width: "3rem",
+              height: "3rem",
+              borderRadius: "9999px",
+              backgroundColor: "#fee2e2",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginBottom: "1rem",
+            }}
+          >
             <svg
               className="h-6 w-6 text-red-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              style={{ width: "1.5rem", height: "1.5rem", color: "#dc2626", stroke: "currentColor" }}
             >
               <path
                 strokeLinecap="round"
@@ -123,16 +177,19 @@ export default function VerifyEmailContent() {
               />
             </svg>
           </div>
-          <h1 className="font-display text-xl font-semibold text-navy-950">
+          <h1 className="font-display text-xl font-semibold text-navy-950" style={{ fontSize: "1.25rem", fontWeight: 600, color: "#0b2035" }}>
             Verification failed
           </h1>
-          <p className="mt-2 text-sm text-ink-500">{errorMessage}</p>
-          <p className="mt-4 text-xs text-ink-500">
+          <p className="mt-2 text-sm text-ink-500" style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#5c7286" }}>
+            {errorMessage}
+          </p>
+          <p className="mt-4 text-xs text-ink-500" style={{ marginTop: "1rem", fontSize: "0.75rem", color: "#5c7286" }}>
             The link may have expired. Please check your email for a new verification link,
             or try signing up again.
           </p>
         </div>
       )}
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
