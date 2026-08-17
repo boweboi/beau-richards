@@ -7,6 +7,7 @@ type Homeowner = {
   id: string;
   full_name: string;
   email: string;
+  email_verified: boolean;
 };
 
 type Counts = { tradies: number; homeowners: number };
@@ -68,17 +69,18 @@ export default function AdminHomeownersPage() {
         </div>
 
         <div className="mt-8 overflow-x-auto rounded-2xl bg-paper-0 shadow-sm">
-          <table className="w-full min-w-[500px] text-left text-sm">
+          <table className="w-full min-w-[700px] text-left text-sm">
             <thead>
               <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-500">
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">Email</th>
+                <th className="px-4 py-3 font-medium">Email status</th>
               </tr>
             </thead>
             <tbody>
               {homeowners.length === 0 && (
                 <tr>
-                  <td colSpan={2} className="px-4 py-6 text-center text-ink-500">
+                  <td colSpan={3} className="px-4 py-6 text-center text-ink-500">
                     No homeowner accounts yet.
                   </td>
                 </tr>
@@ -99,6 +101,22 @@ export default function AdminHomeownersPage() {
                       className="block px-4 py-3 text-ink-700"
                     >
                       {homeowner.email}
+                    </Link>
+                  </td>
+                  <td className="p-0">
+                    <Link
+                      href={`/admin/homeowners/${homeowner.id}`}
+                      className="block px-4 py-3"
+                    >
+                      <span
+                        className={
+                          homeowner.email_verified
+                            ? "inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800"
+                            : "inline-flex rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-800"
+                        }
+                      >
+                        {homeowner.email_verified ? "Verified" : "Unverified"}
+                      </span>
                     </Link>
                   </td>
                 </tr>
