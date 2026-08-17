@@ -162,6 +162,10 @@ export async function PATCH(
   const { id } = await context.params;
   const body = (await request.json()) as Record<string, unknown>;
 
+  if ("deactivated" in body && typeof body.deactivated !== "boolean") {
+    return NextResponse.json({ error: "deactivated must be a boolean." }, { status: 400 });
+  }
+
   const updates: Partial<Record<EditableField, unknown>> = {};
   for (const field of EDITABLE_FIELDS) {
     if (field in body) {

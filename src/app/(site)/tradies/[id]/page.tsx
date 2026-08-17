@@ -34,6 +34,7 @@ export default async function TradieProfilePage({
     .select(PUBLIC_PROFILE_COLUMNS)
     .eq("id", id)
     .eq("role", "tradie")
+      .eq("deactivated", false)
     .single();
 
   if (!profile) {
