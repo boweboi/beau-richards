@@ -363,7 +363,7 @@ export default async function JobsPage({
               groups={groups}
               savedJobIds={savedJobIds}
               purchasedJobIds={purchasedJobIds}
-              showSaveButton={tab === "matching"}
+              showSaveButton={true}
             />
             {tab === "matching" ? (
               <Pagination
