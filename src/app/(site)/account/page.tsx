@@ -23,9 +23,6 @@ export default async function AccountPage() {
   const primaryLink = isTradie
     ? { href: "/jobs", label: "Find jobs" }
     : { href: "/post-a-job", label: "Post a job" };
-  const secondaryLink = isTradie
-    ? null
-    : { href: "/jobs", label: "Find jobs" };
 
   return (
     <main className="flex flex-1 items-center justify-center bg-navy-950 px-6 py-12">
@@ -48,14 +45,6 @@ export default async function AccountPage() {
           >
             {primaryLink.label}
           </Link>
-          {secondaryLink && (
-            <Link
-              href={secondaryLink.href}
-              className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
-            >
-              {secondaryLink.label}
-            </Link>
-          )}
           <Link
             href="/account/edit"
             className="block w-full rounded-md border border-line px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
