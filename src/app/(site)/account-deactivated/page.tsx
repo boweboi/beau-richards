@@ -18,7 +18,7 @@ export default function AccountDeactivatedPage() {
           Your account has been deactivated
         </h1>
         <p className="mt-4 text-sm leading-6 text-ink-700">
-          Access to your tradie account and features is blocked while your account is deactivated.
+          Access to your account and features is blocked while your account is deactivated.
           Please contact support if you think this is a mistake.
         </p>
         <Link

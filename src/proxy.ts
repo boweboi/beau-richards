@@ -73,32 +73,32 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    const isDeactivationPage = pathname === "/account-deactivated";
-    if (user && !isDeactivationPage && !pathname.startsWith("/admin")) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role, deactivated")
-        .eq("id", user.id)
-        .single();
+  const isDeactivationPage = pathname === "/account-deactivated";
+  if (user && !isDeactivationPage && !pathname.startsWith("/admin")) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("deactivated")
+      .eq("id", user.id)
+      .single();
 
-      if (profile?.role === "tradie" && profile.deactivated) {
-        if (pathname.startsWith("/api")) {
-          return NextResponse.json(
-            {
-              error:
-                "This account has been deactivated. Contact support if you think this is a mistake.",
-            },
-            { status: 403 }
-          );
-        }
-
-        return NextResponse.redirect(new URL("/account-deactivated", request.url));
+    if (profile?.deactivated) {
+      if (pathname.startsWith("/api")) {
+        return NextResponse.json(
+          {
+            error:
+              "This account has been deactivated. Contact support if you think this is a mistake.",
+          },
+          { status: 403 }
+        );
       }
+
+      return NextResponse.redirect(new URL("/account-deactivated", request.url));
     }
+  }
 
   // Maintenance mode: gate every page for regular visitors. Never the
   // admin panel or its API routes though — otherwise nobody could ever
