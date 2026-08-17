@@ -169,7 +169,7 @@ export default function VerifyEmailContent() {
             Email verified!
           </h1>
           <p className="mt-2 text-sm text-ink-500" style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#5c7286" }}>
-            Thank you for verifying your email. Redirecting you now…
+            Thank you for verifying your email. You can now open your account in your preferred browser.
           </p>
         </div>
       )}
