@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 async function verifyEmail(
   tokenHash: string,
@@ -32,7 +31,6 @@ async function verifyEmail(
 
 export default function VerifyEmailContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState("");
   const [pageUrl, setPageUrl] = useState("");
@@ -40,7 +38,6 @@ export default function VerifyEmailContent() {
 
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-  const next = searchParams.get("next") ?? "/tradie-dashboard";
 
   useEffect(() => {
     setPageUrl(window.location.href);
@@ -89,10 +86,6 @@ export default function VerifyEmailContent() {
 
       if (result.success) {
         setStatus("success");
-        // Redirect after 2 seconds to give user time to see the success message
-        setTimeout(() => {
-          router.push(next);
-        }, 2000);
       } else {
         setStatus("error");
         setErrorMessage(result.error || "Email verification failed. Please try again.");
@@ -100,7 +93,7 @@ export default function VerifyEmailContent() {
     };
 
     verify();
-  }, [tokenHash, type, next, router]);
+  }, [tokenHash, type]);
 
   return (
     <div
