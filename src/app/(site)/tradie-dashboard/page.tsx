@@ -164,12 +164,20 @@ export default async function TradieDashboardPage() {
                 See jobs matching your trade categories and service areas, or browse every open
                 job site-wide.
               </p>
-              <Link
-                href="/jobs"
-                className="mt-4 inline-block rounded-md bg-hivis-500 px-4 py-2 text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
-              >
-                Browse matching jobs →
-              </Link>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/jobs?tab=matching"
+                  className="flex-1 rounded-md border border-line bg-white px-4 py-2 text-center text-sm font-semibold text-navy-950 transition hover:bg-navy-950/5"
+                >
+                  Browse matching jobs →
+                </Link>
+                <Link
+                  href="/jobs?tab=all"
+                  className="flex-1 rounded-md bg-hivis-500 px-4 py-2 text-center text-sm font-semibold text-navy-950 transition hover:bg-hivis-400"
+                >
+                  All jobs →
+                </Link>
+              </div>
             </div>
           ) : (
             <CompleteProfileSection
