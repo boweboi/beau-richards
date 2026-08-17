@@ -33,18 +33,15 @@ export default function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState("");
-  const [pageUrl, setPageUrl] = useState("");
   const [copied, setCopied] = useState(false);
 
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-
-  useEffect(() => {
-    setPageUrl(window.location.href);
-  }, []);
+  const next = searchParams.get("next");
+  const dashboardPath = next?.startsWith("/") ? next : "/tradie-dashboard";
 
   const copyPageUrl = async () => {
-    const url = pageUrl || window.location.href;
+    const url = `${window.location.origin}${dashboardPath}`;
 
     try {
       await navigator.clipboard.writeText(url);
@@ -222,7 +219,7 @@ export default function VerifyEmailContent() {
           style={{ margin: 0, fontSize: "0.75rem", lineHeight: 1.5, color: "#5c7286" }}
         >
           Email apps sometimes display pages incorrectly. Open this page in your preferred
-          browser for the best experience. Copy the link below before leaving this page.
+          browser for the best experience. Copy the dashboard link below before leaving this page.
         </p>
         <button
           type="button"
@@ -240,7 +237,7 @@ export default function VerifyEmailContent() {
             padding: "0.75rem 1rem",
           }}
         >
-          {copied ? "Copied" : "Push here to copy link."}
+          {copied ? "Dashboard link copied" : "Push here to copy link."}
         </button>
       </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
