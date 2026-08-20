@@ -166,10 +166,10 @@ export default function HomeownerRecruitmentPage() {
         />
         <div className="relative mx-auto max-w-3xl">
           <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">
-            More than just a job board
+            Giving back with every job.
           </h2>
           <p className="mt-4 text-white/70">
-            Every job posted on TradieMatch gives something back. Two dollars from each lead splits evenly between two community funds: one dollar into our apprenticeship toolkit fund, and one dollar toward planting native trees here in Aotearoā. Kaitiakitanga (guardianship of the land), looking after the land we all share. So when you find your tradie, you're also backing the next generation of tradies.
+            Every job posted on TradieMatch gives something back. We contribute to two community funds, one supporting an apprenticeship toolkit fund to help the next generation of tradies get started, and one supporting native trees being replanted and regenerated across the country, helping restore the land for future generations. Kaitiakitanga, guardianship of the land, looking after the land we all share. So when you find your tradie, you're also helping a young tradie get started and supporting the land for future generations.
           </p>
           <Link
             href="/signup?role=homeowner"
