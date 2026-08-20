@@ -78,7 +78,7 @@ export default function HomeownerRecruitmentPage() {
       >
         <div className="pointer-events-none absolute inset-0 bg-black/60" />
 
-        <div className="relative mx-auto flex min-h-[18rem] max-w-2xl flex-col justify-start">
+        <div className="relative mx-auto flex min-h-[18rem] max-w-2xl -translate-y-8 flex-col justify-start sm:-translate-y-12">
           <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
             Need a tradie in Wellington?
           </h1>
