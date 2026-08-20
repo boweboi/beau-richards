@@ -9,39 +9,27 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const BENEFITS = [
-  {
-    title: "Post your job once",
-    description:
-      "Describe your job in detail. Local tradies who do that work see it and get in touch. No more leaving voicemails that never get returned.",
-  },
-  {
-    title: "Real local Wellington tradies",
-    description:
-      "No call centre, just real tradespeople working in your area, ready to quote your job.",
-  },
-  {
-    title: "Free for homeowners",
-    description:
-      "Posting a job costs you nothing. Compare quotes, ask questions, and choose the tradie that's right for you.",
-  },
-];
-
 const STEPS = [
   {
     number: "1",
+    title: "Sign up today",
+    description:
+      "Create your free homeowner account to get started.",
+  },
+  {
+    number: "2",
     title: "Post your job",
     description:
       "Tell us what you need done and where. Takes a couple of minutes.",
   },
   {
-    number: "2",
+    number: "3",
     title: "Local tradies get in touch",
     description:
       "Tradies who cover your area and your type of work reach out to discuss the job and quote it.",
   },
   {
-    number: "3",
+    number: "4",
     title: "Compare and choose",
     description:
       "Weigh up your quotes, pick the tradie you're comfortable with, and get the job done.",
@@ -79,53 +67,35 @@ const FAQS = [
 export default function HomeownerRecruitmentPage() {
   return (
     <main className="flex-1">
-      <section className="relative overflow-hidden bg-navy-950 px-4 py-16 text-center sm:py-20">
-        <CorrugatedPattern
-          id="homeowner-recruitment-hero-corrugation"
-          className="pointer-events-none absolute inset-0 h-full w-full"
-          color="#ffffff"
-          opacity={0.05}
-        />
+      <section
+        className="relative overflow-hidden bg-navy-950 bg-cover bg-center px-4 py-16 text-center sm:py-20"
+        style={{
+          backgroundImage: 'url("/site%20images/pexels-lucas-w-2810353-4350631.jpg")',
+          backgroundPosition: "center bottom",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-black/60" />
 
-        <div className="relative mx-auto max-w-2xl">
+        <div className="relative mx-auto flex min-h-[18rem] max-w-2xl flex-col justify-start">
           <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
             Need a tradie in Wellington?
           </h1>
           <p className="mt-4 text-white/70">
-            Post your job once and local tradies come to you. No ringing around, no chasing, no dead ends.
+            Sign up today, post your job, and let local verified tradies come to you.
           </p>
-          <Link
-            href="/signup?role=homeowner"
-            className="mt-10 inline-block rounded-lg bg-hivis-500 px-12 py-6 font-display text-xl font-bold text-navy-950 shadow-[0_20px_50px_-15px_rgba(255,106,19,0.6)] transition hover:scale-105 hover:bg-hivis-400 sm:text-2xl"
-          >
-            Post your job — it's free
-          </Link>
         </div>
       </section>
 
-      <section className="bg-paper-0 px-4 py-16 sm:py-20">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid gap-6 sm:grid-cols-3">
-            {BENEFITS.map((benefit) => (
-              <div
-                key={benefit.title}
-                className="rounded-xl border border-line bg-white p-6 text-left shadow-sm"
-              >
-                <span
-                  aria-hidden="true"
-                  className="block h-1 w-10 rounded-full bg-hivis-500"
-                />
-                <h2 className="mt-4 font-display text-lg font-semibold text-navy-950">
-                  {benefit.title}
-                </h2>
-                <p className="mt-2 text-sm text-ink-700">
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="bg-paper-0 px-4 py-10 text-center">
+        <Link
+          href="/signup?role=homeowner"
+          className="inline-block rounded-lg bg-hivis-500 px-12 py-6 font-display text-xl font-bold text-navy-950 shadow-[0_20px_50px_-15px_rgba(255,106,19,0.6)] transition hover:scale-105 hover:bg-hivis-400 sm:text-2xl"
+        >
+          Sign up today.
+        </Link>
+      </div>
 
       <section className="bg-paper px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-5xl">
@@ -134,7 +104,7 @@ export default function HomeownerRecruitmentPage() {
               How it works
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-navy-950 sm:text-3xl">
-              Three simple steps.
+              Four simple steps.
             </h2>
           </div>
 
@@ -205,7 +175,7 @@ export default function HomeownerRecruitmentPage() {
             href="/signup?role=homeowner"
             className="mt-10 inline-block rounded-lg bg-hivis-500 px-12 py-6 font-display text-xl font-bold text-navy-950 shadow-[0_20px_50px_-15px_rgba(255,106,19,0.6)] transition hover:scale-105 hover:bg-hivis-400 sm:text-2xl"
           >
-            Post your job — it's free
+            Sign up today.
           </Link>
         </div>
       </section>
