@@ -67,19 +67,17 @@ export default function HomeownerHeroVideo() {
       />
       <div className="pointer-events-none absolute inset-0 bg-black/60" />
 
-      <div className="relative mx-auto grid min-h-[18rem] max-w-2xl -translate-y-8 place-items-center sm:-translate-y-12">
-        <h1 className="grid place-items-center">
-          {SEGMENTS.map((text, index) => (
-            <span
-              key={text}
-              className="col-start-1 row-start-1 inline-block rounded-md bg-navy-900/85 px-4 py-1.5 font-display text-2xl font-bold text-hivis-500 sm:text-3xl"
-              style={{ opacity: opacities[index] }}
-            >
-              {text}
-            </span>
-          ))}
-        </h1>
-      </div>
+      <h1 className="absolute inset-0 mx-auto flex w-full max-w-2xl flex-col items-center justify-between px-4 py-8 text-center sm:py-10">
+        {SEGMENTS.map((text, index) => (
+          <span
+            key={text}
+            className="inline-block rounded-md bg-navy-900/85 px-4 py-1.5 font-display text-2xl font-bold text-hivis-500 sm:text-3xl"
+            style={{ opacity: opacities[index] }}
+          >
+            {text}
+          </span>
+        ))}
+      </h1>
     </>
   );
 }

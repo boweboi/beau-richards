@@ -68,9 +68,7 @@ const FAQS = [
 export default function HomeownerRecruitmentPage() {
   return (
     <main className="flex-1">
-      <section
-        className="relative overflow-hidden bg-navy-950 px-4 py-16 text-center sm:py-20"
-      >
+      <section className="relative min-h-[26rem] overflow-hidden bg-navy-950 text-center sm:min-h-[28rem]">
         <HomeownerHeroVideo />
       </section>
 
