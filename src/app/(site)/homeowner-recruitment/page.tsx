@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CorrugatedPattern from "@/components/CorrugatedPattern";
+import HomeownerHeroVideo from "@/components/HomeownerHeroVideo";
 
 export const metadata: Metadata = {
   title: "Post your job free | TradieMatch",
@@ -68,24 +69,9 @@ export default function HomeownerRecruitmentPage() {
   return (
     <main className="flex-1">
       <section
-        className="relative overflow-hidden bg-navy-950 bg-cover bg-center px-4 py-16 text-center sm:py-20"
-        style={{
-          backgroundImage: 'url("/site%20images/pexels-lucas-w-2810353-4350631.jpg")',
-          backgroundPosition: "center bottom",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
+        className="relative overflow-hidden bg-navy-950 px-4 py-16 text-center sm:py-20"
       >
-        <div className="pointer-events-none absolute inset-0 bg-black/60" />
-
-        <div className="relative mx-auto flex min-h-[18rem] max-w-2xl -translate-y-8 flex-col justify-start sm:-translate-y-12">
-          <h1 className="font-display text-3xl font-semibold text-white sm:text-4xl">
-            Need a tradie in Wellington?
-          </h1>
-          <p className="mt-4 text-white/70">
-            Sign up today, post your job, and let local verified tradies come to you.
-          </p>
-        </div>
+        <HomeownerHeroVideo />
       </section>
 
       <div className="bg-paper-0 px-4 py-10 text-center">
